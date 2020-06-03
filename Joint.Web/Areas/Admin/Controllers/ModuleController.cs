@@ -18,7 +18,7 @@ namespace Joint.Web.Areas.Admin.Controllers
     public class ModuleController : BaseAdminController
     {
         // GET: Admin/Module
-        public ActionResult Index()
+        public ActionResult Index() 
         {
             //如果不是管理员，拒绝访问
             if (!CurrentInfo.IsAdministrator)
