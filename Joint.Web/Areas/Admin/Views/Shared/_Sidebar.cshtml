@@ -1,0 +1,221 @@
+﻿@{
+    Layout = null;
+}
+
+@using Joint.Web.Framework
+
+<div class="@(IsSidebarCollapsed() ? "sidebar menu-min" : "sidebar")" id="sidebar">
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts" style="">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success" onclick="javascript: location.href = '@InitInfo.Instance.HomeUrl'">
+                <i class="icon-home"></i>
+            </button>
+            <button class="btn btn-info" onclick="javascript:location.href='@(InitInfo.Instance.GetCurrentShopType() == Joint.Entity.ShopTypeEnum.汽车美容 ? "/Admin/FastBill/Index" : "/Admin/FastBill/TyBill") '">
+                <i class="icon-pencil"></i>
+            </button>
+            <button class="btn btn-warning" onclick="javascript: location.href = '/admin/ReportCenter/BusinessSummaryReport'">
+                <i class=" icon-jpy">
+                </i>
+            </button>
+            <button class="btn btn-danger" onclick="javascript:location.href = '/Admin/StockManager/ProductIndex'">
+                <i class="icon-truck"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <span class="btn btn-success"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-warning"></span>
+
+            <span class="btn btn-danger"></span>
+        </div>
+    </div><!-- #sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        @{
+            if (InitInfo.Instance.IsLogin)
+            {
+                Joint.Entity.Module currentModule = InitInfo.Instance.CurrentModule as Joint.Entity.Module;
+                if (currentModule != null)
+                {
+                    List<Joint.Entity.Module> allModule = InitInfo.Instance.Sidebar as List<Joint.Entity.Module>;
+
+                    var topModule = allModule.Where(t => t.ParentID == 0).OrderBy(t => t.Sort).ToList();
+
+                    foreach (var item in topModule)
+                    {
+                        var subModules = allModule.Where(t => t.ParentID == item.ID).OrderBy(t => t.Sort).ToList();
+                        //当菜单只有一级的时候，没有子菜单，就需要判断是否是自己被点击
+                        bool isMyselfActive = false;
+                        //孩子是否正处于展开的状态标识
+                        bool hasChildrenActive = false;
+                        bool hasSubModules = subModules.Any(t => true);
+                        //如果有孩子菜单则判断孩子是否正处于展开的状态
+                        if (hasSubModules)
+                        {
+                            hasChildrenActive = HasChildrenActive(subModules, allModule, currentModule);// subModules.Any(t => t.ID == currentModule.ID);
+                        }
+                        else
+                        {
+                            isMyselfActive = item.ID == currentModule.ID;
+                        }
+                        <li class="@(hasChildrenActive ? "active open" : (isMyselfActive ? "active" : ""))">
+                            <a href="@(hasSubModules ? "#":item.LinkUrl)" class="@(hasSubModules ? "dropdown-toggle" : string.Empty)">
+                                <i class="@item.Icon"></i>
+                                <span class="menu-text"> @item.Name </span>
+                                @if (hasSubModules)
+                                {
+                                    <b class="arrow icon-angle-down"></b>
+                                }
+                            </a>
+                            @{
+                                HtmlString sidebarhHmlString = new HtmlString(ShowSidebar(subModules, allModule, currentModule, new System.Text.StringBuilder()));
+                                @sidebarhHmlString
+                            }
+
+                        </li>
+                                        }
+                                    }
+
+                                }
+        }
+
+    </ul><!-- /.nav-list -->
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="@(IsSidebarCollapsed() ? "icon-double-angle-right" : "icon-double-angle-left")  " data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+    </script>
+</div>
+
+@functions
+{
+    //判断右侧菜单是否缩起来了
+    public bool IsSidebarCollapsed()
+    {
+        if (Request.Cookies["ace.settings"] == null)
+        {
+            return true;
+        }
+        var aceSettings = Server.UrlDecode(Request.Cookies["ace.settings"].Value);
+        if (aceSettings.StartsWith("{\"sidebar-collapsed\":1"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 判断是否有子菜单被选中
+    /// </summary>
+    /// <returns></returns>
+    public bool HasChildrenActive(List<Joint.Entity.Module> subModules, List<Joint.Entity.Module> allModule, Joint.Entity.Module currentModule)
+    {
+        if (subModules.Any(t => t.ID == currentModule.ID))
+        {
+            return true;
+        }
+
+        //判断子菜单是否还有子菜单
+        foreach (var singleSubModules in subModules)
+        {
+            var subSubModule = allModule.Where(t => t.ParentID == singleSubModules.ID).ToList();
+            if (subSubModule.Count > 0)
+            {
+                if (HasChildrenActive(subSubModule, allModule, currentModule))
+                {
+                    return true;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 生成右侧菜单
+    /// </summary>
+    /// <param name="subModules"></param>
+    /// <param name="allModule"></param>
+    /// <param name="currentModule"></param>
+    /// <param name="sb"></param>
+    /// <returns></returns>
+    public string ShowSidebar(List<Joint.Entity.Module> subModules, List<Joint.Entity.Module> allModule, Joint.Entity.Module currentModule, System.Text.StringBuilder sb)
+    {
+        if (subModules.Any(t => true))
+        {
+            sb.Append("<ul class=\"submenu\">");
+            foreach (var item in subModules)
+            {
+                var subSubModules = allModule.Where(t => t.ParentID == item.ID).OrderBy(t => t.Sort).ToList();
+                bool hasSubModules = subSubModules.Any(t => true);
+                bool hasChildrenActive = subSubModules.Any(t => t.ID == currentModule.ID);
+                sb.AppendFormat("<li class=\"{0}\">", (currentModule != null && currentModule.ID == item.ID) ? "active" : (hasChildrenActive ? "active open" : ""));
+                //如果有子菜单则要运行展开
+                if (hasSubModules)
+                {
+
+                    sb.AppendFormat("<a href=\"{0}\" class=\"dropdown-toggle\">", item.LinkUrl);
+                }
+                else
+                {
+                    sb.AppendFormat("<a href=\"{0}\">", item.LinkUrl);
+                }
+                sb.Append("<i class=\"icon-double-angle-right\"></i>");
+                sb.Append(item.Name);
+                //如果有子菜单则要显示下拉按钮的样式
+                if (hasSubModules)
+                {
+                    sb.Append("<b class=\"arrow icon-angle-down\"></b>");
+
+                }
+
+                sb.Append("</a>");
+                ShowSidebar(subSubModules, allModule, currentModule, sb);
+                sb.Append("</li>");
+            }
+            sb.Append("</ul>");
+            return sb.ToString();
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+
+}
+
+@*  局部视图中无法使用@helper方法，所以用上面的@functions来代替，两者的逻辑一致 *@
+@*@helper ShowSidebar(List<Joint.Entity.Module> subModules, List<Joint.Entity.Module> allModule)
+    {
+        <ul class="submenu">
+            @foreach (var item in subModules)
+            {
+                <li>
+                    <a href="@item.LinkUrl">
+                        <i class="icon-double-angle-right"></i>
+                        @item.Name
+                    </a>
+                    @{
+                var subSubModules = allModule.Where(t => t.ParentID == item.ID).OrderBy(t => t.Sort).ToList();
+                ShowSidebar(subSubModules, allModule);
+                    }
+                </li>
+            }
+        </ul>
+    }*@

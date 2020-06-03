@@ -1,0 +1,134 @@
+/**
+ * Name: booNavigation.css
+ * Date:Sun 16 Feb 2014
+ * Author: Noemi Losada Estrella <info@noemilosada.com>
+ * Creative Commons License <http://creativecommons.org/licenses/by-sa/3.0/>
+ */
+
+/** General
+================================================== */
+.booNavigation {
+    margin: 0;
+    padding: 0;
+}
+
+.booNavigation {
+    font-family: "微软雅黑"; /*Microsoft YaHei*/
+    font-size: 13px;
+    font-weight: 400;
+    color: #333;
+    /*background-color: #D8D8D8;*/
+}
+
+.wrapper {
+    margin: 50px auto;
+    width: 960px;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+/** Navigation theme
+================================================== */
+.booNavigation {
+    /*position: relative;*/
+    position:absolute;
+    left:180px;
+}
+
+    .booNavigation li.navItem {
+        background-color: rgba(0, 0, 0, 0);
+        border-top: 0px solid rgba(0, 0, 0, 0);
+        padding: 13px 10px 14px 10px;
+        float: left;
+        text-decoration: none;
+        transition: all .3s ease;
+        -webkit-transition: all .5s ease;
+        -moz-transition: all .5s ease;
+        -ms-transition: all .5s ease;
+        -o-transition: all .5s ease;
+    }
+
+        .booNavigation li.navItem:hover {
+            background-color: #FFFFFF;
+            border-color: #FFFFFF;
+            cursor: pointer;
+        }
+
+
+        .booNavigation li.navItem > a {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+
+        .booNavigation li.navItem .navContent {
+            /*border:1px solid #D8D8D8;*/
+            background-color: #FFFFFF;
+            left: 0;
+            position: absolute;
+            top: 35px;
+            width: 100%;
+            z-index: 999;
+            margin-left: 25px;
+            margin-top: 10px;
+            display: none;
+            -moz-box-shadow:2px 2px 5px #333333; 
+            -webkit-box-shadow:2px 2px 5px #333333; 
+            box-shadow:2px 2px 5px #333333;
+            /*min-height:166px;
+            min-width:300px;*/
+        }
+
+    .booNavigation .navContent > li {
+        color: #444444;
+        float: left;
+        padding: 10px;
+        width: 150px;
+    }
+
+    .booNavigation .navContent ul li a {
+        color: #444444;
+        display: block;
+        padding: 10px;
+        transition: all .3s ease;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        -ms-transition: all .3s ease;
+        -o-transition: all .3s ease;
+        text-decoration: none;
+    }
+
+        .booNavigation .navContent ul li a:hover {
+            background-color: #F2F2F2;
+            padding-left: 20px;
+        }
+
+    .booNavigation li.navItem:hover a {
+        color: Black;
+        /*background-color:#FFFFFF;*/
+    }
+
+    /*.booNavigation li.navItem:hover {
+        background-color: #FFFFFF;
+    }*/
+
+/** Navigation examples
+================================================== */
+.nav-example {
+    clear: left;
+}
+
+/** 自己的样式================================================== */
+/*  960 以下设备 隐藏 */
+@media only screen and (max-width:960px){
+    #booNavigation {
+        display:none;
+    }
+}

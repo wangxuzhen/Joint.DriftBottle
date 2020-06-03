@@ -1,0 +1,365 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>B4漂流瓶|微信漂流瓶下线|随机免费漂流瓶|漂流瓶|在线漂流瓶免费捞</title>
+    <meta name="keywords" content="B4漂流瓶|随机漂流瓶|微信漂流瓶下线|漂流瓶" />
+    <meta name="description" content="寻找另一个她，遇到自己的有缘人，18岁以下请在父母陪同下使用。一款能认识更多陌生人的在线漂流瓶-B4漂流瓶。微信漂流瓶下线后，我一直使用这款漂流瓶，小哥哥快来找我聊天咯~" />
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <!-- basic styles -->
+    <link href="/Areas/Admin/Content/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/assets/css/ace.min.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/assets/css/ace-rtl.min.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/assets/css/ace-skins.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrapValidator.min.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/easyui/easyui.min.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/booNavigation-master/css/booNavigation.css" rel="stylesheet" />
+    <link href="/Areas/Admin/Content/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.bbbb4.com/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="">
+
+
+
+    <link href="/Areas/Mobile/Content/css/CommonExpandDriftBottle.css" rel="stylesheet" />
+
+
+
+    <script src="/Areas/Admin/Content/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/ace-extra.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/date-time/moment.min.js"></script>
+    <script src="/Scripts/ValidatorExpand.js"></script>
+    <script src="/Scripts/bootstrapValidator.min.js"></script>
+    <script src="/Scripts/Common.Core.js"></script>
+
+    <style type="text/css">
+        .blue {
+            color: #0caffe;
+        }
+
+        .main-content {
+            margin-left: 0px;
+        }
+
+        .breadcrumbs {
+            padding: 0px;
+            background: #0caffe;
+            line-height: 50px;
+            height: 53px;
+            color: #ffffff;
+            z-index: 200;
+            border-bottom: none;
+        }
+
+            .breadcrumbs span {
+                font-size: 20px;
+                text-align: center;
+                display: inline-block;
+                width: 100%;
+            }
+
+            .breadcrumbs a.z-03 {
+                position: absolute;
+                left: 10px;
+                top: 30%;
+                margin-top: -3px;
+                background: url(/Areas/Mobile/Content/img/zjt.png) no-repeat;
+                background-size: contain;
+                width: 2.2rem;
+                height: 3.2rem;
+            }
+
+            .breadcrumbs a.z-04 {
+                position: absolute;
+                right: 10px;
+                top: 40%;
+                margin-top: -15px;
+                background: url(/Areas/Mobile/Content/img/settings.png) no-repeat;
+                background-size: contain;
+                width: 3.0rem;
+                height: 4.4rem;
+            }
+
+        .navside {
+            height: 4.5rem;
+            width: 100%;
+            background-color: #fff;
+            padding-top: .5rem;
+            border-top: .1rem #ededed solid;
+            position: fixed;
+            bottom: 0rem;
+            z-index: 100;
+        }
+
+            .navside ul {
+                margin: 0px;
+            }
+
+                .navside ul li {
+                    font-size: 1.2rem;
+                    float: left;
+                    text-align: center;
+                    width: 20%;
+                    /*margin-left: 5%;*/
+                    line-height: 1rem;
+                }
+
+                    .navside ul li p {
+                        margin-bottom: 2px !important;
+                    }
+
+        a {
+            text-decoration: none;
+        }
+
+        input[type="button"], input[type="submit"], input[type="reset"] {
+            -webkit-appearance: none;
+        }
+
+        textarea {
+            -webkit-appearance: none;
+        }
+
+        .layui-layer, .layui-layer-shade {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
+    </style>
+    <style type="text/css">
+        .bootstrap-table .page-list {
+            display: none !important;
+        }
+
+        body.modal-open {
+            margin-right: 0px;
+        }
+    </style>
+    <script type="text/javascript">
+        var isWeiXinOrMoblie = true;
+    </script>
+
+
+
+
+
+
+</head>
+
+<body onselectstart="return false">
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            <div class="main-content">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <div class="navigation-bar">
+                        <a data-toggle="dropdown" style="text-decoration:none" class="dropdown-toggle z-04" href="javascript:void(0);"></a>
+                        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" style="padding: 10px 5px !important;">
+                            <li>
+                                <a href="/Mobile/Home/DriftBottleList">
+                                    <i class="icon-home"></i>
+                                    返回首页
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="/Mobile/Home/UserCenter">
+                                    <i class="icon-user"></i>
+                                    个人中心
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/admin/Home/ModifyPassword">
+                                    <i class="icon-key"></i>
+                                    修改密码
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/admin/Home/Logout">
+                                    <i class="icon-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                        <span>B4漂流瓶</span>
+                        <a href="javascript:void(0);" onclick="goBack()" class="z-03"></a>
+                    </div>
+
+                </div>
+                <div class="bkGray">
+
+
+                    <script type="text/template" id="singleItem">
+                        <a class="plist {0}" href="/Mobile/Home/SendMassage?BottleID={4}&massageKey={5}&UName={6}">
+                            <div class="ptit">{1}</div>
+                            <div class="namespand">{2} <img style="width: 20px;" src="{3}" /> </div>
+                        </a>
+                    </script>
+
+                    <div class="personal-list">
+                        <div id="allItem">
+                            <a class="plist purplediv" href="#" onclick="showRegister()">
+                                <div class="ptit">菊花好养啊，都不用浇水的，现在都枯了</div>
+                                <div class="namespand">因小失大<img style="width: 20px;" src="/Areas/Mobile/Content/img/nv.png"> </div>
+                            </a>
+                            <a class="plist greendiv" href="#" onclick="showRegister()">
+                                <div class="ptit">打个谜语：一下深，一下浅，一头毛，一头柄</div>
+                                <div class="namespand">博大精深<img style="width: 20px;" src="/Areas/Mobile/Content/img/nan.png"> </div>
+                            </a>
+                            <a class="plist purplediv" href="#" onclick="showRegister()">
+                                <div class="ptit">有没有人连麦语音呀</div>
+                                <div class="namespand">笑眯眯 <img style="width: 20px;" src="/Areas/Mobile/Content/img/nv.png"> </div>
+                            </a>
+
+                            <a class="plist greendiv" href="#" onclick="showRegister()">
+                                <div class="ptit">找一个靠谱的，过一辈子</div>
+                                <div class="namespand">小林 <img style="width: 20px;" src="/Areas/Mobile/Content/img/nan.png"> </div>
+                            </a>
+
+                            <a class="plist purplediv" href="#" onclick="showRegister()">
+                                <div class="ptit">今天特别冷，被窝里冷冰冰的</div>
+                                <div class="namespand">姐的冷漠 <img style="width: 20px;" src="/Areas/Mobile/Content/img/nv.png"> </div>
+                            </a>
+
+                            <a class="plist greendiv" href="#" onclick="showRegister()">
+                                <div class="ptit">睡觉了，晚安各位，明天见</div>
+                                <div class="namespand">小弟弟冻僵了 <img style="width: 20px;" src="/Areas/Mobile/Content/img/nan.png"> </div>
+                            </a>
+
+                            <a class="plist purplediv" href="#" onclick="showRegister()">
+                                <div class="ptit">把孤独当作晚安，却夜夜失眠</div>
+                                <div class="namespand">Anni <img style="width: 20px;" src="/Areas/Mobile/Content/img/nv.png"> </div>
+                            </a>
+
+                            <a class="plist purplediv" href="#" onclick="showRegister()">
+                                <div class="ptit">想找个有肌肉的小哥哥</div>
+                                <div class="namespand">艾比利 <img style="width: 20px;" src="/Areas/Mobile/Content/img/nv.png"> </div>
+                            </a>
+
+                            <a class="plist greendiv" href="#" onclick="showRegister()">
+                                <div class="ptit">找个女闺蜜，合适可以处朋友</div>
+                                <div class="namespand">猛男183 <img style="width: 20px;" src="/Areas/Mobile/Content/img/nan.png"> </div>
+                            </a>
+
+                            <a class="plist purplediv" href="#" onclick="showRegister()">
+                                <div class="ptit">有没有30左右的能聊得来的</div>
+                                <div class="namespand">三生三世abc<img style="width: 20px;" src="/Areas/Mobile/Content/img/nv.png"> </div>
+                            </a>
+                        </div>
+                        <div class="form-actions" style="background-color: #ffffff;">
+                            <button class="btn btn-primary btn-block" onclick="showRegister()">点击更换一批</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong>联系站长：QQ280973534</strong>
+
+                        <span onclick="javascript: location.href = 'http://www.miit.gov.cn'">闽ICP备15023039号</span>
+                        <br>
+                    </div>
+                    
+                    <div class="row col-xs-12" style="height:60px;"></div>
+                </div><!-- /.page-content -->
+
+
+
+
+
+                <div class="navside">
+                    <ul>
+                        <li class="margin_left animated bounceInLeft">
+                            <a href="#" onclick="showRegister()" class="">
+                                <p><i class="icon-home bigger-170"></i></p>
+                                <span>首页</span>
+                            </a>
+                        </li>
+                        <li class="animated bounceInRight">
+                            <a href="#" onclick="showRegister()">
+                                <p><i class="icon-location-arrow bigger-170"></i> </p>
+                                <span>附近</span>
+                            </a>
+                        </li>
+                        <li class="animated bounceInLeft">
+                            <a id="totalNoReadHref" href="#" onclick="showRegister()">
+                                <p><i class="icon-envelope icon-animated-vertical bigger-160"></i></p>
+                                <span id="totalNoReadCout" class="">信息</span>
+                            </a>
+                        </li>
+                        <li class="animated bounceInRight">
+                            <a href="#" onclick="showRegister()">
+                                <p><i class="icon-beaker bigger-170"></i> </p>
+                                <span>扔瓶子</span>
+                            </a>
+                        </li>
+                        <li class="animated bounceInLeft">
+                            <a href="#" onclick="showRegister()">
+                                <p><i class="icon-th-list bigger-170"></i> </p>
+                                <span>更多</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div><!-- /.main-container-inner -->
+    </div><!-- /.main-container -->
+
+    <script src="/Areas/Admin/Content/easyui/jquery.easyui.min.js"></script>
+    <script src="/Areas/Admin/Content/easyui/easyui-lang-zh_CN.js"></script>
+
+    <script src="/Areas/Admin/Content/libjs/Layer/layer.2.1.js"></script>
+
+
+
+    <script src="/Areas/Admin/Content/LaxJquery.js"></script>
+    <script src="/Areas/Admin/Content/booNavigation-master/js/booNavigation.js"></script>
+
+    <script src="/Areas/Admin/Content/assets/js/bootstrap.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/typeahead-bs2.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/ace-elements.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/ace.min.js"></script>
+
+    <script src="/Areas/Admin/Content/LaxJquery.js"></script>
+    <script src="/Areas/Admin/Content/bootstrap-table/bootstrap-table.js"></script>
+
+
+    <script src="/Areas/Admin/Content/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+
+    <!-- Visual Studio Browser Link -->
+    <script type="application/json" id="__browserLink_initializationData">
+        {"appName":"Safari (IPhone)","requestId":"78dc973f36794aa886225c82e11054db"}
+    </script>
+    @*<script type="text/javascript" src="http://localhost:18308/c51d213ba07e424f9cd0ad26aa8bdff6/browserLink" async="async"></script>*@
+    <!-- End Browser Link -->
+
+    <script type="text/javascript">
+        function showRegister() {
+
+            layer.confirm('你还没有登录，请登录后再试', {
+                btn: ['去登录', '去注册', '取消'] //按钮
+            }, function () {
+                location.href = "/Mobile/Home/DriftBottleList";
+            }, function () {
+                location.href = "/Mobile/Home/Register";
+            });
+        }
+    </script>
+
+</body>
+</html>

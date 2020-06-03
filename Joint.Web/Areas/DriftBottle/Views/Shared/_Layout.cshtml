@@ -1,0 +1,327 @@
+﻿@{
+    Layout = null;
+}
+@using Joint.Web.Framework
+@using Joint.Entity
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>su</title>
+    <meta name="keywords" content="奇策管理系统" />
+    <meta name="description" content="奇策管理系统" />
+    @*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*@
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <!-- basic styles -->
+    @Styles.Render("~/Areas/Admin/Content/assets/css/HeadCss",
+                            "~/Content/HeadCss",
+                            "~/Areas/Admin/Content/easyui/HeadCss",
+                            "~/Areas/Admin/Content/booNavigation-master/css/HeadCss",
+                            "~/Areas/Admin/Content/bootstrap-table/HeadCss")
+
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.bbbb4.com/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="">
+    @* ACE 拓展样式 兼容手机 *@
+    <link href="~/Areas/Mobile/Content/css/CommonExpand.css" rel="stylesheet" />
+    @RenderSection("Style", false)
+
+
+    <script src="~/Areas/Admin/Content/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/ace-extra.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/date-time/moment.min.js"></script>
+    @Scripts.Render("~/Scripts/HeadScript")
+    <style type="text/css">
+        .blue {
+            color: #0caffe;
+        }
+
+        .breadcrumbs {
+            padding: 0px;
+            background: #0caffe;
+            line-height: 50px;
+            height: 53px;
+            color: #ffffff;
+            z-index: 200;
+            border-bottom:none;
+        }
+
+            .breadcrumbs span {
+                font-size: 20px;
+                text-align: center;
+                display: inline-block;
+                width: 100%;
+            }
+
+            .breadcrumbs a.z-03 {
+                position: absolute;
+                left: 10px;
+                top: 30%;
+                margin-top: -3px;
+                background: url(/Areas/Mobile/Content/img/zjt.png) no-repeat;
+                background-size: contain;
+                width: 2.2rem;
+                height: 3.2rem;
+            }
+
+            .breadcrumbs a.z-04 {
+                position: absolute;
+                right: 10px;
+                top: 40%;
+                margin-top: -15px;
+                background: url(/Areas/Mobile/Content/img/settings.png) no-repeat;
+                background-size: contain;
+                width: 3.0rem;
+                height: 4.4rem;
+            }
+
+        .navside {
+            height: 4rem;
+            width: 100%;
+            background-color: #fff;
+            padding-top: .5rem;
+            border-top: .1rem #ededed solid;
+            position: fixed;
+            bottom: 0rem;
+            z-index: 100;
+        }
+
+            .navside ul {
+                margin: 0px;
+            }
+
+                .navside ul li {
+                    font-size: 1.2rem;
+                    float: left;
+                    text-align: center;
+                    width: 20%;
+                    /*margin-left: 5%;*/
+                    line-height: 1rem;
+                }
+
+                    .navside ul li p {
+                        margin-bottom: 2px !important;
+                    }
+        a{
+            text-decoration:none;
+        }
+        input[type="button"], input[type="submit"], input[type="reset"] {
+            -webkit-appearance: none;
+        }
+
+        textarea {  -webkit-appearance: none;}
+        .layui-layer, .layui-layer-shade {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }      
+    </style>
+    <style type="text/css">
+        .bootstrap-table .page-list {
+            display: none !important;
+        }
+        body.modal-open {
+           margin-right:0px;
+        }
+    </style>
+    <script type="text/javascript">
+        var isWeiXinOrMoblie=@(ViewBag.IsWeiXinOrMoblie==true?"true":"false");
+    </script>
+
+    @RenderSection("HeadScript", false)
+
+</head>
+
+<body>
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            <div class="main-content">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <div class="navigation-bar">
+                        <a data-toggle="dropdown" style="text-decoration:none" class="dropdown-toggle z-04" href="javascript:void(0);"></a> 
+                        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" style="padding: 10px 5px !important;">
+                            <li>
+                                <a href="/Mobile/Home/Index">
+                                    <i class="icon-home"></i>
+                                    返回首页
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="/Mobile/Home/UserCenter">
+                                    <i class="icon-user"></i>
+                                    个人中心
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/admin/Home/ModifyPassword">
+                                    <i class="icon-key"></i>
+                                    修改密码
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <i class="icon-cog"></i>
+                                    系统设置
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/Home/JumpPcVersion">
+                                    <i class="icon-windows"></i>
+                                    切换电脑版
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/admin/Home/Logout">
+                                    <i class="icon-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                        <span>B4漂流瓶</span> 
+                        <a href="javascript:void(0);" onclick="goBack()" class="z-03"></a>
+                     </div>
+                    
+                </div>
+                <div class="bkGray">
+                    @RenderBody()
+                    <div class="row col-xs-12" style="height:60px;"></div>
+                </div><!-- /.page-content -->
+                @*@RenderSection("FooterView", false)*@
+                @if (IsSectionDefined("FooterView"))
+                {
+                    @RenderSection("FooterView", false)
+                }
+                else
+                {
+                    <div class="navside">
+                        <ul>
+                            <li class="margin_left animated bounceInLeft">
+                                <a href="/Mobile/Home/Index" class="">
+                                    <p><i class="icon-home bigger-170"></i></p>
+                                    <span>首页</span>
+                                </a>
+                            </li>
+                            <li class="animated bounceInRight">
+                                <a href="/Mobile/Home/FormDemo">
+                                    <p><i class="icon-jpy bigger-170"></i> </p>
+                                    <span>收银</span>
+                                </a>
+                            </li>
+                            <li class="animated bounceInLeft">
+                                <a href="/Admin/Members/Index">
+                                    <p><i class="icon-resize-small bigger-170"></i></p>
+                                    <span>充值</span>
+                                </a>
+                            </li>
+                            <li class="animated bounceInRight">
+                                <a href="/Mobile/Business/BusinessList">
+                                    <p><i class="icon-bar-chart bigger-170"></i> </p>
+                                    <span>报表</span>
+                                </a>
+                            </li>
+                            <li class="animated bounceInLeft">
+                                <a href="/Admin/Members/Index">
+                                    <p><i class="icon-skype  bigger-170"></i> </p>
+                                    <span>会员</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
+
+            </div>
+        </div><!-- /.main-container-inner -->
+    </div><!-- /.main-container -->
+    @*<script type="text/javascript">
+            if ("ontouchend" in document) document.write("<script src='/Areas/Admin/Content/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        </script>*@
+    <script src="~/Areas/Admin/Content/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Admin/Content/easyui/easyui-lang-zh_CN.js"></script>
+    @* PC版的layer *@
+    <script src="~/Areas/Admin/Content/libjs/Layer/layer.2.1.js"></script>
+    @*<script src="~/Areas/Mobile/Content/js/layer_mobile/layer.js"></script>*@
+
+
+    @Scripts.Render("~/Areas/Admin/Content/FootScript",
+                            "~/Areas/Admin/Content/booNavigation-master/js/FootScript"
+                    )
+    <script src="~/Areas/Admin/Content/assets/js/bootstrap.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/typeahead-bs2.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/ace-elements.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/ace.min.js"></script>
+    @*<script src="~/Scripts/Ewin.js"></script>*@
+    <script src="~/Areas/Admin/Content/LaxJquery.js"></script>
+    @Scripts.Render("~/Areas/Admin/Content/bootstrap-table/FootScript"
+                    )
+
+    <script src="~/Areas/Admin/Content/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    @RenderSection("FootScript", false)
+    <script type="text/javascript">
+        function goBack() {
+           
+            try{
+                if(PageGoBack && typeof(PageGoBack)=="function"){ 
+                    PageGoBack(); 
+                }else{ 
+                    history.go(-1);
+                } 
+                return;
+            }
+            catch (e) {
+
+            }
+            history.go(-1);
+        }
+
+        //根据pc和mobile返回不同对象
+        function CheckPcOrMoblie(pcObj,mobileObj){
+
+            if(isWeiXinOrMoblie){
+                return mobileObj;
+            }
+            else{
+                return pcObj;
+            }
+        }
+
+        function AdminHeartbeat() {
+            $.post('/Admin/SystemTool/AdminHeartbeat', {},
+                function (result) {
+                    if (result.success) {
+
+                    }
+                    else {
+
+                        layer.msg(result.msg);
+                    }
+                },
+                "json"
+            );
+        }
+
+
+        function _stopIt(e) {
+            if (e.returnValue) {
+                e.returnValue = false;
+            }
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+
+            return false;
+        }
+
+        $(function(){
+            //心跳
+            var interval = setInterval(AdminHeartbeat, 1000 * 60);//1000 * 60 * 20
+        });
+    </script>
+    @{Html.RenderPartial("_BaiduTongJi", new { });}
+</body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e2a3e9a55a1c497c886f5e04f6b77de6" Name="Diagram1" ZoomLevel="34">
+        <EntityTypeShape EntityType="JWDB_JCModel.Bottle" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Conversation" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Module" Width="1.5" PointX="0.75" PointY="14.5" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Privileges" Width="1.5" PointX="3" PointY="20.625" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationPrivilegesRole" Width="1.5" PointX="5.25" PointY="21.875" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationPrivilegesShops" Width="1.5" PointX="8.25" PointY="17.875" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationPrivilegesStores" Width="1.5" PointX="8.25" PointY="21.875" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationPrivilegesSystem" Width="1.5" PointX="5.25" PointY="34.125" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationPrivilegesUsers" Width="1.5" PointX="5.25" PointY="25.875" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationRoleModule" Width="1.5" PointX="6" PointY="11.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationShopsModule" Width="1.5" PointX="6" PointY="15.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationShopVersionModule" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationStoresModule" Width="1.5" PointX="3" PointY="9.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationUserRole" Width="1.5" PointX="6" PointY="29.375" />
+        <EntityTypeShape EntityType="JWDB_JCModel.RelationUsersModule" Width="1.5" PointX="3" PointY="15.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Role" Width="1.5" PointX="3.75" PointY="5.125" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Shops" Width="1.5" PointX="1.5" PointY="26.625" />
+        <EntityTypeShape EntityType="JWDB_JCModel.ShopVersion" Width="1.5" PointX="1.5" PointY="38.75" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Stores" Width="1.5" PointX="0.75" PointY="4.25" />
+        <EntityTypeShape EntityType="JWDB_JCModel.UserOperationLog" Width="1.5" PointX="3" PointY="12.875" />
+        <EntityTypeShape EntityType="JWDB_JCModel.Users" Width="1.5" PointX="0.75" PointY="42" />
+        <AssociationConnector Association="JWDB_JCModel.FK_Privileges_Module" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationRoleModule_Module" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationShopsModule_Module" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationStoresModule_Module" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationUsersModule_Module" />
+        <AssociationConnector Association="JWDB_JCModel.FK_UserOperationLog_Module" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesRole_Privileges" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesShops_Privileges" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesStores_Privileges" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesSystem_Privileges" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesUsers_Privileges" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesRole_Role" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesShops_Shops" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesStores_Stores" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationPrivilegesUsers_Users" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationRoleModule_Role" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationShopsModule_Shops" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationStoresModule_Stores" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationUserRole_Role" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationUserRole_Users" />
+        <AssociationConnector Association="JWDB_JCModel.FK_RelationUsersModule_Users" />
+        <AssociationConnector Association="JWDB_JCModel.FK_Role_Shops" />
+        <AssociationConnector Association="JWDB_JCModel.FK_Role_Stores" />
+        <AssociationConnector Association="JWDB_JCModel.FK_Shops_ShopVersion" />
+        <AssociationConnector Association="JWDB_JCModel.FK_Stores_Shops" />
+        <AssociationConnector Association="JWDB_JCModel.FK_Users_Stores" />
+        <AssociationConnector Association="JWDB_JCModel.FK_UserOperationLog_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

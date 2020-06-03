@@ -1,0 +1,1070 @@
+﻿@model IQueryable<Joint.Entity.Module>
+
+@section Style{
+    @*头部样式位置*@
+    <style type="text/css">
+        .dd-handle2 {
+            display: block;
+            min-height: 38px;
+            margin: 5px 0;
+            padding: 8px 12px;
+            background: #f8faff;
+            border: 1px solid #dae2ea;
+            color: #7c9eb2;
+            text-decoration: none;
+            font-weight: bold;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    </style>
+}
+
+@helper ShowMenu(List<Joint.Entity.Module> listModule)
+{
+if (listModule.Any(t => true))
+{
+        <ol class="dd-list">
+
+            @foreach (var item in listModule)
+            {
+                var subMenu = Model.Where(t => t.ParentID == item.ID).OrderBy(t => t.Sort).ToList();
+                <li id="@item.ID" class=" dd-item">
+                    @* 有任何子元素的时候，显示前面的展开符号 *@
+                    @*@if (subMenu.Any(t => true))
+                        {
+                            <button data-action="collapse" type="button" style="display: block;">Collapse</button>
+                            <button data-action="expand" type="button" style="display: none;">Expand</button>
+                        }*@
+                    <div class="dd-handle2">
+                        @item.Name
+                        <span class="lighter grey">
+                            &nbsp; [排序：@item.Sort]@item.Description
+                        </span>
+                        <div class="pull-right action-buttons">
+                            @if (item.Disabled == true)
+                            {
+                                <a data-id="@item.ID" data-pid="@item.ParentID" data-rel="tooltip" title="" data-original-title="该菜单已禁用" class="orange2 tooltip-warning" href="#">
+                                    <i class="icon-warning-sign bigger-130"></i>
+                                </a>
+                            }
+
+                            <a data-id="@item.ID" data-pid="@item.ParentID" data-rel="tooltip" title="" data-original-title="添加权限" class="purple tooltip-info" href="javascript:void(0);" onclick="aaa(this);">
+                                <i class="icon-sitemap bigger-130"></i>
+                            </a>
+
+                            <a data-id="@item.ID" data-pid="@item.ParentID" data-rel="tooltip" title="" data-original-title="添加子菜单" class="green tooltip-success" href="javascript:void(0);" onclick="addSubMenu(this);">
+                                <i class="icon-plus bigger-130"></i>
+                            </a>
+                            <a data-id="@item.ID" data-pid="@item.ParentID" data-rel="tooltip" title="" data-original-title="编辑菜单" class="blue tooltip-info" href="javascript:void(0);" onclick="showEditMenu(this);">
+                                <i class="icon-pencil bigger-130"></i>
+                            </a>
+                            @if (item.Disabled == true)
+                            {
+                                <a data-id="@item.ID" data-pid="@item.ParentID" data-rel="tooltip" title="" data-original-title="启用" class="red tooltip-error" href="javascript:void(0);" onclick="startUsingMenu(this);">
+                                    <i class="icon-undo bigger-130"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a data-id="@item.ID" data-pid="@item.ParentID" data-rel="tooltip" title="" data-original-title="禁用" class="red tooltip-error" href="javascript:void(0);" onclick="disableMenu(this);">
+                                    <i class="icon-trash bigger-130"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    @* 递归显示子菜单 *@
+                    @ShowMenu(subMenu)
+
+                </li>
+
+            }
+        </ol>
+}
+}
+
+<div class="row">
+    <input id="editModuleID" type="hidden" value="0" />
+    @*<h4 class="pink">
+            <i class="icon-hand-right icon-animated-hand-pointer blue"></i>
+            <a id="btnAddTopMenu" href="javascript:; " role="button" class="green"> 点击此处添加顶级菜单 </a>
+        </h4>*@
+
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="row">
+            <div class="col-sm-5">
+                <button id="btnAddTopMenu" type="button" class="btn btn-sm btn-info" style="">
+                    <i class="icon-ok"></i>
+                    添加顶级菜单
+                </button>
+                <button id="btnExpandAll" type="button" class="btn btn-sm btn-success" onclick="expandAll(true);">
+                    <i class="icon-plus"></i>
+                    展开所有
+                </button>
+                <button id="btnCollapseAll" type="button" class="btn btn-sm btn-purple" onclick="expandAll(false);">
+                    <i class="icon-minus"></i>
+                    折叠所有
+                </button>
+            </div>
+
+            <div class="col-sm-7">
+                <button id="btnAddPrivileges" type="button" class="btn btn-sm btn-info" onclick="showAddPrivileges('1');">
+                    <i class="icon-ok"></i>
+                    添加权限
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5">
+                <h3 class="row-fluid header smaller lighter blue">
+                    系统菜单设置
+
+                </h3>
+                <div class="dd" id="nestable">
+                    @ShowMenu(Model.Where(t => t.ParentID == 0 || t.ParentID == null).OrderBy(t => t.Sort).ToList())
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <h3 class="header smaller lighter green">
+                    <span class="span5"> 系统权限设置 </span><!-- /span -->
+                    <span class="span7">
+                        <label class="pull-right inline">
+                            <small class="muted">菜单：</small>
+                            <select class="form-control" id="ModuleID2" name="ModuleID2" style="width:200px;float:right;"></select>
+                        </label>
+                    </span><!-- /span -->
+                </h3>
+
+                <div id="tbPrivilegesDiv" class="row" style="padding-left:12px;">
+                    <table id="tbPrivileges" style="width:99%"></table>
+                </div>
+            </div>
+            <div class="vspace-sm-16"></div>
+        </div>
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<style type="text/css">
+    .help-block {
+        display: inline-block;
+    }
+</style>
+
+<div class="modal fade" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-ok"></i><label id="modalTitle">添加权限</label></h4>
+            </div>
+            <div class="modal-body">
+                <form id="AddMenu" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Name"> 父菜单 </label>
+
+                        <div class="col-sm-9">
+                            <select class="form-control" id="ParentID" name="ParentID" style="width:263px"></select>
+                            <span class="help-inline col-xs-12 col-sm-5">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Name"> 菜单名称 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Name" name="Name" class="col-xs-10 col-sm-8">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="ShortName"> 简称 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="ShortName" name="ShortName" class="col-xs-10 col-sm-8">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="LinkUrl"> 链接地址 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="LinkUrl" name="LinkUrl" class="col-xs-10 col-sm-8" placeholder="父菜单不必填写">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Icon"> 图标 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Icon" name="Icon" class="col-xs-10 col-sm-8">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Sort"> 排序 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Sort" name="Sort" class="col-xs-10 col-sm-8">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Area"> Area </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Area" name="Area" class="col-xs-10 col-sm-8" placeholder="父菜单不必填写">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Controller"> Controller </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Controller" name="Controller" class="col-xs-10 col-sm-8" placeholder="父菜单不必填写">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Action"> Action </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Action" name="Action" class="col-xs-10 col-sm-8" placeholder="父菜单不必填写">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Disabled"> 是否禁用 </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                @*<input id="Disabled" name="Disabled" class="ace ace-switch ace-switch-5" type="checkbox" checked>*@
+                                <input id="Disabled" name="Disabled" class="ace ace-switch ace-switch-5" type="checkbox">
+
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Description"> 备注 </label>
+                        <div class="col-sm-9">
+                            <textarea class="col-xs-10 col-sm-8" id="Description" name="Description" maxlength="100" style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetForm();">取消</button>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="addMenu()">添加</button>
+                <button id="btnUpdate" type="button" class="btn btn-primary" onclick="updateMenuToServer()">更新</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modalPrivileges">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-ok"></i><label id="modalPrivilegesTitle">添加权限</label></h4>
+            </div>
+            <div class="modal-body">
+                <form id="formAddPrivileges" name="formAddPrivileges" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Name"> 菜单 </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="ModuleID" name="ModuleID" style="width:263px"></select>
+                            <span class="help-inline col-xs-12 col-sm-5">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Name"> 权限名称 </label>
+
+                        <div class="col-sm-9">
+                            <input id="PrivilegesID" type="hidden" value="" />
+                            <input type="text" id="PrivilegesName" name="Name" class="col-xs-10 col-sm-8">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="ShortName"> 权限代码 </label>
+
+                        <div class="col-sm-9" style="padding:0px;">
+                            <div class="col-xs-10 col-sm-8">
+                                <div class="col-sm-8" style="padding:0px;">
+                                    <input type="text" id="Code" name="Code" class="col-xs-12">
+                                </div>
+                                <div class="col-sm-4" style="">
+                                    <button id="btnGetPrivilegeCode" type="button" class="btn btn-xs btn-info" onclick="getPrivilegeCode()">
+                                        <i class="icon-ok"></i>
+                                        获取
+                                    </button>
+                                </div>
+                            </div>
+
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="LinkUrl"> 权限值 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Value" name="Value" class="col-xs-10 col-sm-8" placeholder="若是bool值，此处留空">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Sort"> 排序 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="PrivilegesSort" name="Sort" class="col-xs-10 col-sm-8">
+                            <span class="help-inline col-xs-12 col-sm-4">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Icon"> 权限类型 </label>
+
+                        <div class="col-sm-9">
+                            <div class="col-sm-9" style="padding:0px;">
+                                <label class="col-sm-3">
+                                    <input type="checkbox" class="ace" id="UserShow" name="UserShow">
+                                    <span class="lbl"> 用户 </span>
+                                </label>
+                                <label class="col-sm-3">
+                                    <input type="checkbox" class="ace" id="RoleShow" name="RoleShow">
+                                    <span class="lbl"> 角色</span>
+                                </label>
+                                <label class="col-sm-4">
+                                    <input type="checkbox" class="ace" id="StoreShow" name="StoreShow">
+                                    <span class="lbl"> 门店</span>
+                                </label>
+                                <label class="col-sm-3">
+                                    <input type="checkbox" class="ace" id="StoreShow" name="ShopShow">
+                                    <span class="lbl"> 商家</span>
+                                </label>
+                                <label class="col-sm-4">
+                                    <input type="checkbox" class="ace" id="StoreShow" name="SystemShow">
+                                    <span class="lbl"> 系统</span>
+                                </label>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Disabled"> 是否禁用 </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                @*<input id="Disabled" name="Disabled" class="ace ace-switch ace-switch-5" type="checkbox" checked>*@
+                                <input id="PrivilegesDisabled" name="Disabled" class="ace ace-switch ace-switch-5" type="checkbox">
+
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Description"> 描述 </label>
+                        <div class="col-sm-9">
+                            <textarea class="col-xs-10 col-sm-8" id="Describe" name="Describe" maxlength="100" style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">取消</button>
+                <button id="btnPrivilegesAdd" type="button" class="btn btn-primary" onclick="addPrivileges(1);">添加</button>
+                <button id="btnPrivilegesUpdate" type="button" class="btn btn-primary" onclick="addPrivileges(2);">更新</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section FootScript{
+    <!-- page specific plugin scripts -->
+    <script src="/Areas/Admin/Content/assets/js/jquery.nestable.min.js"></script>
+
+    <script src="/Areas/Admin/Content/assets/js/bootbox.min.js"></script>
+
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        $(function () {
+
+            initValidator();
+
+            //初始化菜单树
+            $('.dd').nestable();
+            $('.dd').nestable('collapseAll');
+
+            //$('.dd-handle a').on('mousedown', function (e) {
+            //    e.stopPropagation();
+            //});
+            //$('[data-rel="tooltip"]').tooltip();
+
+
+            //提示窗代码
+            $('[data-rel=tooltip]').tooltip();
+
+            //添加顶级菜单按钮事件，和弹出窗口的准备事件
+            $("#btnAddTopMenu").click(function () {
+
+                //设置添加和更新按钮的可见不可见
+                $("#btnAdd").show();
+                $("#btnUpdate").hide();
+
+                $("#ParentID").val("0");
+                $("#modalTitle").html("添加顶级菜单");
+                $("#mymodal").modal("toggle");
+            });
+
+            //为下拉菜单填充值
+            $.post('/Admin/Module/GetModules',
+            {},
+            function (result) {
+                $.each(result, function (index, el) {
+                    $("#ParentID").append("<option value='" + el.ID + "'>" + el.Name + "</option>");
+                    //权限的下拉框
+                    $("#ModuleID").append("<option value='" + el.ID + "'>" + el.Name + "</option>");
+                    $("#ModuleID2").append("<option value='" + el.ID + "'>" + el.Name + "</option>");
+
+                });
+                $("#ParentID").prepend("<option value='0' selected='selected'>顶级菜单</option>"); //为Select插入一个Option(第一个位置)
+                //权限的下拉框
+                $("#ModuleID").prepend("<option value='0' selected='selected'>不限菜单</option>"); //为Select插入一个Option(第一个位置)
+
+
+                //权限的下拉框
+                $("#ModuleID2").prepend("<option value='0' selected='selected'>不限菜单</option>"); //为Select插入一个Option(第一个位置)
+            },
+            "json"
+            );
+
+            //权限填充
+            InitPrivilegesTable();
+
+            $("#ModuleID2").change(
+                function () {
+                    InitPrivilegesTable();
+                });
+        });
+
+        function getPrivilegeCode() {
+
+            //var privilegeName = $("#PrivilegesName").val();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Module/GetPrivilegeCode',
+              { privilegeName: $("#PrivilegesName").val() },
+              function (result) {
+                  layer.close(loading);
+                  if (result.success) {
+                      $("#Code").val(result.msg);
+                  } else {
+                      layer.msg(result.msg);
+                  }
+
+
+                  //$.loadData(result, "#AddMenu");
+                  //$("#mymodal").modal("toggle");
+              },
+              "json"
+              );
+        }
+
+        function showAddPrivileges(showType) {
+            
+            if (showType == "1") {
+                $("#modalPrivilegesTitle").html("添加权限");
+                $("#btnPrivilegesAdd").show();
+                $("#btnPrivilegesUpdate").hide();
+                document.formAddPrivileges.reset();
+
+            }
+            else {
+                $("#modalPrivilegesTitle").html("修改权限")
+                $("#btnPrivilegesAdd").hide();
+                $("#btnPrivilegesUpdate").show();
+            }
+
+            $("#modalPrivileges").modal("toggle");
+        }
+
+        function expandAll(flage) {
+            if (flage) {
+                $('.dd').nestable('expandAll');
+            }
+            else {
+                $('.dd').nestable('collapseAll');
+            }
+        }
+
+        function initValidator() {
+            /**
+            * 下面是进行插件初始化
+            * 你只需传入相应的键值对
+            * */
+            $('#AddMenu').bootstrapValidator({
+                //submitButtons: 'button[type="submit"]',
+                message: '数据格式不符合',
+                feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                    valid: 'icon-ok-sign',
+                    invalid: 'icon-remove-sign',
+                    validating: 'icon-ok-sign'
+                },
+                fields: {/*验证*/
+                    Name: {/*键名username和input name值对应*/
+                        message: '菜单名称无效',
+                        validators: {
+                            notEmpty: {
+                                message: '不能为空'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 2,
+                                max: 20,
+                                message: '2到20字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    LinkUrl: {/*键名username和input name值对应*/
+                        message: '链接地址无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 500,
+                                message: '500字符以内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Icon: {/*键名username和input name值对应*/
+                        message: '图标无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 50,
+                                message: '50字符以内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Sort: {/*键名username和input name值对应*/
+                        message: '排序无效',
+                        validators: {
+                            regexp: {
+                                regexp: /^[0-9]*$/,
+                                message: '必须是数字'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 1,
+                                max: 20,
+                                message: '10字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Area: {
+                        message: 'Area无效',
+                        validators: {
+                            stringLength: {
+                                min: 0,
+                                max: 50,
+                                message: '50字符以内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Controller: {
+                        message: 'Controller无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 50,
+                                message: '50字符以内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Action: {
+                        message: 'Action无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 50,
+                                message: '50字符以内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Description: {
+                        message: '备注无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 500,
+                                message: '500字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    }
+                }
+            });
+        }
+
+        //设置列宽百分比
+        function fitWidth(percent) {
+            //减31是因为前面的序号站31个像素
+            var width = document.getElementById("tbPrivilegesDiv").clientWidth - 30;
+            var newwidth = width * (percent / 100);
+            return newwidth;
+        }
+
+
+        function InitPrivilegesTable() {
+
+            $('#tbPrivileges').datagrid({
+                fitColumns: true,
+                pagination: true, //启动分页
+                pageSize: 50,//每页显示的记录条数，默认为10
+                pageList: [10, 50, 100, 500],//可以设置每页记录条数的列表
+                //pageNumber: 1, //当前第几页
+                //rownumbers: true,
+                showFooter: true,
+                //单选
+                singleSelect: true,
+                queryParams: {
+                    moduleID: $("#ModuleID2").val()
+                },
+                url: '/Admin/Module/GetPrivilegesList',
+                columns: [[
+                    { field: 'ID', title: '主键', width: fitWidth(9), hidden: true },
+                    { field: 'ModuleName', title: '模块名称', width: fitWidth(9) },
+                    { field: 'Name', title: '权限名称', width: fitWidth(11) },
+                    { field: 'Code', title: '权限编码', width: fitWidth(11) },
+                    { field: 'Value', title: '权限值', width: fitWidth(11) },
+                    { field: 'Sort', title: '排序', width: fitWidth(9) },
+                    { field: 'Describe', title: '描述', width: fitWidth(11) },
+                    //{ field: 'UserShow', title: '用户', width: fitWidth(9)},
+                    //{ field: 'StoreShow', title: '门店', width: fitWidth(9) },
+                    //{ field: 'ShopShow', title: '门店', width: fitWidth(9) },
+                    //{ field: 'SystemShow', title: '门店', width: fitWidth(9) },
+                    {
+                        field: 'UserShow', title: '用户用', width: fitWidth(7), align: 'center', formatter: function (value, rec, index) {
+                            if (rec.UserShow == null || rec.UserShow == true) {
+                                return "<span class=\"label label-sm label-success\">是</span>";
+                            }
+                            else {
+                                return "<span class=\"label label-sm label-warning\">否</span>";
+                            }
+                        }
+                    },
+                     {
+                         field: 'RoleShow', title: '角色用', width: fitWidth(7), align: 'center', formatter: function (value, rec, index) {
+                             if (rec.RoleShow == null || rec.RoleShow == true) {
+                                 return "<span class=\"label label-sm label-success\">是</span>";
+                             }
+                             else {
+                                 return "<span class=\"label label-sm label-warning\">否</span>";
+                             }
+                         }
+                     },
+                    {
+                        field: 'StoreShow', title: '门店用', width: fitWidth(7), align: 'center', formatter: function (value, rec, index) {
+                            if (rec.StoreShow == null || rec.StoreShow == true) {
+                                return "<span class=\"label label-sm label-success\">是</span>";
+                            }
+                            else {
+                                return "<span class=\"label label-sm label-warning\">否</span>";
+                            }
+                        }
+                    },
+                    {
+                        field: 'ShopShow', title: '商家用', width: fitWidth(7), align: 'center', formatter: function (value, rec, index) {
+                            if (rec.ShopShow == null || rec.ShopShow == true) {
+                                return "<span class=\"label label-sm label-success\">是</span>";
+                            }
+                            else {
+                                return "<span class=\"label label-sm label-warning\">否</span>";
+                            }
+                        }
+                    },
+                    {
+                        field: 'SystemShow', title: '系统用', width: fitWidth(7), align: 'center', formatter: function (value, rec, index) {
+                            if (rec.SystemShow == null || rec.SystemShow == true) {
+                                return "<span class=\"label label-sm label-success\">是</span>";
+                            }
+                            else {
+                                return "<span class=\"label label-sm label-warning\">否</span>";
+                            }
+                        }
+                    },
+                    {
+                        field: 'Disabled', title: '状态', width: fitWidth(7), formatter: function (value, rec, index) {
+                            if (rec.Disabled == true) {
+                                return "<span class=\"label label-warning arrowed arrowed-right\">禁用</span>";
+                            }
+                            else if (rec.Disabled == false) {
+                                return "<span class=\"label label-success arrowed-in arrowed-in-right\">正常</span>";
+                            }
+                        }
+                    },
+                    {
+                        field: 'Option', title: '操作', width: fitWidth(7), align: 'left', formatter: function (value, rec, index) {
+
+                            return '<button class="btn btn-xs btn-info" onclick="showEditPrivileges(' + rec.ID + ');"><i class="icon-edit bigger-120"></i>编辑</button>';
+
+                        }
+                    },
+                ]]
+            });
+        }
+
+
+        //更新菜单前的装备
+        function showEditMenu(obj) {
+
+            //设置菜单的父ID,如果有父ID则说明是子菜单，如果没有，则说明是顶级菜单
+            //var pid = $(obj).attr('data-pid');
+            //if (pid > 0) {
+            //    $("#ParentID").val(pid);
+            //}
+            //else {
+            //    $("#ParentID").val("0");
+            //}
+
+            //设置添加和更新按钮的可见不可见
+            $("#btnAdd").hide();
+            $("#btnUpdate").show();
+
+            $("#editModuleID").val($(obj).attr('data-id'));
+
+            $("#modalTitle").html("编辑菜单");
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $.post('/Admin/Module/GetModuleByID',
+            { menuID: $(obj).attr('data-id') },
+            function (result) {
+                layer.close(loading);
+                $.loadData(result, "#AddMenu");
+                $("#mymodal").modal("toggle");
+            },
+            "json"
+            );
+        }
+        function showEditPrivileges(PrivilegesID) {
+            
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Module/GetPrivilegesByID',
+           { PrivilegesID: PrivilegesID },
+           function (result) {
+               layer.close(loading);
+               $.loadData(result, "#formAddPrivileges");
+               $("#PrivilegesID").val(result.ID);
+               showAddPrivileges(2);
+           },
+           "json"
+           );
+        }
+
+        //function editPrivileges() {
+
+        //    var loading = layer.load(1, {
+        //        shade: [0.1, '#fff'] //0.1透明度的白色背景
+        //    });
+
+        //   $.post('/Admin/Module/AddPrivileges',
+        //   privilegesJson,
+        //   function (result) {
+        //       layer.close(loading);
+
+        //       if (result.success) {
+        //           //墨绿深蓝风
+        //           layer.msg(result.msg);
+        //           $("#modalPrivileges").modal("hide");
+        //       }
+        //       else {
+        //           layer.msg(result.msg);
+        //       }
+        //   },
+        //   "json"
+        //   );
+        //}
+
+        function addPrivileges(addOrUpdate) {
+            var privilegesJson = $("#formAddPrivileges").serializeJson();
+            if (privilegesJson.UserShow == "on") {
+                privilegesJson.UserShow = true;
+            }
+            else {
+                privilegesJson.UserShow = false;
+            }
+
+            if (privilegesJson.RoleShow == "on") {
+                privilegesJson.RoleShow = true;
+            }
+            else {
+                privilegesJson.RoleShow = false;
+            }
+            if (privilegesJson.StoreShow == "on") {
+                privilegesJson.StoreShow = true;
+            }
+            else {
+                privilegesJson.StoreShow = false;
+            }
+
+            if (privilegesJson.ShopShow == "on") {
+                privilegesJson.ShopShow = true;
+            }
+            else {
+                privilegesJson.ShopShow = false;
+            }
+
+            if (privilegesJson.SystemShow == "on") {
+                privilegesJson.SystemShow = true;
+            }
+            else {
+                privilegesJson.SystemShow = false;
+            }
+
+            var posturl;
+            if (addOrUpdate == 1) {
+                posturl = '/Admin/Module/AddPrivileges';
+            }
+            else {
+                posturl = '/Admin/Module/UpdatePrivileges';
+                privilegesJson.ID = $("#PrivilegesID").val();
+            }
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post(posturl,
+            privilegesJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    //墨绿深蓝风
+                    layer.msg(result.msg);
+                    $("#modalPrivileges").modal("hide");
+                    InitPrivilegesTable();
+                    //$('#SendDialog').modal("hide");
+                    //layer.msg(result.msg);
+                    //location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+
+        //更新菜单
+        function updateMenuToServer() {
+            //验证数据
+            var validateResult = $('#AddMenu').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var menuJson = $("#AddMenu").serializeJson();
+            menuJson.Disabled = $("#Disabled").is(":Checked");
+            menuJson.ID = $("#editModuleID").val();
+            parentID = $("#ParentID").val();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Module/UpdateMenu',
+            menuJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        //添加子菜单
+        function addSubMenu(obj) {
+
+            //验证数据
+            var validateResult = $('#AddMenu').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            //设置添加和更新按钮的可见不可见
+            $("#btnAdd").show();
+            $("#btnUpdate").hide();
+
+            //设置菜单的父ID
+            $("#ParentID").val($(obj).attr('data-id'));
+            $("#modalTitle").html("添加子菜单");
+            $("#mymodal").modal("toggle");
+        }
+
+        //重置表单
+        function resetForm() {
+            $('#AddMenu')[0].reset();
+            $(".ace-switch").prop("checked", false);
+        }
+
+        function startUsingMenu(obj) {
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $.post('/Admin/Module/StartUsingMenu',
+           { menuID: $(obj).attr('data-id') },
+           function (result) {
+               layer.close(loading);
+
+               if (result.success) {
+                   location.reload();
+               }
+               else {
+                   layer.msg(result.msg);
+               }
+           },
+           "json"
+           );
+        }
+
+        function disableMenu(obj) {
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $.post('/Admin/Module/DisableMenu',
+           { menuID: $(obj).attr('data-id') },
+           function (result) {
+               layer.close(loading);
+
+               if (result.success) {
+                   location.reload();
+               }
+               else {
+                   layer.msg(result.msg);
+               }
+           },
+           "json"
+           );
+        }
+
+        //添加顶级菜单到服务器
+        function addMenu() {
+
+            var menuJson = $("#AddMenu").serializeJson();
+            menuJson.Disabled = $("#Disabled").is(":Checked");
+            menuJson.ParentID = $("#ParentID").val();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Module/AddMenu',
+            menuJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+    </script>
+}
+

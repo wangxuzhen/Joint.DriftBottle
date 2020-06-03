@@ -1,0 +1,267 @@
+﻿@section Style{
+    @* ACE 拓展样式 兼容手机 *@
+    <link href="~/Areas/Mobile/Content/css/CommonExpandDriftBottle.css" rel="stylesheet" />
+    <style type="text/css">
+        .itemdiv.dialogdiv:before {
+            background-color: #ffffff;
+            border: 0px;
+        }
+
+        .itemdiv > .user > img {
+            border: 0px;
+        }
+    </style>
+}
+
+@section HeadScript{
+    @*页头脚本位置*@
+
+}
+<script type="text/template" id="singleItem">
+    <div class="itemdiv dialogdiv">
+        <div class="user">
+            <img src="{0}">
+        </div>
+
+        <div class="body">
+            <div class="time">
+                <i class="icon-time"></i>
+                <span class="green">{1}</span>
+            </div>
+
+            <div class="name">
+                <span class="{2}">{3}</span>
+            </div>
+            <div class="text">{4}</div>
+
+            <div class="tools">
+                @*<a href="#" class="btn btn-minier btn-info">
+                        <i class="icon-only icon-share-alt"></i>
+                    </a>*@
+            </div>
+        </div>
+    </div>
+</script>
+
+<div class="personal-list">
+
+    <div class="widget-box ">
+        <div class="widget-header">
+            <h4 class="lighter smaller">
+                <i class="icon-comment blue"></i>
+                【@Request["UName"]】的瓶子
+            </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <div class="form-actions" style="background-color: #ffffff;padding: 5px;margin-top: 0px;margin-bottom: 0px;">
+                    <div class="form-actions" style="padding: 10px;margin-top: 5px;margin-bottom: 5px;">
+                        <div class="input-group" id="dataForm">
+                            <input id="Massage" placeholder="请输入..." type="text" class="form-control" name="message">
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm btn-info no-radius" type="button" onclick="replyBottle()" id="btnSend">
+                                    <i class="icon-share-alt"></i>
+                                    发送
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dialogs" id="allItem" data-maxid="0" data-minid="2000000000">
+
+                </div>
+                <div style="text-align:center;margin-bottom:5px">
+                    <span class="blue" onclick="getMassageListByPage()">更多聊天记录</span>
+                </div>
+
+            </div><!-- /widget-main -->
+        </div><!-- /widget-body -->
+    </div>
+
+    @*<a class="plist" href="/Admin/InventoryDetails/InventoryReport">
+            <span class="btn btn-pink btn-circle listIco"><i class="icon-umbrella bigger-150"></i></span>
+            <span class="ptit">库存统计报表</span><span class="iconarrow"></span>
+        </a>
+        <a class="plist" href="/Admin/StockManager/ProductIndex">
+            <span class="btn btn-success btn-circle listIco"><i class="icon-plane bigger-150"></i></span>
+            <span class="ptit">产品列表</span><span class="iconarrow"></span>
+        </a>
+
+        <a class="plist" href="/Admin/InventoryDetails/InventoryReport">
+            <span class="btn btn-pink btn-circle listIco"><i class="icon-umbrella bigger-150"></i></span>
+            <span class="ptit">库存统计报表</span><span class="iconarrow"></span>
+        </a>
+        <a class="plist" href="/Admin/StockManager/ProductIndex">
+            <span class="btn btn-success btn-circle listIco"><i class="icon-plane bigger-150"></i></span>
+            <span class="ptit">产品列表</span><span class="iconarrow"></span>
+        </a>
+
+        <a class="plist" href="/Admin/InventoryDetails/InventoryReport">
+            <span class="btn btn-pink btn-circle listIco"><i class="icon-umbrella bigger-150"></i></span>
+            <span class="ptit">库存统计报表</span><span class="iconarrow"></span>
+        </a>*@
+
+</div>
+
+@section FooterView{
+    @{Html.RenderPartial("_FooterCommon", new { });}
+}
+
+@section FootScript{
+    @*页尾脚本位置*@
+    <script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        function PageGoBack() {
+            if (index) {
+                parent.layer.close(index);
+            }
+            else {
+                history.go(-1);
+            }
+        }
+        var msgPageIndex = 0;
+
+        $(function () {
+            var hasReply = "@ViewBag.HasReply";
+            if (hasReply == "1") {
+                layer.msg("来迟了，瓶子已经被回复，请换个瓶子试试", { shadeClose: false, time: 3000, shade: [0.2, '#393D49'] });
+                return;
+            }
+            getMassageListByPage();
+            //定时刷新聊天记录
+            setInterval(function () {
+                getNewMassage();
+            }, 2000);
+        });
+
+        $(document).keydown(function (event) {
+            if (event.keyCode == 13) {
+                $('#btnSend').triggerHandler('click');
+            }
+        });
+
+        var flashOK = true;
+        function getNewMassage() {
+            //如果上次刷新还没好，则不要刷新，
+            if (flashOK == false) {
+                return;
+            }
+            flashOK = false;
+            $.post('/Mobile/Home/getNewMassage',
+           { ConversationMaxID: $("#allItem").attr("data-maxid"), BottleID: $.getUrlParam("bottleID"), MassageKey: $.getUrlParam("massageKey") },
+               function (result) {
+                   if (result.success == false) {
+                       layer.msg(result.msg);
+                   }
+                   else {
+                       console.log(result);
+                       $(result).each(function (index, el) {
+                           var singleItem = $.format($("#singleItem").html(),
+                               el.Sexual == true ? "/Areas/Mobile/Content/img/nan.png" : "/Areas/Mobile/Content/img/nv.png",
+                               el.CreateTime,// $.formatDate("MM/dd hh:mm:ss", el.CreateTime.replace("T", " ")),
+                               el.Sexual == true ? "blue" : "pink",
+                               el.CreateUserName,
+                               el.Massage);
+                           //设置最大ID，后面要实时取最新对话
+                           if (parseInt($("#allItem").attr("data-maxid")) < el.ID) {
+                               $("#allItem").attr("data-maxid", el.ID);
+                           }
+                           //设置最大ID，后面要实时取最新对话
+                           if (el.ID < parseInt($("#allItem").attr("data-minid"))) {
+                               $("#allItem").attr("data-minid", el.ID);
+                           }
+
+                           $("#allItem").prepend(singleItem);
+                       });
+                   }
+                   flashOK = true;
+               },
+               "json"
+           );
+        }
+
+
+        function getMassageListByPage() {
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+
+            $.post('/Mobile/Home/getMassageListByPage',
+            { ConversationMinid: $("#allItem").attr("data-minid"), BottleID: $.getUrlParam("bottleID"), MassageKey: $.getUrlParam("massageKey") },
+                function (result) {
+                    if (result.success == false) {
+                        layer.msg(result.msg);
+                    }
+                    else {
+                        //console.log(result);
+                        $(result).each(function (index, el) {
+
+                            var singleItem = $.format($("#singleItem").html(),
+                                el.Sexual == true ? "/Areas/Mobile/Content/img/nan.png" : "/Areas/Mobile/Content/img/nv.png",
+                                el.CreateTime,// $.formatDate("MM/dd hh:mm:ss", el.CreateTime.replace("T", " ")),
+                                el.Sexual == true ? "blue" : "pink",
+                                el.CreateUserName,
+                                el.Massage);
+                            //设置最大ID，后面要实时取最新对话
+                            if (parseInt($("#allItem").attr("data-maxid")) < el.ID) {
+                                $("#allItem").attr("data-maxid", el.ID);
+                            }
+                            //设置最大ID，后面要实时取最新对话
+                            if (el.ID < parseInt($("#allItem").attr("data-minid"))) {
+                                $("#allItem").attr("data-minid", el.ID);
+                            }
+
+                            $("#allItem").append(singleItem);
+                        });
+                        if (result.length > 0) {
+                            msgPageIndex++;
+                        }
+                        else {
+                            if (msgPageIndex > 0) {
+                                layer.msg("没有更早的消息了", { shadeClose: false, time: 2000, shade: [0.2, '#393D49'] });
+                            }
+
+                        }
+
+                    }
+
+                    layer.close(loading);
+                },
+                "json"
+            );
+        }
+
+
+        function replyBottle() {
+            var bottleJson = {};
+            bottleJson.BottleID = $.getUrlParam("bottleID");
+            bottleJson.MassageKey = $.getUrlParam("massageKey");
+            bottleJson.Massage = $("#Massage").val();
+            //userJson.WeiXinVisible = $("#WeiXinVisible").is(":Checked");
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Mobile/Home/replyBottle',
+            bottleJson,
+            function (result) {
+
+                if (result.success) {
+
+                    getNewMassage();
+                    $("#Massage").val("");
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+                layer.close(loading);
+            },
+            "json"
+            );
+        }
+
+    </script>
+}

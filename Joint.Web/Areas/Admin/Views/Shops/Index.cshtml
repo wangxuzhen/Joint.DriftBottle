@@ -1,0 +1,562 @@
+﻿@section Style{
+    <style type="text/css">
+        .help-block {
+            display: inline-block;
+        }
+
+        .dropdown-menu.dropdown-close {
+            top: -5px;
+        }
+    </style>
+}
+
+@section HeadScript{
+
+}
+
+@using Joint.Web.Framework;
+<div class="page-header">
+    <div>
+        @if (InitInfo.Instance.IsAdministrator)
+        {
+            <button class="btn btn-sm btn-info" data-toggle="modal" onclick="showAddShops();" id="btn_add">
+                <i class="icon-plus"></i>
+                添加
+            </button>
+
+            <button class="btn btn-sm btn-danger" data-toggle="modal" onclick="deleteSome();" id="btn_deleteSome">
+                <i class="icon-remove"></i>
+                批量禁用
+            </button>
+
+        }
+
+        <div style="float:right;" class="col-xs-12 col-sm-7">
+
+            <div class="input-group col-xs-12 col-sm-6">
+                <input type="text" class="form-control search-query" placeholder="" id="seachShopName">
+                <span class="input-group-btn">
+                    <button class="btn btn-purple btn-sm" id="searchbtn" onclick="initTable();" type="button">
+                        查询
+                        <i class="icon-search icon-on-right bigger-110"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-responsive">
+
+            <table class="table table-striped table-bordered table-hover" id="tbShops"></table>
+        </div><!-- /.table-responsive -->
+    </div><!-- /span -->
+</div>
+
+<div class="modal fade" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-ok"></i><label id="modalTitle">添加机构</label></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formShops">
+                    <input id="ID" name="ID" type="hidden" value="" />
+                    <input id="ShopType" name="ShopType" type="hidden" value="1" />
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 机构名称 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="ShopName" name="ShopName" class="col-xs-10 col-sm-7" placeholder="必填项">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 登录账号 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="UserName" name="UserName" class="col-xs-10 col-sm-7" value="@ViewBag.NextMerchantID" placeholder="必填项">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 登录密码 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="Password" name="Password" class="col-xs-10 col-sm-7" value="@ViewBag.NextMerchantID" placeholder="必填项">
+                        </div>
+                    </div>
+
+
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="AddShops();">添加</button>
+                <button id="btnUpdate" type="button" class="btn btn-primary" onclick="editShops();">更新</button>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section FootScript{
+
+    <script src="/Areas/Admin/Content/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/date-time/daterangepicker.min.js"></script>
+
+
+
+    <script type="text/javascript">
+
+        //初始化fileinput
+        function initTable() {
+            //先销毁表格
+            $('#tbShops').bootstrapTable('destroy');
+            //初始化表格,动态从服务器加载数据
+            $("#tbShops").bootstrapTable({
+                method: "get",  //使用get请求到服务器获取数据
+                url: "@Url.Action("GetShopsPage", "Shops")", //获取数据的Servlet地址
+                striped: true,  //表格显示条纹
+                pagination: true, //启动分页
+                pageSize: 10,  //每页显示的记录数
+                pageNumber: 1, //当前第几页
+                search: false,  //是否启用查询
+                showColumns: false,  //显示下拉框勾选要显示的列
+                showRefresh: false,  //显示刷新按钮
+                sidePagination: "server", //表示服务端请求
+                //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+                //设置为limit可以获取limit, offset, search, sort, order
+                queryParamsType: "undefined",
+                queryParams: function queryParams(params) {   //设置查询参数
+                    var param = {
+                        pageNumber: params.pageNumber,
+                        pageSize: params.pageSize,
+                        shopName: $("#seachShopName").val(),
+                        MerchantID: $("#MerchantID").val()
+                    };
+                    return param;
+                },
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'ID',
+                    title: '编号',
+                    visible: false
+                }, {
+                    field: 'ShopName',
+                    title: '机构（点击查看部门）',
+                    formatter: function (value, row, index) {
+                        return '<a class="blue" href="/Admin/Stores/index?shopID='+row.ID+'">'+row.ShopName+'</a>';
+                    }
+                }, {
+                    field: 'UserName',
+                    title: '登录账号',
+                    formatter: function (value, row, index) {
+                        return '<span class="label label-sm label-success" style="cursor: pointer;" onclick="loginThis(' + row.UserID + ');")>' + row.UserName + '</span>';
+                    }
+                },
+                {
+                    field: 'Disabled',
+                    title: '状态',
+                    formatter: function (value) {
+                        if (value != true)
+                            return '<span class="label label-sm label-success">正常</span>';
+                        else
+                            return '<span class="label label-sm label-warning">禁用</span>';
+                    }
+                }, {
+                    field: 'Oprate',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+                        if (canViewImportantInfo()) {
+                            return [
+                           '<button class="btn btn-xs btn-info" onClick="showEditShops(' + row.ID + ')"><i class="icon-edit bigger-120"></i>编辑</button>',
+                           '<button class="btn btn-xs btn-danger"' + styleShowOrHide(!row.Disabled) + ' onClick="del(' + row.ID + ')"><i class="icon-remove bigger-120"></i>禁用</button>',
+                           '<button class="btn btn-xs btn-success"' + styleShowOrHide(row.Disabled) + ' onClick="reDel(' + row.ID + ')"><i class="icon-undo bigger-120"></i>启用</button>',
+                            ].join('  ');
+                        }
+
+                    }
+                }],
+                onLoadSuccess: function () {  //加载成功时执行
+                    $(".page-list").css("display", "none");
+                    //layer.msg("加载成功", { time: 1000 });
+                },
+                onLoadError: function () {  //加载失败时执行
+                    layer.msg("加载数据失败", { time: 1500, icon: 2 });
+                }
+            });
+        };
+
+        function canViewImportantInfo()
+        {
+            var canView=@(InitInfo.Instance.IsAdministrator?"true":"false");
+            return canView;
+        }
+
+        function loginThis(UserID) {
+            layer.confirm('你确定要登录此账号么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                location.href = "/Admin/Home/LoginThis?ID=" + UserID;
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+        }
+
+        //判断是否有noticeOpenID
+        function hasNoticeOpenID(noticeOpenID) {
+            if ($.isNullOrEmpty(noticeOpenID)) {
+                return "";
+            }
+            else {
+                return " btn-purple ";
+            }
+        }
+        function  SetVirtualShop(shopID){
+            window.location.href="/Admin/Virtualshops/index?ShopID="+shopID;
+        }
+
+        //设置模态窗口，1添加2编辑
+        function SetModule(tp) {
+            if (tp == 1) {
+                $('#formShops')[0].reset()
+                $("#btnAdd").show();
+                //$("#divShopVersionID").show();
+                $("#btnUpdate").hide();
+                $("#modalTitle").html("添加机构");
+            }
+            else {
+                $("#btnAdd").hide();
+                //$("#divShopVersionID").hide();
+                $("#btnUpdate").show();
+                $("#modalTitle").html("编辑机构");
+            }
+        }
+
+        function showEditShops(id) {
+            SetModule(2);
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Shops/GetShopsByID',
+            { ID: id },
+            function (result) {
+                layer.close(loading);
+                $.loadData(result, "#formShops");
+
+                $("#mymodal").modal("toggle");
+            },
+            "json"
+            );
+        }
+
+        function editShops(id) {
+            //验证数据
+            var validateResult = $('#formShops').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var shopsJson = $("#formShops").serializeJson();
+
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Shops/EditShops',
+            shopsJson,
+            function (result) {
+                layer.close(loading);
+                if (result.success) {
+                    $('#mymodal').modal('hide');
+                    $("#tbShops").bootstrapTable('refresh');
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        function showAddShops() {
+            SetModule(1);
+            $("#mymodal").modal("toggle");
+        }
+
+        function AddShops() {
+            //验证数据
+            var validateResult = $('#formShops').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var shopsJson = $("#formShops").serializeJson();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Shops/AddShops',
+            shopsJson,
+            function (result) {
+                layer.close(loading);
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        function styleShowOrHide(isShow) {
+            if (isShow) {
+                return '';
+            }
+            else {
+                return 'style="display:none;"';
+            }
+        }
+
+        function reDel(id) {
+            layer.confirm('你确定要启用此数据么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("ReDisableShops", "Shops")",
+                    data: { "SID": id },
+                    success: function (result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            layer.msg(result.msg);
+                            $("#tbShops").bootstrapTable('refresh');
+                        } else {
+                            layer.msg(result.msg);
+                        }
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+        }
+
+
+        function del(id) {
+            layer.confirm('你确定要禁用此数据么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("DisableShops", "Shops")",
+                    data: { "SID": id },
+                    success: function (result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            layer.msg(result.msg);
+                            $("#tbShops").bootstrapTable('refresh');
+                        } else {
+                            layer.msg(result.msg);
+                        }
+                    },
+                    complete: function () {
+
+                    }
+
+                });
+
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+        }
+
+        function add() {
+            var validateResult = $('#addShopsForm').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            $("#addShopsForm").submit();//提交表单
+        }
+
+        ////添加完成以后调用该方法
+        //function afterAdd(result) {
+
+        //    if (result.success) {
+
+        //        $('#addShopsModal').modal('hide');
+        //        layer.msg(result.msg);
+        //        $("#tbShops").bootstrapTable('refresh');
+        //    } else {
+        //        layer.msg(result.msg);
+        //    }
+        //}
+
+
+
+        //批量删除
+        function deleteSome() {
+
+            var arrselections = $("#tbShops").bootstrapTable('getSelections');
+            if (arrselections.length <= 0) {
+                layer.msg("请选择要禁用的数据");
+                return;
+            }
+
+            layer.confirm('你确定要禁用勾选的数据么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var strId = "";
+                for (var i = 0; i < arrselections.length; i++) {
+                    strId = strId + arrselections[i].ID + ",";//1,2,3,
+                }
+                strId = strId.substr(0, strId.length - 1);
+
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("DisableShops", "Shops")",
+                    data: { "SID": strId },
+                    success: function (result) {
+                        if (result.success) {
+                            $("#tbShops").bootstrapTable('refresh');
+                            layer.msg(result.msg);
+                        } else {
+                            layer.msg(result.msg);
+                        }
+                    },
+                    complete: function () {
+
+                    }
+
+                });
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+
+        }
+
+        function InitValidator() {
+            $('#formShops').bootstrapValidator({
+                //submitButtons: 'button[type="submit"]',
+                message: '数据格式不符合',
+                feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                    valid: 'icon-ok-sign',
+                    invalid: 'icon-remove-sign',
+                    validating: 'icon-ok-sign'
+                },
+                fields: {/*验证*/
+                    ShopName: {/*键名username和input name值对应*/
+                        message: '数据无效',
+                        validators: {
+                            notEmpty: {
+                                message: '不能为空'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 1,
+                                max: 30,
+                                message: '长度必须在1到30字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    UserName: {/*键名username和input name值对应*/
+                        message: '用户名无效',
+                        validators: {
+                            notEmpty: {
+                                message: '用户名不能为空'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 4,
+                                max: 50,
+                                message: '长度必须在4到50字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Password: {/*键名username和input name值对应*/
+                        message: '密码无效',
+                        validators: {
+                            notEmpty: {
+                                message: '密码不能为空'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 6,
+                                max: 32,
+                                message: '长度必须在6到32字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Remark: {
+                        message: '备注无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 500,
+                                message: '长度必须500字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    }
+
+                }
+            });
+
+        }
+
+        $(function () {
+
+            //为下拉菜单填充值
+            $.post('/Admin/ShopVersion/GetShopVersions',
+            {},
+            function (result) {
+                $.each(result, function (index, el) {
+                    $("#ShopVersionID").append("<option value='" + el.ID + "'>" + el.Name + "</option>");
+                });
+                $("#ShopVersionID").prepend("<option value='0' selected='selected'>请选择</option>"); //为Select插入一个Option(第一个位置)
+            },
+            "json"
+            );
+
+            $('.date-picker').change(function () {
+
+                //$('#formShops').data('bootstrapValidator').resetForm(true);
+
+                $('#formShops').data('bootstrapValidator')
+               .updateStatus($(this).prop("name"), 'NOT_VALIDATED', null);//.validateField($(this).prop("name"))
+
+            });
+
+            $('.date-picker').datepicker({ autoclose: true }).next().on(ace.click_event, function () {
+                $(this).prev().focus();
+            });
+
+            InitValidator();
+
+            //1.调用函数，初始化表格
+            initTable();
+
+        });
+
+
+
+    </script>
+}

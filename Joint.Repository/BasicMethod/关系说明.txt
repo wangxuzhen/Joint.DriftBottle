@@ -1,0 +1,2 @@
+﻿三个文件的调用关系
+DbSessionFactory->DbSession->EFContextFactory

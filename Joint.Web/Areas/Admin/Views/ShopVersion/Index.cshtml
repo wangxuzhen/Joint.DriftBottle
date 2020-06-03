@@ -1,0 +1,665 @@
+﻿@using Joint.Web.Areas.Admin.Models;
+@using Joint.Entity
+@model PageModel<ShopVersion>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="row">
+            <div>
+                <span style="float:left">
+                    <button type="button" class="btn btn-sm btn-info" style="margin-left: 12px;" onclick="showAddShopVersion();">
+                        <i class="icon-plus"></i>
+                        添加
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteAll();">
+                        <i class="icon-remove"></i>
+                        批量禁用
+                    </button>
+                    <button type="button" class="btn btn-sm btn-success" onclick="resetShopVersion();">
+                        <i class="icon-refresh"></i>
+                        刷新商家菜单
+                    </button>
+                </span>
+                @{
+                    var searchModel = ViewBag.SearchModel as OneKeySearchModel;
+                    if (searchModel == null)
+                    {
+                        searchModel = new OneKeySearchModel();
+                    }
+                }
+
+                <div class="col-xs-8 col-sm-3" style="float:right;">
+                    <form>
+                        <div class="input-group">
+                            <input type="text" class="form-control search-query" name="SearchStr" placeholder="输入查询内容" value="@searchModel.SearchStr" />
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-purple btn-sm">
+                                    查询
+                                    <i class="icon-search icon-on-right bigger-110"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="hr hr-18 dotted hr-double"></div>
+
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <input id="PermissionType" type="hidden" value="ShopVersionPermission">
+                    <input id="IDs" type="hidden" value="">
+                    <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="center">
+                                    <label>
+                                        <input type="checkbox" class="ace" onclick="checkAll(this);">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </th>
+                                <th class="hidden-480">序号</th>
+                                <th>商家版本</th>
+                                <th>排序</th>
+                                <th>创建时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model.Models)
+                            {
+                                <tr>
+                                    <td class="center">
+                                        <label>
+                                            <input data-id="@item.ID" type="checkbox" class="ace cbSingleData">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                    <td class="hidden-480">@item.ID</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Short</td>
+                                    <td>@item.CreateTime.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        @{
+                                var boolDisabled = item.Disabled == true;
+                                <span class="label label-sm @(boolDisabled ? "label-warning" : "label-success")">@(boolDisabled == true ? "禁用" : "正常")</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                                            @*<button data-id="@item.ID" class="btn btn-xs btn-success" onclick="showEditShopVersion(this);">
+                                                    <i class="icon-zoom-in bigger-120"></i>
+                                                </button>*@
+
+                                            <button data-id="@item.ID" class="btn btn-xs btn-success" onclick="showEditShopVersion(this);">
+                                                <i class="icon-edit bigger-120"></i>
+                                                编辑
+                                            </button>
+
+                                            <button data-id="@item.ID" class="btn btn-xs btn-info" onclick="assignPermissions(this);">
+                                                <i class="icon-key bigger-120"></i>菜单
+                                            </button>
+                                            @if (item.Disabled == true)
+                                            {
+                                                <button data-id="@item.ID" class="btn btn-xs btn-success" onclick="reDeleteShopVersion(this);">
+                                                    <i class="icon-ok bigger-120"></i>
+                                                    启用
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button data-id="@item.ID" class="btn btn-xs btn-danger" onclick="deleteShopVersion(this);">
+                                                    <i class="icon-remove bigger-120"></i>
+                                                    禁用
+                                                </button>
+                                            }
+
+                                        </div>
+
+                                        <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                            <div class="inline position-relative">
+                                                <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-cog icon-only bigger-110"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+                                                    @*<li>
+                                                            <a href="#" data-id="@item.ID" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View" onclick="showEditShopVersion(this);">
+                                                                <span class="blue">
+                                                                    <i class="icon-zoom-in bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>*@
+
+                                                    <li>
+                                                        <a href="#" data-id="@item.ID" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit" onclick="showEditShopVersion(this);">
+                                                            <span class="green">
+                                                                <i class="icon-edit bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="#" data-id="@item.ID" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete" onclick="assignPermissions(this);">
+                                                            <span class="blue">
+                                                                <i class="icon-key bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    @if (item.Disabled == true)
+                                                    {
+                                                        <li>
+                                                            <a href="#" data-id="@item.ID" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete" onclick="reDeleteShopVersion(this);">
+                                                                <span class="green">
+                                                                    <i class="icon-ok bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a href="#" data-id="@item.ID" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete" onclick="deleteShopVersion(this);">
+                                                                <span class="red">
+                                                                    <i class="icon-remove bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                        </tbody>
+                    </table>
+                </div><!-- /.table-responsive -->
+
+                <div class="text-center">
+                    @Html.PageLinks(Model.pagingInfo, pageIndex => Url.Action("Index", "ShopVersion", new { PageIndex = pageIndex }), searchModel)
+                </div>
+            </div><!-- /span -->
+        </div><!-- /row -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<div class="modal fade" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-ok"></i><label id="modalTitle">添加版本</label></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formShopVersion">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 版本名称 </label>
+
+                        <div class="col-sm-9">
+                            <input type="hidden" id="ID" name="ID" />
+                            <input type="text" id="Name" name="Name" class="col-xs-10 col-sm-7">
+
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 排序 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="Short" name="Short" class="col-xs-10 col-sm-7">
+
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 是否禁用 </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                <input id="modalDisabled" name="Disabled" class="ace ace-switch ace-switch-5" type="checkbox">
+
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="AddShopVersion();">添加</button>
+                <button id="btnUpdate" type="button" class="btn btn-primary" onclick="editShopVersion();">更新</button>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="modelResetShopVersion">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-ok"></i><label id="modalTitle">重置商家版本【此功能可能需要几分钟时间，请耐心等待】</label></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formShopVersion">
+                    <input type="hidden" id="SuccessIndex" name="SuccessIndex" />
+                    <input type="hidden" id="ShopsID" name="ShopsID" />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 商家总数 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="ShopsLength" name="ShopsLength" class="col-xs-10 col-sm-9" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 已经更新 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="NowIndex" name="NowIndex" class="col-xs-10 col-sm-9" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 正在更新商家 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="NowShopsName" name="NowShopsName" class="col-xs-10 col-sm-9" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 更新进度 </label>
+                        <div class="col-sm-9">
+                            <div class="progress progress-striped active col-xs-10 col-sm-9" style="padding: 0px;margin: 5px 0px 0px 0px;">
+                                <div id="NowProgress" class="progress-bar progress-bar-pink" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnToResetShopVersion" type="button" class="btn btn-primary" onclick="toResetShopVersion();">更新</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section FootScript{
+    <script type="text/javascript">
+
+        function ShowPermissionMenu() {
+            //iframe层-父子操作
+            var openIndex = layer.open({
+                type: 2,
+                area: ['680px', '700px'],
+                fix: false, //不固定
+                maxmin: true,
+                title: "权限分配",
+                content: '/Admin/Permission/PermissionMenu'
+            });
+
+        }
+
+        function assignPermissions(obj) {
+            $("#IDs").val($(obj).attr("data-id"));
+            ShowPermissionMenu();
+        }
+
+        function toResetShopVersion() {
+
+            if ($("#btnToResetShopVersion").attr("disabled") == "disabled") {
+                layer.msg("任务已经在执行，请稍后");
+            }
+
+            $("#btnToResetShopVersion").attr("disabled", "disabled");
+
+            var strIDs = "";
+            $(".cbSingleData:checked").each(function () {
+                strIDs += "," + $(this).attr("data-id");
+            });
+
+            //if ($.isNullOrEmpty(strIDs)) {
+            //    layer.msg("你没有勾选任何菜单，默认将更新所有菜单，请知晓");
+            //}
+
+            //if (strIDs == "") {
+            //    layer.msg("请勾选门店");
+            //    return;
+            //}
+
+            //var loading = layer.load(1, {
+            //    shade: [0.1, '#fff'] //0.1透明度的白色背景
+            //});
+            var loading = layer.msg('更新中...请稍后', {
+                time: 0,
+                icon: 16,
+                shade: 0.01
+            });
+
+            $.post('/Admin/Shops/GetCommercialTenant', { strIDs: strIDs },
+            function (result) {
+                if (result.success) {
+                    $("#ShopsLength").val(result.data.length);
+                    $("#NowIndex").val(0);
+                    //如果有商家，则挨个更新
+                    if (result.data.length > 0) {
+                        ResetSingleShopVersion(0, result.data);
+                    }
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+
+
+        }
+
+        function ResetSingleShopVersion(index, data) {
+            $("#NowShopsName").val(data[index].ShopName);
+            //ajax同步请求
+            $.ajax({
+                type: "POST",
+                url: '/Admin/Shops/ResetShopVersion?shopsID=' + data[index].ShopsID + '&shopVersionID=' + data[index].ShopVersionID,
+                async: true, //设为false就是同步请求
+                cache: false,
+                success: function (notice) {
+                    if (notice.success && index < data.length - 1) {
+                        //$("#NowProgress").css("width", "50%");
+                        ResetSingleShopVersion(index + 1, data);
+                    }
+                    else {
+                        
+                        //layer.close(loading);
+                        layer.alert("所有商家已经更新完毕");
+                        //取消禁用
+                        $("#btnToResetShopVersion").removeAttr("disabled");
+                    }
+                    $("#NowIndex").val(index + 1);
+                    $("#NowProgress").css("width", ((index + 1) / data.length).toFixed(2) * 100 + "%");
+                }
+            });
+
+        }
+
+        function resetShopVersion() {
+            $("#modelResetShopVersion").modal("toggle");
+        }
+
+        //设置模态窗口，1添加2编辑
+        function SetModule(tp) {
+            if (tp == 1) {
+                $("#formShopVersion")[0].reset();
+                $("#btnAdd").show();
+                $("#btnUpdate").hide();
+                $("#modalTitle").html("添加版本");
+            }
+            else {
+                $("#btnAdd").hide();
+                $("#btnUpdate").show();
+                $("#modalTitle").html("编辑版本");
+            }
+        }
+
+
+        //更新菜单前的准备
+        function showEditShopVersion(obj) {
+            //设置添加和更新按钮的可见不可见
+            SetModule(2);
+            $("#ShopVersionID").val($(obj).attr('data-id'));
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/ShopVersion/GetShopVersionByID',
+            { ID: $(obj).attr('data-id') },
+            function (result) {
+                layer.close(loading);
+                $.loadData(result, "#formShopVersion");
+                $("#mymodal").modal("toggle");
+            },
+            "json"
+            );
+        }
+
+        //function restForm() {
+        //    $('#searchShopVersion input').val("");
+        //    $('#Disabled').val("");
+
+        //}
+
+        function editShopVersion() {
+            //验证数据
+            var validateResult = $('#formShopVersion').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var ShopVersionJson = $("#formShopVersion").serializeJson();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/ShopVersion/UpdateShopVersion',
+            ShopVersionJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        function showAddShopVersion() {
+            SetModule(1);
+            $("#mymodal").modal("toggle");
+        }
+
+
+        function AddShopVersion() {
+            //验证数据
+            var validateResult = $('#formShopVersion').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var ShopVersionJson = $("#formShopVersion").serializeJson();
+            ShopVersionJson.Disabled = $("#modalDisabled").is(":Checked");
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/ShopVersion/AddShopVersion',
+            ShopVersionJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+
+        function checkAll(obj) {
+            var isChecked = $(obj).prop("checked");
+            $(".cbSingleData").prop("checked", isChecked);
+        }
+
+        function deleteAll() {
+            var checkCount = $(".cbSingleData:checked").length;
+            if (checkCount == 0) {
+                layer.msg("请选择要禁用的数据");
+                return;
+            }
+
+            layer.confirm('你确定要禁用勾选的数据么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var strIDs = "";
+                $(".cbSingleData:checked").each(function () {
+                    strIDs += "," + $(this).attr("data-id");
+                });
+
+                var loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+
+                $.post('/Admin/ShopVersion/DeleteShopVersions',
+               { IDs: strIDs },
+               function (result) {
+                   layer.close(loading);
+
+                   if (result.success) {
+                       location.reload();
+                   }
+                   else {
+                       layer.msg(result.msg);
+                   }
+               },
+               "json"
+               );
+
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+        }
+
+        function deleteShopVersion(obj) {
+            layer.confirm('你确定要禁用此数据么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+
+                var loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+
+                $.post('/Admin/ShopVersion/DeleteShopVersion',
+               { ID: $(obj).attr('data-id') },
+               function (result) {
+                   layer.close(loading);
+
+                   if (result.success) {
+                       location.reload();
+                   }
+                   else {
+                       layer.msg(result.msg);
+                   }
+               },
+               "json"
+               );
+
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+        }
+
+        function reDeleteShopVersion(obj) {
+            layer.confirm('你确定要启用此数据么？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+
+                var loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+
+                $.post('/Admin/ShopVersion/ReDeleteShopVersion',
+               { ID: $(obj).attr('data-id') },
+               function (result) {
+                   layer.close(loading);
+
+                   if (result.success) {
+                       location.reload();
+                   }
+                   else {
+                       layer.msg(result.msg);
+                   }
+               },
+               "json"
+               );
+
+            }, function () {
+                layer.msg('已取消', { icon: 1, time: 1000 });
+            });
+        }
+
+        $(function () {
+            /**
+           * 下面是进行插件初始化
+           * 你只需传入相应的键值对
+           * */
+            $('#formRole').bootstrapValidator({
+                //submitButtons: 'button[type="submit"]',
+                message: '数据格式不符合',
+                feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                    valid: 'icon-ok-sign',
+                    invalid: 'icon-remove-sign',
+                    validating: 'icon-ok-sign'
+                },
+                fields: {/*验证*/
+                    Name: {/*键名username和input name值对应*/
+                        message: '版本名无效',
+                        validators: {
+                            notEmpty: {
+                                message: '角色名称不能为空'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 2,
+                                max: 20,
+                                message: '长度必须在2到20字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    }
+                }
+            });
+
+        });
+
+        //function selectModule() {
+        //    //iframe层-父子操作
+        //    var openIndex = layer.open({
+        //        type: 2,
+        //        area: ['380px', '350px'],
+        //        fix: false, //不固定
+        //        maxmin: true,
+        //        title: "角色分配",
+        //        content: '/Admin/Permission/GetModulesByStoreID'
+        //    });
+        //}
+
+
+
+    </script>
+}
+

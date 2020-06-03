@@ -1,0 +1,307 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>B4漂流瓶注册页</title>
+    <meta name="keywords" content="B4漂流瓶|随机漂流瓶|微信漂流瓶下线|漂流瓶" />
+    <meta name="description" content="寻找另一个她，遇到自己的有缘人，18岁以下请在父母陪同下使用。一款能认识更多陌生人的在线漂流瓶-B4漂流瓶。微信漂流瓶下线后，我一直使用这款漂流瓶，小哥哥快来找我聊天咯~" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- basic styles -->
+
+    <link href="/Areas/Admin/Content/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace-rtl.min.css" />
+
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/Areas/Admin/Content/assets/js/html5shiv.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="/Scripts/jquery-2.0.3.js" charset="UTF-8"></script>
+    <script src="~/Areas/Admin/Content/LaxJquery.js"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+    <script src="/Areas/Admin/Content/libjs/Layer/layer.2.1.js" charset="UTF-8" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //判断是否有勾选记住我的选项
+
+            if ($.cookie("RememberMe") && $.cookie("RememberMe").toLowerCase() == "true") {
+                userName = $("#UserName").val($.cookie("UserName"));
+                password = $("#Password").val($.cookie("Password"));
+                $("#rememberMe").prop("checked", true);
+            }
+            else {
+
+                $("#UserName").val("");
+                $("#Password").val("");
+                $("#rememberMe").prop("checked", false);
+            }
+
+            $("#aLogin").click(function () {
+                $("#btnLogin").click();
+            });
+        });
+
+        function login() {
+            
+            var userName = $("#UserName").val();
+            var password = $("#Password").val();
+            if ($.trim(userName) == '') {
+                layer.msg("账号不能为空");
+                return false;
+            }
+            if ($.trim(password) == '') {
+                layer.msg("密码不能为空");
+                return false;
+            }
+
+            var isRememberMe = $("#rememberMe").prop("checked");
+
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/Home/LoginAjax',
+            { UserName: userName, Password: password, rememberMe: isRememberMe },
+            function (result) {
+                if (result.success) {
+                    location.href = result.msg + "?rd=20170906";
+                }
+                else if (result.isDue) {
+                    
+                    layer.close(loading);
+                    layer.open({
+                        type: 2,
+                        area: ['600px', '500px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: result.msg
+                    });
+                }
+                else {
+                    layer.close(loading);
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        function forgetPassword() {
+            layer.alert("请联系客服找回密码，电话：0592-5921254", {
+                icon: 1
+            });
+        }
+
+        function showTaoBaoInfo() {
+            var cfm = layer.alert("请联系阿里旺旺客服，索要测试账号");
+        }
+
+
+    </script>
+</head>
+
+<body class="login-layout" onselectstart="return false">
+    <div class="main-container">
+        <div class="main-content">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="login-container">
+                        <div class="center">
+                            <h1>
+                                <i class="icon-beaker pink"></i>
+                                <span class="white">B4漂流瓶</span>
+                            </h1>
+                            <h4 class="blue">遇上另一个ta</h4>
+                        </div>
+
+                        <div class="space-6"></div>
+
+                        <div class="position-relative">
+                            <div id="signup-box" class="signup-box visible widget-box no-border">
+                                <div class="widget-body">
+                                    <div class="widget-main">
+                                        <h4 class="header green lighter bigger">
+                                            <i class="icon-group blue"></i>
+                                            用户注册
+                                        </h4>
+
+                                        <div class="space-6"></div>
+                                        <p> </p>
+
+                                        <form id="RegisterForm">
+                                            <fieldset>
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input id="UserName" name="UserName" type="text" class="form-control" placeholder="账号" />
+                                                        <i class="icon-star "></i>
+                                                    </span>
+                                                </label>
+
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input id="RealName" name="RealName" type="text" class="form-control" placeholder="昵称" />
+                                                        <i class="icon-user"></i>
+                                                    </span>
+                                                </label>
+                                                <div class="clearfix">                                                 
+                                                    <label><input name="Sexual" type="radio" value="1" />男孩 </label>
+                                                    <label style="margin-left:20px;"><input name="Sexual" type="radio" checked="checked" value="0" />女孩   （勾选您的性别）</label> 
+                                                </div>
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input id="Password" name="Password" type="password" class="form-control" placeholder="密码" />
+                                                        <i class="icon-lock"></i>
+                                                    </span>
+                                                </label>
+
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input id="ConfirmPassword" name="ConfirmPassword" type="password" class="form-control" placeholder="确认密码" />
+                                                        <i class="icon-retweet"></i>
+                                                    </span>
+                                                </label>
+
+                                                <label class="block">
+                                                    <input id="HasReadRegister" name="HasReadRegister" type="checkbox" class="ace" value="1"  />
+                                                    <span class="lbl">
+                                                        我已阅读并同意
+                                                        <a href="/Mobile/Home/RegisterNotice">《用户注册协议》</a>
+                                                    </span>
+                                                </label>
+
+                                                <div class="space-24"></div>
+
+                                                <div class="clearfix">
+                                                    <button type="reset" class="width-30 pull-left btn btn-sm">
+                                                        <i class="icon-refresh"></i>
+                                                        重置
+                                                    </button>
+
+                                                    <button type="button" class="width-65 pull-right btn btn-sm btn-success" onclick="toRegister()">
+                                                        马上注册
+                                                        <i class="icon-arrow-right icon-on-right"></i>
+                                                    </button>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+
+                                    <div class="toolbar center">
+                                        <a href="/Mobile/Home/Login"return false;" class="back-to-login-link">
+                                            <i class="icon-arrow-left"></i>
+                                            返回登录页
+                                        </a>
+                                    </div>
+                                </div><!-- /widget-body -->
+                            </div><!-- /signup-box -->
+                        </div><!-- /position-relative -->
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div>
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/Areas/Admin/Content/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='/Areas/Admin/Content/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='/Areas/Admin/Content/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- inline scripts related to this page -->
+
+    <script type="text/javascript">
+        function show_box(id) {
+            jQuery('.widget-box.visible').removeClass('visible');
+            jQuery('#' + id).addClass('visible');
+        }
+
+        function toRegister() {
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            var registerForm = $("#RegisterForm").serializeJson();
+            if (registerForm.Sexual == "1") {
+                registerForm.Sexual = true;
+            }
+            else {
+                registerForm.Sexual = false;
+            }
+
+            if (registerForm.HasReadRegister == "1") {
+                registerForm.HasReadRegister = true;
+            }
+            else {
+                registerForm.HasReadRegister = false;
+            }
+
+            $.post('/Mobile/Home/RegisterAjax',
+           registerForm,
+           function (result) {
+               
+               if (result.success) {
+                   layer.msg(result.msg);
+
+                   $.post('/Admin/Home/LoginAjax',
+                  { UserName: registerForm.UserName, Password: registerForm.Password, rememberMe: true },
+                  function (result) {
+                      if (result.success) {
+                          location.href = "/Mobile/Home/DriftBottleList" + "?rd=20170906";
+                      }
+                      else {                         
+                          layer.msg(result.msg);
+                      }
+                      layer.close(loading);
+                  },
+                  "json"
+                  );
+                   //location.href = "/Mobile/Home/DriftBottleList" + "?rd=20170906";
+               }
+               else {
+                   layer.msg(result.msg);
+                   layer.close(loading);
+               }
+              
+           },
+           "json"
+           );
+        }
+
+    </script>
+
+</body>
+</html>

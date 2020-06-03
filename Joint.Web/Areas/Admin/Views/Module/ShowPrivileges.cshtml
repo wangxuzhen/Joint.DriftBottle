@@ -1,0 +1,148 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutShow.cshtml";
+}
+
+@section Style{
+    @*头部样式位置*@
+}
+
+@section HeadScript{
+    @*页头脚本位置*@
+}
+
+@model  List<Joint.Entity.Privileges>
+<div>
+    <div class="row" style="margin-right:0px; margin-left:0px;">
+        <div class="col-xs-12 col-sm-12">
+            <div>
+                <div class="row">
+                    <h3 id="PrivilegesTitle" class="header smaller lighter blue" style="margin-top: 15px; padding-left: 20px;">商家权限</h3>
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-xs-6 col-sm-3">
+                            <div class="checkbox">
+                                <label data-rel="tooltip" title="" data-original-title="@(string.IsNullOrWhiteSpace(item.Describe)?"无备注":item.Describe)" class=" tooltip-info">
+                                    <input name="form-field-checkbox" type="checkbox" data-id="@item.ID" class="ace">
+                                    <span class="lbl">&nbsp;@item.Name</span>
+                                </label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="height:60px;width:100%">
+
+    </div>
+    <div style="position:fixed;bottom:0px; height:60px; width:100%;text-align:center; padding:10px; background-color:#EFF3F8;z-index: 99;">
+        <span style="">
+            <button id="btnSave" class="btn btn-info" type="button" onclick="">
+                <i class="icon-ok bigger-110"></i>
+                保存
+            </button>
+
+            &nbsp;
+            <button id="closeIframe" class="btn" type="button">
+                <i class="icon-remove bigger-110"></i>
+                关闭
+            </button>
+        </span>
+    </div>
+</div>
+
+@section FootScript{
+    <script src="/Areas/Admin/Content/assets/js/bootbox.min.js"></script>
+
+
+    <script type="text/javascript">
+        //设置当前权限勾选的状态
+        function SetPrivileges(PType, ID) {
+
+            var loading = parent.layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post("/Admin/Module/GetHasPrivileges",
+           { PType: PType, ID: ID },
+           function (result) {
+               
+               parent.layer.close(loading);
+               //获取当前页面所有的权限勾选框
+               $("input[type=checkbox]").each(function () {
+                   var moduleID = parseInt($(this).attr("data-id"));
+                   //如果有存在服务器返回的id列表里，则打钩
+                   if ($.arrIsInclude(result, moduleID)) {
+                       $(this).prop("checked", true);
+                   }
+               });
+           },
+           "json"
+           );
+        }
+        $(function () {
+            
+            var PType = $.getUrlParam("PType");
+            if (PType == "SystemShow") {
+                $("#PrivilegesTitle").html("系统权限");
+            }
+            else if (PType == "ShopShow") {
+                $("#PrivilegesTitle").html("商家权限");
+            }
+            else if (PType == "StoreShow") {
+                $("#PrivilegesTitle").html("门店权限");
+            }
+            else if (PType == "UserShow") {
+                $("#PrivilegesTitle").html("用户权限");
+            }
+            else if (PType == "RoleShow") {
+                $("#PrivilegesTitle").html("角色权限");
+            }
+
+
+            //提示窗代码
+            $('[data-rel=tooltip]').tooltip();
+        
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            $('#closeIframe').click(function () {
+                parent.layer.close(index);
+            });
+
+            $("#btnSave").click(function () {
+                //分给的
+                var privilegesIDSs = "";
+                $("input[type=checkbox]").each(function () {
+                    if ($(this).prop("checked") == true) {
+                        privilegesIDSs += "," + $(this).attr("data-id");
+                    }
+                });
+
+                var loading = parent.layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+                
+                $.post("/Admin/Module/AddPrivilegesByType",
+               { PType: $.getUrlParam("PType"), ID: $.getUrlParam("ID"), privilegesIDSs: privilegesIDSs },
+               function (result) {
+                   
+                   parent.layer.close(loading);
+                   if (result.success) {
+                       parent.layer.msg(result.msg);
+                       parent.layer.close(index);
+                   }
+                   else {
+                       layer.msg(result.msg);
+                   }
+               },
+               "json"
+               );
+
+            });
+
+            SetPrivileges($.getUrlParam("PType"), $.getUrlParam("ID"));
+
+        });
+    </script>    
+}

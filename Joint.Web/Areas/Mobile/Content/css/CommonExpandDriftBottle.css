@@ -1,0 +1,173 @@
+﻿/*修改ace样式*/
+.bkGray {
+    background-color: #F3F3F3;
+}
+
+.page-content {
+    padding-top: 0px;
+}
+
+
+.mainContent {
+    padding: 10px;
+}
+.namespand {
+    color:#87b87f;
+    margin:10px;
+
+}
+
+.sendmsg {
+    margin: 0px;
+    width: 100%;
+    height: 80px;
+}
+.greendiv {
+    border-top: 3px solid #87b87f;
+}
+.purplediv {
+    border-top: 3px solid #cd95d6;
+}
+
+.main-container:after {
+    background-color: #F3F3F3;
+}
+
+/*列表样式*/
+.personal-list {
+    /* margin-top: 10px; */
+    border-top: 1px solid #eee;
+}
+
+    .personal-list .plist {
+        display: block;
+        /*height: 80px;*/
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 5px;
+        margin-left: 8px;
+        margin-right: 8px;
+        /*border-top: 3px solid #87b87f;*/
+        border-radius: 5px;
+        min-height: 80px;
+    }
+
+        .personal-list .plist .ptit {
+            /*float: left;*/
+            font-size: 15px;
+            margin-top: 20px;
+            color: #4a4a4a;
+            /*line-height: 40px;*/
+            font-size: 16px;
+            margin:10px;
+        }
+
+        .personal-list .plist .iconarrow {
+            float: right;
+            margin-top: 30px;
+            margin-right: 10px;
+            /*background: url(/Areas/Mobile/Content/img/icon-right.png) 0 0 no-repeat;*/
+            width: 12px;
+            height: 20px;
+            background-size: 12px 20px;
+        }
+
+.listIco {
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* 圆形按钮样式*/
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 3px 3px;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+    .btn-circle i {
+        margin: 0px !important;
+    }
+
+
+
+    .btn-circle.btn-lg {
+        width: 40px;
+        height: 40px;
+        /*padding: 8px 8px;*/
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 25px;
+    }
+
+    .btn-circle.btn-xl {
+        width: 70px;
+        height: 70px;
+        padding: 10px 10px;
+        font-size: 24px;
+        line-height: 1.33;
+        border-radius: 35px;
+    }
+
+
+/*tab 页样式*/
+
+.tab-content {
+    border: 0px solid #ffffff;
+    padding: 0px 0px;
+    position: relative;
+    z-index: 11;
+    background-color: #ffffff;
+}
+
+.nav-tabs li {
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.nav-tabs > li > a, .nav-tabs > li > a:focus {
+    border-radius: 0 !important;
+    background-color: #ffffff;
+    color: #000000;
+    margin-right: 0px;
+    line-height: 16px;
+    position: relative;
+    z-index: 11;
+    border-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    margin-right: 0px;
+    color: #4c8fbd;
+    border-color: #ffffff;
+    border-top: 0px;
+    border-bottom: 2px solid #4c8fbd;
+    /*border-bottom-color: transparent;*/
+    background-color: #FFFFFF;
+    z-index: 12;
+    line-height: 16px;
+    margin-top: -1px;
+    box-shadow: none;
+}
+
+.tabCount2 {
+    width: 50%;
+}
+
+.tabCount3 {
+    width: 33.33%;
+}
+
+.tabCount4 {
+    width: 25%;
+}
+
+.tabCount5 {
+    width: 20%;
+}

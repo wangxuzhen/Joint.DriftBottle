@@ -1,0 +1,122 @@
+﻿@using Joint.Web.Framework;
+@using Joint.Entity;
+
+@section Style{
+
+    <style type="text/css">
+        .help-block {
+            display: inline-block;
+        }
+        .progress {
+           display:none;
+        }
+        .edui-faked-video {
+            background:red
+        }
+    </style>
+}
+@section HeadScript{
+}
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="row">
+            <span style="float:left">
+              
+            </span>
+        </div>
+
+
+        <div class="col-xs-12">
+
+            <form class="form-horizontal" id="saveProductForm">
+               
+             
+               
+             
+                  
+                <div class="row">
+                    <div class="form-group col-md-10" style="margin-bottom:0px">
+                        <label class="col-sm-3 control-label">员工介绍</label>
+
+
+                        <div class="col-sm-9">
+                            <input type="hidden" value="@ViewBag.UserID" id="UserID" />
+                            <textarea name="Description" id="Description" style="height:400px" >@ViewBag.Description</textarea>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions  text-center col-md-12">
+                    <button id="btnUpdate" class="btn btn-info" type="button" onclick="SaveDescription();">
+                        <i class="icon-ok bigger-110"></i>
+                        保存
+                    </button>
+
+                    &nbsp; &nbsp; &nbsp;
+                    <button type="button" class="btn" style="margin-left: 12px;" onclick="goBack();">
+                        <i class="icon-reply"></i>
+                        返回
+                    </button>
+
+                </div>
+
+
+            </form>
+
+           
+
+        </div>
+
+
+
+    </div><!-- /.col -->
+
+</div><!-- /.row -->
+
+@section FootScript{
+    
+ 
+<!--百度编辑器-->
+<script src="~/Scripts/plugins/UEditor/ueditor.config.js"></script>
+<script src="~/Scripts/plugins/UEditor/ueditor.all.min.js"></script>
+<script src="~/Scripts/plugins/UEditor/lang/zh-cn/zh-cn.js"></script>
+
+    <script type="text/javascript">
+        var description = "";
+        var editor = UE.getEditor('Description', {
+            elementPathEnabled: false,
+            wordCount: false
+        });
+        $(function () {
+           
+        });
+      
+
+        function goBack() {
+            if (window.history.length > 1) {
+                history.go(-1);
+            }
+            else {
+                location.href = '/Admin/WeiXin/Latest';
+            }
+        }
+        function SaveDescription() {
+            description = encodeURIComponent(UE.getEditor('Description').getContent().replace(/\"/g, "'"));
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            var paramConfig = { reqUrl: "/Admin/User/SaveDescription", data: "userID=" + $("#UserID").val() + "&description=" + description };
+            CallAjax(paramConfig, function () { layer.close(loading); layer.alert("保存成功"); window.location.href = "/Admin/User/CusUserManage"; }, function () { layer.close(loading); layer.msg("保存失败"); });
+        }
+
+
+
+    </script>
+
+}

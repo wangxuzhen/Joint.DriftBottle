@@ -1,0 +1,219 @@
+﻿@{
+    var breadcrumbHtml = InitInfo.Instance.GetBreadcrumb();
+    Layout = null;
+}
+@using Joint.Web.Framework
+@using Joint.Entity
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta charset="utf-8" />
+    <title>Jeasu后台管理系统</title>
+    <meta name="description" content="B4软件是一款专业的美容美发美甲管理软件。适用理发店管理系统,美容院软件,美甲软件,理发店收银系统,美容院管理系统,美容美发收银系统,发廊收银系统软件,美发店会员卡软件,理发店软件,发廊软件,美发店管理系统,美容院店务管理系统,美发店会员卡系统,美发店管理软件,美发收银系统软件,美容美发管理系统,美发店收银系统,发廊管理软件,美发店软件,美甲会员管理系统,美容管理软件,美发管理系统,理发店收银软件,美容店会员管理软件,美容美发收银软件,美容连锁管理软件,理发店会员管理软件,美发店收银软件,理发店管理系统软件,美容美发店管理软件,发廊专用软件,美容美发店收银系统,美甲管理系统,理发店会员系统,美发会员管理软件,美容院店务管理软件,美发收银软件,美容院软件,理发店系统,美甲管理软件,理发店会员管理系统,美业管理软件等。" />
+    <meta name="keywords" content="美容美发软件,美发软件,美容美发管理软件,美甲店软件,美容院软件,理发店管理系统,理发店收银系统,美容院管理系统,美容美发收银系统,发廊收银系统软件,美发店会员卡软件,理发店软件,发廊软件,美发店管理系统,美发店会员卡系统,美发店管理软件,美发收银系统软件,美发系统,美容美发管理系统,美发店收银系统,发廊管理软件,美发店软件,美容管理软件,美发管理系统,美容管理系统,理发店收银软件,美容店会员管理软件,美容美发收银软件,美容连锁管理软件,理发店会员管理软件,美发店收银软件,理发店管理系统软件,美容美发店管理软件,发廊专用软件,美发系统管理软件,美容美发店收银系统" />
+    <meta name="searchtitle" content="进销存系统,会员管理系统,收银开单软件,美容美发软件,美发软件,美容美发管理软件,美容院软件,美甲店管理系统,理发店管理系统,理发店收银系统,美容院管理系统,美容美发收银系统,发廊收银系统软件,美发店会员卡软件,理发店软件,发廊软件,美发店管理系统,美发店会员卡系统,美发店管理软件,美发收银系统软件,美发系统,美容美发管理系统,美发店收银系统,发廊管理软件,美发店软件,美容管理软件,美发管理系统,美容管理系统,理发店收银软件,美容店会员管理软件,美容美发收银软件,美容连锁管理软件,理发店会员管理软件,美发店收银软件,理发店管理系统软件,美容美发店管理软件,发廊专用软件,美发系统管理软件,美容美发店收银系统" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.bbbb4.com/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico57.png">
+
+    <!-- basic styles -->
+    @Styles.Render("~/Areas/Admin/Content/assets/css/HeadCss",
+                            "~/Content/HeadCss",
+                            "~/Areas/Admin/Content/easyui/HeadCss",
+                            "~/Areas/Admin/Content/booNavigation-master/css/HeadCss",
+                            "~/Areas/Admin/Content/bootstrap-table/HeadCss")
+
+    @RenderSection("Style", false)
+
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- ace styles -->
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="~/Areas/Admin/Content/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/ace-extra.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/date-time/moment.min.js"></script>
+    @Scripts.Render("~/Scripts/HeadScript")
+    <style type="text/css">
+        .bootstrap-table .page-list {
+            display: none !important;
+        }
+        input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { /* WebKit*/  
+            color:    #D0D0D0;  
+        }  
+        input:-moz-placeholder, textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */  
+            color:    #D0D0D0;  
+        }  
+        input::-moz-placeholder, textarea::-moz-placeholder { /* Mozilla Firefox 19+ */  
+            color:    #D0D0D0;  
+        }  
+        input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* IE 10+ */  
+            color:    #D0D0D0;  
+        }  
+
+    </style>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/Areas/Admin/Content/assets/js/html5shiv.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        var isWeiXinOrMoblie=@(ViewBag.IsWeiXinOrMoblie==true?"true":"false");
+    </script>
+
+    @RenderSection("HeadScript", false)
+
+    @{
+        //打印控件选择
+       
+    }
+</head>
+
+<body>
+    @{Html.RenderAction("Navbar", "Partial", new { area = "Admin" });}
+    @*@{Html.RenderPartial("_Navbar", new { });}*@
+
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="main-container-inner">
+            <a class="menu-toggler" id="menu-toggler" href="#">
+                <span class="menu-text"></span>
+            </a>
+            @{Html.RenderAction("Sidebar", "Partial", new { area = "Admin" });}
+            <div class="main-content">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+                    </script>
+
+                    @breadcrumbHtml
+
+                    <div class="nav-search" id="nav-search">
+                        <form class="form-search">
+                            <span>
+                                <a class="btn btn-xs btn-warning" style="margin-bottom:2px;" href="javascript:void(0);" onclick="javascript: if (document.referrer.indexOf('/admin/Home/Login')==-1) history.go(-1);">
+                                    <i class="icon-arrow-left"></i>
+                                </a>
+                                <a class="btn btn-xs btn-success" href="javascript:void(0);" onclick="javascript:history.go(1);" style="margin-bottom:2px; margin-right:5px;">
+                                    <i class="icon-arrow-right icon-on-right"></i>
+                                </a>
+                            </span>
+                            <span class="input-icon">
+                                <input type="text" placeholder="菜单查询..." class="nav-search-input" id="nav-search-input" autocomplete="off">
+                                <i class="icon-search nav-search-icon"></i>
+                            </span>
+                        </form>
+                    </div><!-- #nav-search -->
+                </div>
+
+                <div class="page-content">
+                    @RenderBody()
+                    @RenderSection("FooterView", false)
+                </div><!-- /.page-content -->
+            </div>
+
+
+            <div class="ace-settings-container" id="ace-settings-container">
+                <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                    <i class="icon-cog bigger-150"></i>
+                </div>
+
+                <div class="ace-settings-box" id="ace-settings-box">
+                    <div>
+                        <div class="pull-left">
+                            <select id="skin-colorpicker" class="hide">
+                                <option data-skin="default" value="#438EB9">#438EB9</option>
+                                <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                                <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                                <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                            </select>
+                        </div>
+                        <span>&nbsp; 选择皮肤</span>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                        <label class="lbl" for="ace-settings-navbar"> 固定导航条</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                        <label class="lbl" for="ace-settings-sidebar"> 固定滑动条</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                        <label class="lbl" for="ace-settings-breadcrumbs"> 固定面包屑</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                        <label class="lbl" for="ace-settings-rtl"> 切换到左边</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                        <label class="lbl" for="ace-settings-add-container">
+                            切换窄屏
+                            <b></b>
+                        </label>
+                    </div>
+                </div>
+            </div><!-- /#ace-settings-container -->
+        </div><!-- /.main-container-inner -->    
+        
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="icon-double-angle-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='/Areas/Admin/Content/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    @*<script src="~/Scripts/jquery-1.10.2.js"></script>*@
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='/Areas/Admin/Content/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="~/Areas/Admin/Content/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Admin/Content/easyui/easyui-lang-zh_CN.js"></script>
+    <script src="~/Areas/Admin/Content/libjs/Layer/layer.2.1.js"></script>
+
+
+    @Scripts.Render("~/Areas/Admin/Content/FootScript",
+                            "~/Areas/Admin/Content/booNavigation-master/js/FootScript"
+                    )
+    <script src="~/Areas/Admin/Content/assets/js/bootstrap.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/typeahead-bs2.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/ace-elements.min.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/ace.min.js"></script>
+    <script src="~/Scripts/Ewin.js"></script>
+
+    @Scripts.Render("~/Areas/Admin/Content/bootstrap-table/FootScript"
+                    )
+
+    <script src="~/Areas/Admin/Content/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    @RenderSection("FootScript", false)
+    <script type="text/javascript">
+
+
+    </script>
+
+    @*@{Html.RenderPartial("_BaiduTongJi", new { });}*@
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+判断表是否存在
+if not exists (select 1 from sysobjects where id = object_id(N'[表名]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)  
+begin
+	CREATE TABLE [dbo].[EmployeeShareScheme](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[PerformanceType] [nvarchar](20) NULL,
+	[ShareType] [int] NOT NULL,
+	[UserID] [int] NOT NULL,
+	[CreateTime] [datetime] NOT NULL,
+	[CreateUserID] [int] NOT NULL,
+	[EmployeeWelfareID] [int] NOT NULL,
+ CONSTRAINT [PK_EmployeeShareScheme] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+end
+
+
+判断列是否存在
+if not exists(select 1 from syscolumns where id=object_id('表名') and name='列名')  
+begin
+  alter table [表名] add 字段名 int default 0
+end
+
+修改表字段类型
+alter table 表名 alter column 字段名 字段类型
+
+
+引用外键
+if not exists(select 1 from sysobjects where name= 'fk_foreignkey1' and xtype= 'F') 
+begin
+	ALTER TABLE [表名]  WITH CHECK ADD  CONSTRAINT [外键名称] FOREIGN KEY([外键字段])
+	REFERENCES [主键表名] ([主键字段])
+end 
+如：
+ALTER TABLE [dbo].[EmployeeShareScheme]  WITH CHECK ADD  CONSTRAINT [FK_EmployeeShareScheme_EmployeeWelfare] FOREIGN KEY([EmployeeWelfareID])
+REFERENCES [dbo].[EmployeeWelfare] ([ID])
+GO
+
+删除外键
+if exists(select 1 from sysobjects where name= '[外键名称]' and xtype= 'F') 
+begin
+	ALTER TABLE [表名] DROP CONSTRAINT [外键名称] 
+end
+
+判断视图是否存在
+IF EXISTS (SELECT * FROM sys.views WHERE object_id = '[dbo].[视图名]'
+
+判断存储过程是否存在
+if not exists (select * from sysobjects where id = object_id(N'[存储过程名]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)  
+
+判断索引是否存在
+if?exists(select?*?from?sysindexes?where?id=object_id('表名')?and?name='索引名')
+begin
+	CREATE NONCLUSTERED INDEX [索引名] ON [表名]
+	(
+	[字段名]
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+end
+
+判断临时表是否存在
+if object_id('tempdb..#临时表名') is not null    
+
+
+判断要创建的函数名是否存在    
+if not exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[函数名]') and xtype in (N'FN', N'IF', N'TF'))    
+  
+获取用户创建的对象信息 
+Sql代码 
+SELECT [name],[id],crdate FROM sysobjects where xtype='U'  
+  
+/*  
+xtype 的表示参数类型，通常包括如下这些  
+C = CHECK 约束  
+D = 默认值或 DEFAULT 约束  
+F = FOREIGN KEY 约束  
+L = 日志  
+FN = 标量函数  
+IF = 内嵌表函数  
+P = 存储过程  
+PK = PRIMARY KEY 约束（类型是 K）  
+RF = 复制筛选存储过程  
+S = 系统表  
+TF = 表函数  
+TR = 触发器  
+U = 用户表  
+UQ = UNIQUE 约束（类型是 K）  
+V = 视图  
+X = 扩展存储过程  
+*/  SELECT [name],[id],crdate FROM sysobjects where xtype='U'
+/*
+xtype 的表示参数类型，通常包括如下这些
+C = CHECK 约束
+D = 默认值或 DEFAULT 约束
+F = FOREIGN KEY 约束
+L = 日志
+FN = 标量函数
+IF = 内嵌表函数
+P = 存储过程
+PK = PRIMARY KEY 约束（类型是 K）
+RF = 复制筛选存储过程
+S = 系统表
+TF = 表函数
+TR = 触发器
+U = 用户表
+UQ = UNIQUE 约束（类型是 K）
+V = 视图
+X = 扩展存储过程
+*/

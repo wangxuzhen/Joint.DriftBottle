@@ -1,0 +1,342 @@
+﻿@{
+    Layout = null;
+}
+@using Joint.Common;
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+
+        @GetLoginTitle()
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.bbbb4.com/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="">
+    @*<meta charset="utf-8">*@
+    @*<link href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700" media="all" rel="stylesheet" type="text/css" />*@
+    <link href="/Areas/Admin/Content/Se7en/stylesheets/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Admin/Content/Se7en/stylesheets/font-awesome.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Admin/Content/Se7en/stylesheets/se7en-font.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Admin/Content/Se7en/stylesheets/style.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js" charset="UTF-8"></script>
+    <script src="~/Scripts/jquery-ui.1.10.3.js" charset="UTF-8"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/bootstrap.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/raphael.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.mousewheel.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.vmap.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.vmap.sampledata.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.vmap.world.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.bootstrap.wizard.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/fullcalendar.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/gcal.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/datatable-editable.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.easy-pie-chart.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/excanvas.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.isotope.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/masonry.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/modernizr.custom.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.fancybox.pack.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/select2.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/styleswitcher.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/wysiwyg.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.inputmask.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.validate.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/bootstrap-fileupload.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/bootstrap-datepicker.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/bootstrap-timepicker.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/bootstrap-colorpicker.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/bootstrap-switch.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/daterange-picker.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/date.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/morris.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/skycons.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/jquery.sparkline.min.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/fitvids.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/main.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/Se7en/javascripts/respond.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Areas/Admin/Content/libjs/Layer/layer.2.1.js" charset="UTF-8" type="text/javascript"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+    <style>
+        .btn {
+            line-height: 1.5;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            //判断是否有勾选记住我的选项
+
+            if ($.cookie("RememberMe") && $.cookie("RememberMe").toLowerCase() == "true") {
+                userName = $("#UserName").val($.cookie("UserName"));
+                password = $("#Password").val($.cookie("Password"));
+                $("#rememberMe").prop("checked", true);
+            }
+            else {
+
+                $("#UserName").val("");
+                $("#Password").val("");
+                $("#rememberMe").prop("checked", false);
+            }
+
+            $("#aLogin").click(function () {
+                $("#btnLogin").click();
+            });
+        });
+
+        function login() {
+            var userName = $("#UserName").val();
+            var password = $("#Password").val();
+            if ($.trim(userName) == '') {
+                layer.msg("账号不能为空");
+                //layer.msg("账号不能为空", { time: 2000, icon: 2 });
+                return false;
+            }
+            if ($.trim(password) == '') {
+                layer.msg("密码不能为空");
+                //layer.msg("密码不能为空", { time: 2000, icon: 2 });
+                return false;
+            }
+
+            var isRememberMe = $("#rememberMe").prop("checked");
+
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('@Url.Action("LoginAjax", "Home")',
+            { UserName: userName, Password: password, rememberMe: isRememberMe },
+            function (result) {
+                if (result.success) {
+                    location.href = result.msg + "?rd=20170906";
+                }
+                else if (result.isDue) {
+                    
+                    layer.close(loading);
+                    layer.open({
+                        type: 2,
+                        area: ['600px', '500px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: result.msg
+                    });
+                }
+                else {
+                    layer.close(loading);
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+
+            return false;
+        }
+
+        function forgetPassword() {
+            layer.alert("请联系客服找回密码，电话：0592-5921254", {
+                icon: 1
+            });
+        }
+
+        function showTaoBaoInfo() {
+            var cfm = layer.alert("请联系阿里旺旺客服，索要测试账号");
+        }
+
+        function showShowRegister() {
+            if (document.domain != "vip.iqcrj.com" &&
+                document.domain != "vip2.iqcrj.com" &&
+                document.domain != "vip.imqrj.com" &&
+                document.domain != "localhost") {
+
+
+                var cfm = layer.confirm("去官网免费获取体验账号，<a href='http://www.bbbb4.com'>B4官网</a>", {
+                    icon: 3,
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    //确定的话，直接保存
+                    location.href = 'http://www.bbbb4.com';
+                }, function () {
+                    //layer.msg('已取消', { icon: 1, time: 1000 });
+                    return;
+                });
+
+                return;
+            }
+
+            var openIndex = layer.open({
+                type: 2,
+                area: ['450px', '300px'],
+                fix: true, //不固定
+                maxmin: false,
+                //skin: 'layui-layer-lan',
+                shade: [0.1, '#fff'],//0.1透明度的白色背景
+                title: "欢迎试用软件",
+                content: '/Admin/Home/ShowRegister',
+                cancel: function (index) {
+                    openIndex = undefined;
+                }
+            });
+        }
+
+    </script>
+    <style type="text/css">
+        #UserName, #Password {
+            padding-left: 10px;
+        }
+    </style>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+</head>
+<body class="login1">
+
+    <!-- Login Screen -->
+    <div class="login-wrapper">
+        <div class="login-container">
+            <a href="/Admin">
+                @* 如果用户有定制LOGO *@
+                @if (ViewBag.IsUserDefinedLogo == true)
+                {
+                    //如果有定制 且没有图标，则直接用文字
+                    if (string.IsNullOrWhiteSpace(ViewBag.UserDefinedLogo))
+                    {
+                        <h2 class="lighter">@ViewBag.UserDefinedName</h2>
+                    }
+                    else
+                    {
+                        <img width="150" height="45" style="margin:0px 0px 20px 0px" src="/Upload/ShopLogo/@ViewBag.UserDefinedLogo" />
+                    }
+
+                }
+                else
+                {
+                    <img width="150" height="45" style="margin:0px 0px 20px 0px" src="@GetLoginLogo()" />
+                }
+
+            </a>
+            <form action="/admin/home/login" method="post">
+                <div class="form-group">
+                    <input id="UserName" name="UserName" class="form-control" placeholder="请输入账号" type="text">
+                </div>
+                <div class="form-group">
+                    <input id="Password" name="Password" class="form-control" placeholder="请输入密码" type="password"><input id="btnLogin" type="submit" onclick="return login();" value="&#xf054;">
+                </div>
+                <div class="form-options clearfix">
+                    <a class="pull-right" href="#" onclick="forgetPassword();">忘记密码?</a>
+                    <div class="text-left">
+                        <label class="checkbox"><input id="rememberMe" type="checkbox"><span>记住我</span></label>
+                    </div>
+                </div>
+            </form>
+            <div class="social-login clearfix">
+                @if (ViewBag.IsWeiXinOrMoblie)
+                {
+                    <a id="aLogin" href="javascript:void(0);" class="btn btn-primary pull-right twitter"><i class="icon-user"></i>马上登录</a>
+                    <a class="btn btn-primary pull-left facebook" href="#" onclick="showShowRegister();"><i class="icon-facebook"></i>获取测试账号</a>
+                }
+                else
+                {
+                    //如果是淘宝来的，禁止注册，直接叫他联系旺旺
+                    if (Session["FromSource"] != null && Session["FromSource"].ToString() == "taobao")
+                    {
+                        <a class="btn btn-primary pull-left facebook" href="#" onclick="showTaoBaoInfo();"><i class="icon-facebook"></i>获取测试账号</a>
+                        <a id="aLogin" href="javascript:void(0);" class="btn btn-primary pull-right twitter"><i class="icon-user"></i>马上登录</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary pull-left facebook" href="#" onclick="showShowRegister();"><i class="icon-facebook"></i>获取测试账号</a>
+                        <a id="aLogin" href="javascript:void(0);" class="btn btn-primary pull-right twitter"><i class="icon-user"></i>马上登录</a>
+                    }
+                }
+
+            </div>
+
+            @if (ViewBag.ShopType == 2)
+            {
+                <p class="signup">
+                    了解B4软件? <a href="http://mf.iqcrj.com/HomeMeiFa/Index">去官网看看</a>
+                </p>
+            }
+            else
+            {
+                <p class="signup">
+                    了解B4软件? <a href="http://www.bbbb4.com">去官网看看</a>
+                </p>
+            }
+            <input type="hidden" value="@ViewBag.PCodeBefore" />
+        </div>
+    </div>
+    <!-- End Login Screen -->
+    @*@{Html.RenderPartial("_BaiduTongJi", new { });}*@
+</body>
+</html>
+
+@functions
+{
+    /// <summary>
+    /// 判断是否有子菜单被选中
+    /// </summary>
+    /// <returns></returns>
+    public string GetLoginLogo()
+    {
+        //如果是自定义logo则显示自定义logo
+        //if ( ViewBag.IsUserDefinedLogo== true)
+        //{
+        //    return "/Areas/Admin/Content/Se7en/images/" + ViewBag.UserDefinedLogo;
+        //}
+        //else
+        if (ViewBag.ShopType == 2)
+        {
+            return "/Areas/Admin/Content/Se7en/images/logo-login_mf.png";
+        }
+        else
+        {
+            return "/Areas/Admin/Content/Se7en/images/logo-login_qc.png";
+        }
+    }
+
+    public string GetLoginTitle()
+    {
+        if (Request.Url.Host.EndsWith("iqcrj.com"))
+        {
+            if (ViewBag.ShopType == 2)
+            {
+                if (ViewBag.IsWeiXinOrMoblie)
+                {
+                    return "B4软件";
+                }
+                return "B4管理软件登录、B4管理软件、B4管理系统";
+            }
+            else
+            {
+                if (ViewBag.IsWeiXinOrMoblie)
+                {
+                    return "B4软件";
+                }
+                return "B4管理软件登录、B4管理软件、B4管理系统";
+            }
+        }
+        else
+        {
+            if (ViewBag.ShopType == 2)
+            {
+                if (ViewBag.IsWeiXinOrMoblie)
+                {
+                    return "B4软件";
+                }
+                return "B4管理软件登录、B4管理软件、B4管理系统";
+            }
+            else
+            {
+                if (ViewBag.IsWeiXinOrMoblie)
+                {
+                    return "B4软件";
+                }
+                return "B4管理软件登录、B4管理软件、B4管理系统";
+            }
+        }
+    }
+
+}

@@ -1,0 +1,87 @@
+﻿@charset "utf-8";
+/*公共方法*/
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /*点击后不会出现虚边框没有背景颜色*/
+}
+
+body {
+    font-family: "黑体";
+    background-color: #FFFFFF;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+
+
+a {
+    outline: none; /*无轮廓*/
+    text-decoration: none;
+    /*-webkit-tap-highlight-color: rgba(255,0,0,0.5); 暗红色*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /*当你点击一个链接或者通过Javascript定义
+            的可点击元素的时候，它就会出现一个半透明的灰色背景(只针对ios ipad)*/
+}
+
+
+html {
+    -webkit-font-smoothing: antialiased; /*让页面里的字体变清晰：*/
+    -webkit-overflow-scrolling: touch; /*允许独立的滚动区域和触摸回弹主要兼容webkit内核的浏览器*/
+    -moz-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+}
+
+
+
+
+img {
+    border: 0 none; /*前面的0是针对ie6和ie7的兼容，后面的none是针对标准浏览器的*/
+    vertical-align: top; /*清除图片下方出现几像素的空白间隙*/
+    -ms-interpolation-mode: bicubic; /*图像失真不现象*/
+    -webkit-interpolation-mode: bicubic;
+    -moz-interpolation-mode: bicubic;
+}
+
+
+
+input, textarea {
+    outline: none; /*外框为0*/
+    background-color: transparent; /*背景颜色透明*/
+    border: 0px;
+    -webkit-appearance: none;
+    vertical-align: middle;
+}
+
+
+
+    /*去掉苹果浏览器自带的样式 可以去掉苹果的渲染，从而实现网页在android，ios系统下显示一致。*/
+    input[type="button"], input[type="submit"], input[type="reset"] {
+        -webkit-appearance: none;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+    }
+
+/*表单输入框placeholder的颜色值能改变么
+input::-webkit-input-placeholder{color:red;}
+input:focus::-webkit-input-placeholder{color:yellow;}*/
+
+/*按钮按下当然瞬间出现颜色
+         input[type=button]:active, input[type="submit"]:active {
+            background-color: yellow;
+        }*/
+
+
+
+
+/*清除浮动*/
+.clear:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.clear {
+    zoom: 1;
+}

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{93079BC8-EB66-47B6-9C8D-0BC141F12009}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Joint.Service</RootNamespace>
+    <AssemblyName>Joint.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasicMethod\BaseService.cs" />
+    <Compile Include="BottleService.cs" />
+    <Compile Include="BasicMethod\Service.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonService.cs" />
+    <Compile Include="ModuleService.cs" />
+    <Compile Include="PrivilegesService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShopsService.cs" />
+    <Compile Include="UsersService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BasicMethod\Service.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Service.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Joint.Common\Joint.Common.csproj">
+      <Project>{51324cfe-dfa7-4255-8b11-bc79c20a28f6}</Project>
+      <Name>Joint.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Joint.DLLFactory\Joint.DLLFactory.csproj">
+      <Project>{13bf6229-ecb9-4c55-9682-52bb557d159f}</Project>
+      <Name>Joint.DLLFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Joint.Entity\Joint.Entity.csproj">
+      <Project>{c6ffdb4e-2be8-4f3c-afc1-1ec51b42c7ea}</Project>
+      <Name>Joint.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Joint.IRepository\Joint.IRepository.csproj">
+      <Project>{f8ae191f-95b7-4090-a4de-584817ace2f3}</Project>
+      <Name>Joint.IRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Joint.IService\Joint.IService.csproj">
+      <Project>{711763ae-db09-4f92-bb82-a24e5d5f8c1d}</Project>
+      <Name>Joint.IService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Joint.Repository\Joint.Repository.csproj">
+      <Project>{93412664-ba00-435d-a9d9-fbd073c65ca4}</Project>
+      <Name>Joint.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

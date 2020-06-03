@@ -1,0 +1,187 @@
+﻿@using Joint.Web.Framework;
+@section Style{
+    @* ACE 拓展样式 兼容手机 *@
+    <link href="~/Areas/Mobile/Content/css/CommonExpand.css" rel="stylesheet" />
+}
+
+
+@section HeadScript{
+    @*页头脚本位置*@
+    <style type="text/css">
+        .row {
+            margin: 0px;
+        }
+
+        .col-xs-12 {
+            padding: 0px;
+        }
+
+
+        #circle_bot {
+            background-color: #42C3F8;
+            width: 9rem;
+            height: 9rem;
+            margin: 0px 0 0 0px;
+            border-radius: 50%;
+        }
+
+        #circle_mid {
+            background-color: #68CFFA;
+            width: 8rem;
+            height: 8rem;
+            margin: -8.5rem 0 0 0.5rem;
+            border-radius: 50%;
+        }
+
+        #circle_top {
+            width: 7rem;
+            height: 7rem;
+            margin: -7.5rem 0 0 1rem;
+            border-radius: 50%;
+            background: url("/Areas/Mobile/Content/img/userImg.png") no-repeat 0rem 0rem;
+            background-color: #11A2AB;
+            background-size: 7rem 7rem;
+        }
+
+        .userImg {
+            margin-left: auto;
+            margin-right: auto;
+            width: 9rem;
+            height: 9rem;
+        }
+
+        .userImgRow {
+            background: #0caffe;
+            height: 15rem;
+        }
+        /*ud3 {
+            width:11rem;
+        }*/
+
+        /*列表样式*/
+        .personal-list {
+            /* margin-top: 10px; */
+            border-top: 1px solid #eee;
+        }
+
+            .personal-list .plist {
+                display: block;
+                height: 60px;
+                background-color: #fff;
+                border-bottom: 1px solid #eee;
+            }
+
+                .personal-list .plist .ptit {
+                    float: left;
+                    font-size: 10px;
+                    margin-top: 13px;
+                    color: #4a4a4a;
+                    line-height: 26px;
+                    font-size: 20px;
+                    margin-left: 10px;
+                }
+
+                .personal-list .plist .iconarrow {
+                    float: right;
+                    margin-top: 16px;
+                    margin-right: 10px;
+                    padding-right: 30px;
+                    text-align: right;
+                    font-size: 16px;
+                    color: #ccc;
+                    background: url(/Areas/Mobile/Content/img/icon-right.png) right 5px no-repeat;
+                    width: 150px;
+                    height: 20px;
+                    overflow: hidden;
+                    background-size: 8px 15px;
+                }
+
+        .listIco {
+            float: left;
+            margin-top: 14px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .btn_Blue {
+            margin-top: 10px;
+            text-align: center;
+            background-color: #0caffe !important;
+            border-color: #0caffe !important;
+            width: 95%;
+            margin-left: 2.5%;
+            font-family: 'Microsoft YaHei';
+            font-size: 1.2em;
+        }
+
+            .btn_Blue:hover {
+                background-color: #0caffe !important;
+            }
+    </style>
+}
+
+<div class="row userImgRow">
+    <div class="userImg">
+        <div id="circle_bot">
+        </div>
+        <div id="circle_mid">
+        </div>
+        <div id="circle_top">
+        </div>
+    </div>
+    <div class="col-xs-12" style="text-align:center;color:#ffffff;padding:10px;">
+        <div style="font-size:1.5rem; margin-bottom:5px; color:#ffffff">@(InitInfo.Instance.CurrentUser.RealName)</div>
+        <span style="font-size:0.8rem;background-color:#6CD0F9;padding:1px 2px 1px 2px;border-radius: 4px;">@(InitInfo.Instance.CurrentUser.Sexual==true?"小哥哥":"小姐姐")</span>
+    </div>
+</div>
+<div class="personal-list">
+    <a class="plist" href="#">
+        <span class="btn btn-warning btn-circle btn-small listIco">
+            <i class="glyphicon icon-home bigger-140"></i>
+        </span>
+        <span class="ptit">当前积分</span>
+        <span class="iconarrow">0分</span>
+    </a>
+    <a class="plist" href="#">
+        <span class="btn btn-danger btn-circle btn-small listIco">
+            <i class="icon-dollar bigger-110"></i>
+        </span>
+        <span class="ptit">当前金币</span><span class="iconarrow">0金</span>
+    </a>
+    <a class="plist" href="/admin/Home/ModifyPassword">
+        <span class="btn btn-success btn-circle btn-small listIco">
+            <i class="icon-key bigger-110"></i>
+        </span>
+        <span class="ptit">修改密码</span><span class="iconarrow">修改密码</span>
+    </a>
+    <a class="plist" href="/Mobile/Home/MyBottleList?bottleType=1">
+        <span class="btn btn-info btn-circle btn-small listIco">
+            <i class="icon-envelope bigger-110"></i>
+        </span>
+        <span class="ptit">我的消息</span><span class="iconarrow">@InitInfo.Instance.CurrentUser.BasicSalary</span>
+    </a>
+    @*<div class="row" style="margin-top:30px;">
+        <input type="button" id="btnSave" class="btn btn-info btn_Blue" value="退出" onclick="javascript: location.href = '/admin/Home/Logout'" />
+    </div>*@
+    <div class="form-actions" style="background-color: #ffffff;">
+        <button class="btn btn-primary btn-block">退出</button>
+    </div>
+
+    @*<a class="plist" href="投资记录.html">
+            <span class="btn btn-info btn-circle btn-lg listIco"><i class="icon-credit-card bigger-110"></i></span>
+            <span class="ptit">员工薪资统计</span><span class="iconarrow"></span>
+        </a>
+        <a class="plist" href="投资记录.html">
+            <span class="btn btn-pink btn-circle btn-lg listIco"><i class="icon-list bigger-110"></i></span>
+            <span class="ptit">项目提成汇总</span><span class="iconarrow"></span>
+        </a>*@
+</div>
+
+
+@section FooterView{
+
+}
+
+@section FootScript{
+    @*页尾脚本位置*@
+}

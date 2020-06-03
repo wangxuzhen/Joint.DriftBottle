@@ -1,0 +1,2082 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="JWDB_JCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bottle">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Massage" Type="nvarchar" MaxLength="500" />
+          <Property Name="MassageKey" Type="varchar" MaxLength="50" />
+          <Property Name="FishingCount" Type="int" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="FirstReplyUserID" Type="int" />
+          <Property Name="LastReplyUserID" Type="int" />
+          <Property Name="FirstReplyUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastReplyUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastReplyMassage" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastReplyTime" Type="datetime" />
+          <Property Name="ReplyViewTime" Type="datetime" />
+          <Property Name="CreateViewTime" Type="datetime" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="Sexual" Type="bit" />
+        </EntityType>
+        <EntityType Name="Conversation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BottleID" Type="int" />
+          <Property Name="Massage" Type="nvarchar" MaxLength="500" />
+          <Property Name="MassageKey" Type="varchar" MaxLength="50" />
+          <Property Name="CreateUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sexual" Type="bit" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShortName" Type="nvarchar" MaxLength="20" />
+          <Property Name="LinkUrl" Type="varchar" MaxLength="500" />
+          <Property Name="Area" Type="varchar" MaxLength="50" />
+          <Property Name="Controller" Type="varchar" MaxLength="50" />
+          <Property Name="Action" Type="varchar" MaxLength="50" />
+          <Property Name="Icon" Type="varchar" MaxLength="50" />
+          <Property Name="Sort" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsMenu" Type="bit" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Privileges">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModuleID" Type="int" />
+          <Property Name="Code" Type="varchar" MaxLength="50" />
+          <Property Name="Value" Type="varchar" MaxLength="50" />
+          <Property Name="UserShow" Type="bit" />
+          <Property Name="RoleShow" Type="bit" />
+          <Property Name="StoreShow" Type="bit" />
+          <Property Name="ShopShow" Type="bit" />
+          <Property Name="SystemShow" Type="bit" />
+          <Property Name="Sort" Type="int" />
+          <Property Name="Describe" Type="nvarchar" MaxLength="200" />
+          <Property Name="Disabled" Type="bit" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="int" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="PrivilegesID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesShops">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopsID" Type="int" Nullable="false" />
+          <Property Name="PrivilegesID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesStores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoresID" Type="int" Nullable="false" />
+          <Property Name="PrivilegesID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesSystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SystemID" Type="int" Nullable="false" />
+          <Property Name="PrivilegesID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsersID" Type="int" Nullable="false" />
+          <Property Name="PrivilegesID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationRoleModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationShopsModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationShopVersionModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopVersionID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationStoresModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoresID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationUsersModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsersID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Sort" Type="int" />
+          <Property Name="ShopsID" Type="int" Nullable="false" />
+          <Property Name="StoreID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shops">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShopVersionID" Type="int" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="50" />
+          <Property Name="DomainName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DueDate" Type="datetime" Nullable="false" />
+          <Property Name="TotalMoney" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="AdminUserID" Type="int" Nullable="false" />
+          <Property Name="OriginID" Type="varchar" MaxLength="50" />
+          <Property Name="AppID" Type="varchar" MaxLength="50" />
+          <Property Name="AppSecret" Type="varchar" MaxLength="50" />
+          <Property Name="MCHID" Type="varchar" MaxLength="50" />
+          <Property Name="MCHKey" Type="varchar" MaxLength="50" />
+          <Property Name="WeiXinAccount" Type="nvarchar" MaxLength="50" />
+          <Property Name="WeiXinPassword" Type="nvarchar" MaxLength="50" />
+          <Property Name="MerchantAccount" Type="nvarchar" MaxLength="50" />
+          <Property Name="MerchantPassword" Type="nvarchar" MaxLength="50" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="20" />
+          <Property Name="OperatorContact" Type="nvarchar" MaxLength="50" />
+          <Property Name="QRCode" Type="varchar" MaxLength="100" />
+          <Property Name="NoticeOpenID" Type="nvarchar" MaxLength="30" />
+          <Property Name="NoticeNickName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+          <Property Name="WeiXinBackground" Type="varchar" MaxLength="100" />
+          <Property Name="AttentionReply" Type="text" />
+          <Property Name="ShopType" Type="int" />
+          <Property Name="SalespersonID" Type="int" />
+          <Property Name="Deposit" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="FinalPayment" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="AuthorizerAppId" Type="nvarchar" MaxLength="100" />
+          <Property Name="AuthorizerRefreshToken" Type="nvarchar" MaxLength="500" />
+          <Property Name="RefreshTokenTime" Type="datetime" />
+          <Property Name="EnableWeixinPay" Type="bit" />
+          <Property Name="AttentionMediaID" Type="nvarchar" MaxLength="50" />
+          <Property Name="AfterSales" Type="int" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProvinceCode" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="CityCode" Type="varchar" MaxLength="50" />
+          <Property Name="County" Type="nvarchar" MaxLength="50" />
+          <Property Name="CountyCode" Type="varchar" MaxLength="50" />
+          <Property Name="LogoUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="SiteName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AnnualFee" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="ShopVersion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+          <Property Name="Short" Type="int" />
+        </EntityType>
+        <EntityType Name="Stores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopId" Type="int" Nullable="false" />
+          <Property Name="StoreName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Area" Type="nvarchar" MaxLength="50" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="200" />
+          <Property Name="BankCard" Type="varchar" MaxLength="50" />
+          <Property Name="MapAdress" Type="nvarchar" MaxLength="200" />
+          <Property Name="LongitudeX" Type="varchar" MaxLength="50" />
+          <Property Name="LatitudeY" Type="varchar" MaxLength="50" />
+          <Property Name="StoresImage" Type="varchar" MaxLength="200" />
+          <Property Name="WifiName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WifiPassword" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsShare" Type="bit" Nullable="false" />
+          <Property Name="IsShowWeiXin" Type="bit" Nullable="false" />
+          <Property Name="IsMainStore" Type="bit" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+          <Property Name="Profile" Type="nvarchar(max)" />
+          <Property Name="ShareExplain" Type="nvarchar(max)" />
+          <Property Name="ReceiptLogo" Type="varchar" MaxLength="200" />
+          <Property Name="PrintRemark" Type="varchar(max)" />
+          <Property Name="VirtualShopsID" Type="int" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="300" />
+          <Property Name="AdminUserID" Type="int" />
+          <Property Name="ActvityName" Type="nvarchar" MaxLength="200" />
+          <Property Name="ActvityEndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserOperationLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="NeedAccount" Type="bit" Nullable="false" />
+          <Property Name="PasswordSalt" Type="varchar" MaxLength="10" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="RealName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WorkNum" Type="varchar" MaxLength="50" />
+          <Property Name="WorkTypeID" Type="int" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="TEL" Type="varchar" MaxLength="20" />
+          <Property Name="QQ" Type="varchar" MaxLength="20" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Area" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="varchar" MaxLength="500" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="BasicSalary" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="WeiXinVisible" Type="bit" />
+          <Property Name="WeiXinOpenID" Type="varchar" MaxLength="50" />
+          <Property Name="WeiXinOpenName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WeiXinOrderNotice" Type="bit" />
+          <Property Name="WeiXinAppointmentNotice" Type="bit" />
+          <Property Name="Idcard" Type="varchar" MaxLength="50" />
+          <Property Name="IdcardPhoto" Type="varchar" MaxLength="100" />
+          <Property Name="ShopsID" Type="int" />
+          <Property Name="DefaultStoreID" Type="int" />
+          <Property Name="LoginTimes" Type="int" />
+          <Property Name="LastLoginTime" Type="datetime" />
+          <Property Name="IsIntention" Type="bit" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+          <Property Name="IsCouponNotice" Type="bit" />
+          <Property Name="WeiXinAutoLoginOpenID" Type="varchar" MaxLength="50" />
+          <Property Name="LastLoginIP" Type="varchar" MaxLength="50" />
+          <Property Name="LastLoginArea" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Sexual" Type="bit" />
+          <Property Name="Mark" Type="int" />
+          <Property Name="GoldCoin" Type="float" />
+          <Property Name="Fishing" Type="int" />
+        </EntityType>
+        <Association Name="FK_Privileges_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="0..1" />
+          <End Role="Privileges" Type="Self.Privileges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Privileges">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesRole_Privileges">
+          <End Role="Privileges" Type="Self.Privileges" Multiplicity="1" />
+          <End Role="RelationPrivilegesRole" Type="Self.RelationPrivilegesRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesRole">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RelationPrivilegesRole" Type="Self.RelationPrivilegesRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesShops_Privileges">
+          <End Role="Privileges" Type="Self.Privileges" Multiplicity="1" />
+          <End Role="RelationPrivilegesShops" Type="Self.RelationPrivilegesShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesShops">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesShops_Shops">
+          <End Role="Shops" Type="Self.Shops" Multiplicity="1" />
+          <End Role="RelationPrivilegesShops" Type="Self.RelationPrivilegesShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesShops">
+              <PropertyRef Name="ShopsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesStores_Privileges">
+          <End Role="Privileges" Type="Self.Privileges" Multiplicity="1" />
+          <End Role="RelationPrivilegesStores" Type="Self.RelationPrivilegesStores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesStores">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesStores_Stores">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="1" />
+          <End Role="RelationPrivilegesStores" Type="Self.RelationPrivilegesStores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesStores">
+              <PropertyRef Name="StoresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesSystem_Privileges">
+          <End Role="Privileges" Type="Self.Privileges" Multiplicity="1" />
+          <End Role="RelationPrivilegesSystem" Type="Self.RelationPrivilegesSystem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesSystem">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesUsers_Privileges">
+          <End Role="Privileges" Type="Self.Privileges" Multiplicity="1" />
+          <End Role="RelationPrivilegesUsers" Type="Self.RelationPrivilegesUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesUsers">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesUsers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RelationPrivilegesUsers" Type="Self.RelationPrivilegesUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesUsers">
+              <PropertyRef Name="UsersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationRoleModule_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="RelationRoleModule" Type="Self.RelationRoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationRoleModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationRoleModule_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RelationRoleModule" Type="Self.RelationRoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationRoleModule">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationShopsModule_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="RelationShopsModule" Type="Self.RelationShopsModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationShopsModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationShopsModule_Shops">
+          <End Role="Shops" Type="Self.Shops" Multiplicity="1" />
+          <End Role="RelationShopsModule" Type="Self.RelationShopsModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationShopsModule">
+              <PropertyRef Name="ShopID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationStoresModule_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="RelationStoresModule" Type="Self.RelationStoresModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationStoresModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationStoresModule_Stores">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="1" />
+          <End Role="RelationStoresModule" Type="Self.RelationStoresModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationStoresModule">
+              <PropertyRef Name="StoresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUserRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RelationUserRole" Type="Self.RelationUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUserRole_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RelationUserRole" Type="Self.RelationUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUsersModule_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="RelationUsersModule" Type="Self.RelationUsersModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUsersModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUsersModule_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RelationUsersModule" Type="Self.RelationUsersModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUsersModule">
+              <PropertyRef Name="UsersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_Shops">
+          <End Role="Shops" Type="Self.Shops" Multiplicity="1" />
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="ShopsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_Stores">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="1" />
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Shops_ShopVersion">
+          <End Role="ShopVersion" Type="Self.ShopVersion" Multiplicity="0..1" />
+          <End Role="Shops" Type="Self.Shops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShopVersion">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Shops">
+              <PropertyRef Name="ShopVersionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stores_Shops">
+          <End Role="Shops" Type="Self.Shops" Multiplicity="1" />
+          <End Role="Stores" Type="Self.Stores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Stores">
+              <PropertyRef Name="ShopId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOperationLog_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="UserOperationLog" Type="Self.UserOperationLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserOperationLog">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOperationLog_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserOperationLog" Type="Self.UserOperationLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserOperationLog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Stores">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="DefaultStoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JWDB_JCModelStoreContainer">
+          <EntitySet Name="Bottle" EntityType="Self.Bottle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Conversation" EntityType="Self.Conversation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Privileges" EntityType="Self.Privileges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationPrivilegesRole" EntityType="Self.RelationPrivilegesRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationPrivilegesShops" EntityType="Self.RelationPrivilegesShops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationPrivilegesStores" EntityType="Self.RelationPrivilegesStores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationPrivilegesSystem" EntityType="Self.RelationPrivilegesSystem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationPrivilegesUsers" EntityType="Self.RelationPrivilegesUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationRoleModule" EntityType="Self.RelationRoleModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationShopsModule" EntityType="Self.RelationShopsModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationShopVersionModule" EntityType="Self.RelationShopVersionModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationStoresModule" EntityType="Self.RelationStoresModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationUserRole" EntityType="Self.RelationUserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationUsersModule" EntityType="Self.RelationUsersModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shops" EntityType="Self.Shops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShopVersion" EntityType="Self.ShopVersion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stores" EntityType="Self.Stores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserOperationLog" EntityType="Self.UserOperationLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Privileges_Module" Association="Self.FK_Privileges_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="Privileges" EntitySet="Privileges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesRole_Privileges" Association="Self.FK_RelationPrivilegesRole_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesRole" EntitySet="RelationPrivilegesRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesRole_Role" Association="Self.FK_RelationPrivilegesRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RelationPrivilegesRole" EntitySet="RelationPrivilegesRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesShops_Privileges" Association="Self.FK_RelationPrivilegesShops_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesShops" EntitySet="RelationPrivilegesShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesShops_Shops" Association="Self.FK_RelationPrivilegesShops_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="RelationPrivilegesShops" EntitySet="RelationPrivilegesShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesStores_Privileges" Association="Self.FK_RelationPrivilegesStores_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesStores" EntitySet="RelationPrivilegesStores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesStores_Stores" Association="Self.FK_RelationPrivilegesStores_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="RelationPrivilegesStores" EntitySet="RelationPrivilegesStores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesSystem_Privileges" Association="Self.FK_RelationPrivilegesSystem_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesSystem" EntitySet="RelationPrivilegesSystem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesUsers_Privileges" Association="Self.FK_RelationPrivilegesUsers_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesUsers" EntitySet="RelationPrivilegesUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesUsers_Users" Association="Self.FK_RelationPrivilegesUsers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RelationPrivilegesUsers" EntitySet="RelationPrivilegesUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationRoleModule_Module" Association="Self.FK_RelationRoleModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationRoleModule" EntitySet="RelationRoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationRoleModule_Role" Association="Self.FK_RelationRoleModule_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RelationRoleModule" EntitySet="RelationRoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationShopsModule_Module" Association="Self.FK_RelationShopsModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationShopsModule" EntitySet="RelationShopsModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationShopsModule_Shops" Association="Self.FK_RelationShopsModule_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="RelationShopsModule" EntitySet="RelationShopsModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationStoresModule_Module" Association="Self.FK_RelationStoresModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationStoresModule" EntitySet="RelationStoresModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationStoresModule_Stores" Association="Self.FK_RelationStoresModule_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="RelationStoresModule" EntitySet="RelationStoresModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUserRole_Role" Association="Self.FK_RelationUserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RelationUserRole" EntitySet="RelationUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUserRole_Users" Association="Self.FK_RelationUserRole_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RelationUserRole" EntitySet="RelationUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUsersModule_Module" Association="Self.FK_RelationUsersModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationUsersModule" EntitySet="RelationUsersModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUsersModule_Users" Association="Self.FK_RelationUsersModule_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RelationUsersModule" EntitySet="RelationUsersModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_Shops" Association="Self.FK_Role_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_Stores" Association="Self.FK_Role_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shops_ShopVersion" Association="Self.FK_Shops_ShopVersion">
+            <End Role="ShopVersion" EntitySet="ShopVersion" />
+            <End Role="Shops" EntitySet="Shops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stores_Shops" Association="Self.FK_Stores_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="Stores" EntitySet="Stores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOperationLog_Module" Association="Self.FK_UserOperationLog_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="UserOperationLog" EntitySet="UserOperationLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOperationLog_Users" Association="Self.FK_UserOperationLog_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserOperationLog" EntitySet="UserOperationLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Stores" Association="Self.FK_Users_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JWDB_JCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="JWDB_JCEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bottle" EntityType="JWDB_JCModel.Bottle" />
+          <EntitySet Name="Conversation" EntityType="JWDB_JCModel.Conversation" />
+          <EntitySet Name="Module" EntityType="JWDB_JCModel.Module" />
+          <EntitySet Name="Privileges" EntityType="JWDB_JCModel.Privileges" />
+          <EntitySet Name="RelationPrivilegesRole" EntityType="JWDB_JCModel.RelationPrivilegesRole" />
+          <EntitySet Name="RelationPrivilegesShops" EntityType="JWDB_JCModel.RelationPrivilegesShops" />
+          <EntitySet Name="RelationPrivilegesStores" EntityType="JWDB_JCModel.RelationPrivilegesStores" />
+          <EntitySet Name="RelationPrivilegesSystem" EntityType="JWDB_JCModel.RelationPrivilegesSystem" />
+          <EntitySet Name="RelationPrivilegesUsers" EntityType="JWDB_JCModel.RelationPrivilegesUsers" />
+          <EntitySet Name="RelationRoleModule" EntityType="JWDB_JCModel.RelationRoleModule" />
+          <EntitySet Name="RelationShopsModule" EntityType="JWDB_JCModel.RelationShopsModule" />
+          <EntitySet Name="RelationShopVersionModule" EntityType="JWDB_JCModel.RelationShopVersionModule" />
+          <EntitySet Name="RelationStoresModule" EntityType="JWDB_JCModel.RelationStoresModule" />
+          <EntitySet Name="RelationUserRole" EntityType="JWDB_JCModel.RelationUserRole" />
+          <EntitySet Name="RelationUsersModule" EntityType="JWDB_JCModel.RelationUsersModule" />
+          <EntitySet Name="Role" EntityType="JWDB_JCModel.Role" />
+          <EntitySet Name="Shops" EntityType="JWDB_JCModel.Shops" />
+          <EntitySet Name="ShopVersion" EntityType="JWDB_JCModel.ShopVersion" />
+          <EntitySet Name="Stores" EntityType="JWDB_JCModel.Stores" />
+          <EntitySet Name="UserOperationLog" EntityType="JWDB_JCModel.UserOperationLog" />
+          <EntitySet Name="Users" EntityType="JWDB_JCModel.Users" />
+          <AssociationSet Name="FK_Privileges_Module" Association="JWDB_JCModel.FK_Privileges_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="Privileges" EntitySet="Privileges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationRoleModule_Module" Association="JWDB_JCModel.FK_RelationRoleModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationRoleModule" EntitySet="RelationRoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationShopsModule_Module" Association="JWDB_JCModel.FK_RelationShopsModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationShopsModule" EntitySet="RelationShopsModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationStoresModule_Module" Association="JWDB_JCModel.FK_RelationStoresModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationStoresModule" EntitySet="RelationStoresModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUsersModule_Module" Association="JWDB_JCModel.FK_RelationUsersModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RelationUsersModule" EntitySet="RelationUsersModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOperationLog_Module" Association="JWDB_JCModel.FK_UserOperationLog_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="UserOperationLog" EntitySet="UserOperationLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesRole_Privileges" Association="JWDB_JCModel.FK_RelationPrivilegesRole_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesRole" EntitySet="RelationPrivilegesRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesShops_Privileges" Association="JWDB_JCModel.FK_RelationPrivilegesShops_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesShops" EntitySet="RelationPrivilegesShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesStores_Privileges" Association="JWDB_JCModel.FK_RelationPrivilegesStores_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesStores" EntitySet="RelationPrivilegesStores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesSystem_Privileges" Association="JWDB_JCModel.FK_RelationPrivilegesSystem_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesSystem" EntitySet="RelationPrivilegesSystem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesUsers_Privileges" Association="JWDB_JCModel.FK_RelationPrivilegesUsers_Privileges">
+            <End Role="Privileges" EntitySet="Privileges" />
+            <End Role="RelationPrivilegesUsers" EntitySet="RelationPrivilegesUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesRole_Role" Association="JWDB_JCModel.FK_RelationPrivilegesRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RelationPrivilegesRole" EntitySet="RelationPrivilegesRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesShops_Shops" Association="JWDB_JCModel.FK_RelationPrivilegesShops_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="RelationPrivilegesShops" EntitySet="RelationPrivilegesShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesStores_Stores" Association="JWDB_JCModel.FK_RelationPrivilegesStores_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="RelationPrivilegesStores" EntitySet="RelationPrivilegesStores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationPrivilegesUsers_Users" Association="JWDB_JCModel.FK_RelationPrivilegesUsers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RelationPrivilegesUsers" EntitySet="RelationPrivilegesUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationRoleModule_Role" Association="JWDB_JCModel.FK_RelationRoleModule_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RelationRoleModule" EntitySet="RelationRoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationShopsModule_Shops" Association="JWDB_JCModel.FK_RelationShopsModule_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="RelationShopsModule" EntitySet="RelationShopsModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationStoresModule_Stores" Association="JWDB_JCModel.FK_RelationStoresModule_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="RelationStoresModule" EntitySet="RelationStoresModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUserRole_Role" Association="JWDB_JCModel.FK_RelationUserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RelationUserRole" EntitySet="RelationUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUserRole_Users" Association="JWDB_JCModel.FK_RelationUserRole_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RelationUserRole" EntitySet="RelationUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationUsersModule_Users" Association="JWDB_JCModel.FK_RelationUsersModule_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RelationUsersModule" EntitySet="RelationUsersModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_Shops" Association="JWDB_JCModel.FK_Role_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_Stores" Association="JWDB_JCModel.FK_Role_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shops_ShopVersion" Association="JWDB_JCModel.FK_Shops_ShopVersion">
+            <End Role="ShopVersion" EntitySet="ShopVersion" />
+            <End Role="Shops" EntitySet="Shops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stores_Shops" Association="JWDB_JCModel.FK_Stores_Shops">
+            <End Role="Shops" EntitySet="Shops" />
+            <End Role="Stores" EntitySet="Stores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Stores" Association="JWDB_JCModel.FK_Users_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOperationLog_Users" Association="JWDB_JCModel.FK_UserOperationLog_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserOperationLog" EntitySet="UserOperationLog" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Bottle">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Massage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MassageKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FishingCount" Type="Int32" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="FirstReplyUserID" Type="Int32" />
+          <Property Name="LastReplyUserID" Type="Int32" />
+          <Property Name="FirstReplyUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastReplyUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastReplyMassage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastReplyTime" Type="DateTime" Precision="3" />
+          <Property Name="ReplyViewTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateViewTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="Sexual" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Conversation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BottleID" Type="Int32" />
+          <Property Name="Massage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MassageKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sexual" Type="Boolean" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShortName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LinkUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sort" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsMenu" Type="Boolean" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Disabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Privileges" Relationship="JWDB_JCModel.FK_Privileges_Module" FromRole="Module" ToRole="Privileges" />
+          <NavigationProperty Name="RelationRoleModule" Relationship="JWDB_JCModel.FK_RelationRoleModule_Module" FromRole="Module" ToRole="RelationRoleModule" />
+          <NavigationProperty Name="RelationShopsModule" Relationship="JWDB_JCModel.FK_RelationShopsModule_Module" FromRole="Module" ToRole="RelationShopsModule" />
+          <NavigationProperty Name="RelationStoresModule" Relationship="JWDB_JCModel.FK_RelationStoresModule_Module" FromRole="Module" ToRole="RelationStoresModule" />
+          <NavigationProperty Name="RelationUsersModule" Relationship="JWDB_JCModel.FK_RelationUsersModule_Module" FromRole="Module" ToRole="RelationUsersModule" />
+          <NavigationProperty Name="UserOperationLog" Relationship="JWDB_JCModel.FK_UserOperationLog_Module" FromRole="Module" ToRole="UserOperationLog" />
+        </EntityType>
+        <EntityType Name="Privileges">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModuleID" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserShow" Type="Boolean" />
+          <Property Name="RoleShow" Type="Boolean" />
+          <Property Name="StoreShow" Type="Boolean" />
+          <Property Name="ShopShow" Type="Boolean" />
+          <Property Name="SystemShow" Type="Boolean" />
+          <Property Name="Sort" Type="Int32" />
+          <Property Name="Describe" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Boolean" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <NavigationProperty Name="Module" Relationship="JWDB_JCModel.FK_Privileges_Module" FromRole="Privileges" ToRole="Module" />
+          <NavigationProperty Name="RelationPrivilegesRole" Relationship="JWDB_JCModel.FK_RelationPrivilegesRole_Privileges" FromRole="Privileges" ToRole="RelationPrivilegesRole" />
+          <NavigationProperty Name="RelationPrivilegesShops" Relationship="JWDB_JCModel.FK_RelationPrivilegesShops_Privileges" FromRole="Privileges" ToRole="RelationPrivilegesShops" />
+          <NavigationProperty Name="RelationPrivilegesStores" Relationship="JWDB_JCModel.FK_RelationPrivilegesStores_Privileges" FromRole="Privileges" ToRole="RelationPrivilegesStores" />
+          <NavigationProperty Name="RelationPrivilegesSystem" Relationship="JWDB_JCModel.FK_RelationPrivilegesSystem_Privileges" FromRole="Privileges" ToRole="RelationPrivilegesSystem" />
+          <NavigationProperty Name="RelationPrivilegesUsers" Relationship="JWDB_JCModel.FK_RelationPrivilegesUsers_Privileges" FromRole="Privileges" ToRole="RelationPrivilegesUsers" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="PrivilegesID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Privileges" Relationship="JWDB_JCModel.FK_RelationPrivilegesRole_Privileges" FromRole="RelationPrivilegesRole" ToRole="Privileges" />
+          <NavigationProperty Name="Role" Relationship="JWDB_JCModel.FK_RelationPrivilegesRole_Role" FromRole="RelationPrivilegesRole" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesShops">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopsID" Type="Int32" Nullable="false" />
+          <Property Name="PrivilegesID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Privileges" Relationship="JWDB_JCModel.FK_RelationPrivilegesShops_Privileges" FromRole="RelationPrivilegesShops" ToRole="Privileges" />
+          <NavigationProperty Name="Shops" Relationship="JWDB_JCModel.FK_RelationPrivilegesShops_Shops" FromRole="RelationPrivilegesShops" ToRole="Shops" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesStores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoresID" Type="Int32" Nullable="false" />
+          <Property Name="PrivilegesID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Privileges" Relationship="JWDB_JCModel.FK_RelationPrivilegesStores_Privileges" FromRole="RelationPrivilegesStores" ToRole="Privileges" />
+          <NavigationProperty Name="Stores" Relationship="JWDB_JCModel.FK_RelationPrivilegesStores_Stores" FromRole="RelationPrivilegesStores" ToRole="Stores" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesSystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SystemID" Type="Int32" Nullable="false" />
+          <Property Name="PrivilegesID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Privileges" Relationship="JWDB_JCModel.FK_RelationPrivilegesSystem_Privileges" FromRole="RelationPrivilegesSystem" ToRole="Privileges" />
+        </EntityType>
+        <EntityType Name="RelationPrivilegesUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsersID" Type="Int32" Nullable="false" />
+          <Property Name="PrivilegesID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Privileges" Relationship="JWDB_JCModel.FK_RelationPrivilegesUsers_Privileges" FromRole="RelationPrivilegesUsers" ToRole="Privileges" />
+          <NavigationProperty Name="Users" Relationship="JWDB_JCModel.FK_RelationPrivilegesUsers_Users" FromRole="RelationPrivilegesUsers" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="RelationRoleModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Module" Relationship="JWDB_JCModel.FK_RelationRoleModule_Module" FromRole="RelationRoleModule" ToRole="Module" />
+          <NavigationProperty Name="Role" Relationship="JWDB_JCModel.FK_RelationRoleModule_Role" FromRole="RelationRoleModule" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="RelationShopsModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Module" Relationship="JWDB_JCModel.FK_RelationShopsModule_Module" FromRole="RelationShopsModule" ToRole="Module" />
+          <NavigationProperty Name="Shops" Relationship="JWDB_JCModel.FK_RelationShopsModule_Shops" FromRole="RelationShopsModule" ToRole="Shops" />
+        </EntityType>
+        <EntityType Name="RelationShopVersionModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopVersionID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="RelationStoresModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoresID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Module" Relationship="JWDB_JCModel.FK_RelationStoresModule_Module" FromRole="RelationStoresModule" ToRole="Module" />
+          <NavigationProperty Name="Stores" Relationship="JWDB_JCModel.FK_RelationStoresModule_Stores" FromRole="RelationStoresModule" ToRole="Stores" />
+        </EntityType>
+        <EntityType Name="RelationUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Role" Relationship="JWDB_JCModel.FK_RelationUserRole_Role" FromRole="RelationUserRole" ToRole="Role" />
+          <NavigationProperty Name="Users" Relationship="JWDB_JCModel.FK_RelationUserRole_Users" FromRole="RelationUserRole" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="RelationUsersModule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsersID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Module" Relationship="JWDB_JCModel.FK_RelationUsersModule_Module" FromRole="RelationUsersModule" ToRole="Module" />
+          <NavigationProperty Name="Users" Relationship="JWDB_JCModel.FK_RelationUsersModule_Users" FromRole="RelationUsersModule" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Sort" Type="Int32" />
+          <Property Name="ShopsID" Type="Int32" Nullable="false" />
+          <Property Name="StoreID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Disabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RelationPrivilegesRole" Relationship="JWDB_JCModel.FK_RelationPrivilegesRole_Role" FromRole="Role" ToRole="RelationPrivilegesRole" />
+          <NavigationProperty Name="RelationRoleModule" Relationship="JWDB_JCModel.FK_RelationRoleModule_Role" FromRole="Role" ToRole="RelationRoleModule" />
+          <NavigationProperty Name="RelationUserRole" Relationship="JWDB_JCModel.FK_RelationUserRole_Role" FromRole="Role" ToRole="RelationUserRole" />
+          <NavigationProperty Name="Shops" Relationship="JWDB_JCModel.FK_Role_Shops" FromRole="Role" ToRole="Shops" />
+          <NavigationProperty Name="Stores" Relationship="JWDB_JCModel.FK_Role_Stores" FromRole="Role" ToRole="Stores" />
+        </EntityType>
+        <EntityType Name="Shops">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShopVersionID" Type="Int32" />
+          <Property Name="Domain" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DomainName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalMoney" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AdminUserID" Type="Int32" Nullable="false" />
+          <Property Name="OriginID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AppID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AppSecret" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MCHID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MCHKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WeiXinAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeiXinPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Operator" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OperatorContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QRCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NoticeOpenID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="NoticeNickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Disabled" Type="Boolean" Nullable="false" />
+          <Property Name="WeiXinBackground" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AttentionReply" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ShopType" Type="Int32" />
+          <Property Name="SalespersonID" Type="Int32" />
+          <Property Name="Deposit" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="FinalPayment" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="AuthorizerAppId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorizerRefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RefreshTokenTime" Type="DateTime" Precision="3" />
+          <Property Name="EnableWeixinPay" Type="Boolean" />
+          <Property Name="AttentionMediaID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AfterSales" Type="Int32" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CountyCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LogoUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AnnualFee" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="RelationPrivilegesShops" Relationship="JWDB_JCModel.FK_RelationPrivilegesShops_Shops" FromRole="Shops" ToRole="RelationPrivilegesShops" />
+          <NavigationProperty Name="RelationShopsModule" Relationship="JWDB_JCModel.FK_RelationShopsModule_Shops" FromRole="Shops" ToRole="RelationShopsModule" />
+          <NavigationProperty Name="Role" Relationship="JWDB_JCModel.FK_Role_Shops" FromRole="Shops" ToRole="Role" />
+          <NavigationProperty Name="ShopVersion" Relationship="JWDB_JCModel.FK_Shops_ShopVersion" FromRole="Shops" ToRole="ShopVersion" />
+          <NavigationProperty Name="Stores" Relationship="JWDB_JCModel.FK_Stores_Shops" FromRole="Shops" ToRole="Stores" />
+        </EntityType>
+        <EntityType Name="ShopVersion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Disabled" Type="Boolean" Nullable="false" />
+          <Property Name="Short" Type="Int32" />
+          <NavigationProperty Name="Shops" Relationship="JWDB_JCModel.FK_Shops_ShopVersion" FromRole="ShopVersion" ToRole="Shops" />
+        </EntityType>
+        <EntityType Name="Stores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopId" Type="Int32" Nullable="false" />
+          <Property Name="StoreName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BankCard" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MapAdress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LongitudeX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LatitudeY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StoresImage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="WifiName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WifiPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsShare" Type="Boolean" Nullable="false" />
+          <Property Name="IsShowWeiXin" Type="Boolean" Nullable="false" />
+          <Property Name="IsMainStore" Type="Boolean" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Boolean" Nullable="false" />
+          <Property Name="Profile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShareExplain" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PrintRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="VirtualShopsID" Type="Int32" />
+          <Property Name="BankName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="AdminUserID" Type="Int32" />
+          <Property Name="ActvityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ActvityEndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="RelationPrivilegesStores" Relationship="JWDB_JCModel.FK_RelationPrivilegesStores_Stores" FromRole="Stores" ToRole="RelationPrivilegesStores" />
+          <NavigationProperty Name="RelationStoresModule" Relationship="JWDB_JCModel.FK_RelationStoresModule_Stores" FromRole="Stores" ToRole="RelationStoresModule" />
+          <NavigationProperty Name="Role" Relationship="JWDB_JCModel.FK_Role_Stores" FromRole="Stores" ToRole="Role" />
+          <NavigationProperty Name="Shops" Relationship="JWDB_JCModel.FK_Stores_Shops" FromRole="Stores" ToRole="Shops" />
+          <NavigationProperty Name="Users" Relationship="JWDB_JCModel.FK_Users_Stores" FromRole="Stores" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserOperationLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Module" Relationship="JWDB_JCModel.FK_UserOperationLog_Module" FromRole="UserOperationLog" ToRole="Module" />
+          <NavigationProperty Name="Users" Relationship="JWDB_JCModel.FK_UserOperationLog_Users" FromRole="UserOperationLog" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NeedAccount" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WorkTypeID" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TEL" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QQ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BasicSalary" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="WeiXinVisible" Type="Boolean" />
+          <Property Name="WeiXinOpenID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WeiXinOpenName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeiXinOrderNotice" Type="Boolean" />
+          <Property Name="WeiXinAppointmentNotice" Type="Boolean" />
+          <Property Name="Idcard" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdcardPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ShopsID" Type="Int32" />
+          <Property Name="DefaultStoreID" Type="Int32" />
+          <Property Name="LoginTimes" Type="Int32" />
+          <Property Name="LastLoginTime" Type="DateTime" Precision="3" />
+          <Property Name="IsIntention" Type="Boolean" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Disabled" Type="Boolean" Nullable="false" />
+          <Property Name="IsCouponNotice" Type="Boolean" />
+          <Property Name="WeiXinAutoLoginOpenID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastLoginIP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastLoginArea" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Sexual" Type="Boolean" />
+          <Property Name="Mark" Type="Int32" />
+          <Property Name="GoldCoin" Type="Double" />
+          <Property Name="Fishing" Type="Int32" />
+          <NavigationProperty Name="RelationPrivilegesUsers" Relationship="JWDB_JCModel.FK_RelationPrivilegesUsers_Users" FromRole="Users" ToRole="RelationPrivilegesUsers" />
+          <NavigationProperty Name="RelationUserRole" Relationship="JWDB_JCModel.FK_RelationUserRole_Users" FromRole="Users" ToRole="RelationUserRole" />
+          <NavigationProperty Name="RelationUsersModule" Relationship="JWDB_JCModel.FK_RelationUsersModule_Users" FromRole="Users" ToRole="RelationUsersModule" />
+          <NavigationProperty Name="Stores" Relationship="JWDB_JCModel.FK_Users_Stores" FromRole="Users" ToRole="Stores" />
+          <NavigationProperty Name="UserOperationLog" Relationship="JWDB_JCModel.FK_UserOperationLog_Users" FromRole="Users" ToRole="UserOperationLog" />
+        </EntityType>
+        <Association Name="FK_Privileges_Module">
+          <End Type="JWDB_JCModel.Module" Role="Module" Multiplicity="0..1" />
+          <End Type="JWDB_JCModel.Privileges" Role="Privileges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Privileges">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationRoleModule_Module">
+          <End Type="JWDB_JCModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationRoleModule" Role="RelationRoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationRoleModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationShopsModule_Module">
+          <End Type="JWDB_JCModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationShopsModule" Role="RelationShopsModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationShopsModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationStoresModule_Module">
+          <End Type="JWDB_JCModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationStoresModule" Role="RelationStoresModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationStoresModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUsersModule_Module">
+          <End Type="JWDB_JCModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationUsersModule" Role="RelationUsersModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUsersModule">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOperationLog_Module">
+          <End Type="JWDB_JCModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="JWDB_JCModel.UserOperationLog" Role="UserOperationLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserOperationLog">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesRole_Privileges">
+          <End Type="JWDB_JCModel.Privileges" Role="Privileges" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesRole" Role="RelationPrivilegesRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesRole">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesShops_Privileges">
+          <End Type="JWDB_JCModel.Privileges" Role="Privileges" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesShops" Role="RelationPrivilegesShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesShops">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesStores_Privileges">
+          <End Type="JWDB_JCModel.Privileges" Role="Privileges" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesStores" Role="RelationPrivilegesStores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesStores">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesSystem_Privileges">
+          <End Type="JWDB_JCModel.Privileges" Role="Privileges" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesSystem" Role="RelationPrivilegesSystem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesSystem">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesUsers_Privileges">
+          <End Type="JWDB_JCModel.Privileges" Role="Privileges" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesUsers" Role="RelationPrivilegesUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Privileges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesUsers">
+              <PropertyRef Name="PrivilegesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesRole_Role">
+          <End Type="JWDB_JCModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesRole" Role="RelationPrivilegesRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesShops_Shops">
+          <End Type="JWDB_JCModel.Shops" Role="Shops" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesShops" Role="RelationPrivilegesShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesShops">
+              <PropertyRef Name="ShopsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesStores_Stores">
+          <End Type="JWDB_JCModel.Stores" Role="Stores" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesStores" Role="RelationPrivilegesStores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesStores">
+              <PropertyRef Name="StoresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationPrivilegesUsers_Users">
+          <End Type="JWDB_JCModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationPrivilegesUsers" Role="RelationPrivilegesUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationPrivilegesUsers">
+              <PropertyRef Name="UsersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationRoleModule_Role">
+          <End Type="JWDB_JCModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationRoleModule" Role="RelationRoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationRoleModule">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationShopsModule_Shops">
+          <End Type="JWDB_JCModel.Shops" Role="Shops" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationShopsModule" Role="RelationShopsModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationShopsModule">
+              <PropertyRef Name="ShopID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationStoresModule_Stores">
+          <End Type="JWDB_JCModel.Stores" Role="Stores" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationStoresModule" Role="RelationStoresModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationStoresModule">
+              <PropertyRef Name="StoresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUserRole_Role">
+          <End Type="JWDB_JCModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationUserRole" Role="RelationUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUserRole_Users">
+          <End Type="JWDB_JCModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationUserRole" Role="RelationUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationUsersModule_Users">
+          <End Type="JWDB_JCModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="JWDB_JCModel.RelationUsersModule" Role="RelationUsersModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RelationUsersModule">
+              <PropertyRef Name="UsersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_Shops">
+          <End Type="JWDB_JCModel.Shops" Role="Shops" Multiplicity="1" />
+          <End Type="JWDB_JCModel.Role" Role="Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="ShopsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_Stores">
+          <End Type="JWDB_JCModel.Stores" Role="Stores" Multiplicity="1" />
+          <End Type="JWDB_JCModel.Role" Role="Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Shops_ShopVersion">
+          <End Type="JWDB_JCModel.ShopVersion" Role="ShopVersion" Multiplicity="0..1" />
+          <End Type="JWDB_JCModel.Shops" Role="Shops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShopVersion">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Shops">
+              <PropertyRef Name="ShopVersionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stores_Shops">
+          <End Type="JWDB_JCModel.Shops" Role="Shops" Multiplicity="1" />
+          <End Type="JWDB_JCModel.Stores" Role="Stores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Stores">
+              <PropertyRef Name="ShopId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Stores">
+          <End Type="JWDB_JCModel.Stores" Role="Stores" Multiplicity="0..1" />
+          <End Type="JWDB_JCModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="DefaultStoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOperationLog_Users">
+          <End Type="JWDB_JCModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="JWDB_JCModel.UserOperationLog" Role="UserOperationLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserOperationLog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JWDB_JCModelStoreContainer" CdmEntityContainer="JWDB_JCEntities">
+          <EntitySetMapping Name="Bottle">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Bottle">
+              <MappingFragment StoreEntitySet="Bottle">
+                <ScalarProperty Name="Sexual" ColumnName="Sexual" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateViewTime" ColumnName="CreateViewTime" />
+                <ScalarProperty Name="ReplyViewTime" ColumnName="ReplyViewTime" />
+                <ScalarProperty Name="LastReplyTime" ColumnName="LastReplyTime" />
+                <ScalarProperty Name="LastReplyMassage" ColumnName="LastReplyMassage" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="LastReplyUserName" ColumnName="LastReplyUserName" />
+                <ScalarProperty Name="FirstReplyUserName" ColumnName="FirstReplyUserName" />
+                <ScalarProperty Name="LastReplyUserID" ColumnName="LastReplyUserID" />
+                <ScalarProperty Name="FirstReplyUserID" ColumnName="FirstReplyUserID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="FishingCount" ColumnName="FishingCount" />
+                <ScalarProperty Name="MassageKey" ColumnName="MassageKey" />
+                <ScalarProperty Name="Massage" ColumnName="Massage" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conversation">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Conversation">
+              <MappingFragment StoreEntitySet="Conversation">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Sexual" ColumnName="Sexual" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="MassageKey" ColumnName="MassageKey" />
+                <ScalarProperty Name="Massage" ColumnName="Massage" />
+                <ScalarProperty Name="BottleID" ColumnName="BottleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Module">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Module">
+              <MappingFragment StoreEntitySet="Module">
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="IsMenu" ColumnName="IsMenu" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="LinkUrl" ColumnName="LinkUrl" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Privileges">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Privileges">
+              <MappingFragment StoreEntitySet="Privileges">
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="Describe" ColumnName="Describe" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="SystemShow" ColumnName="SystemShow" />
+                <ScalarProperty Name="ShopShow" ColumnName="ShopShow" />
+                <ScalarProperty Name="StoreShow" ColumnName="StoreShow" />
+                <ScalarProperty Name="RoleShow" ColumnName="RoleShow" />
+                <ScalarProperty Name="UserShow" ColumnName="UserShow" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationPrivilegesRole">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationPrivilegesRole">
+              <MappingFragment StoreEntitySet="RelationPrivilegesRole">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="PrivilegesID" ColumnName="PrivilegesID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationPrivilegesShops">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationPrivilegesShops">
+              <MappingFragment StoreEntitySet="RelationPrivilegesShops">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="PrivilegesID" ColumnName="PrivilegesID" />
+                <ScalarProperty Name="ShopsID" ColumnName="ShopsID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationPrivilegesStores">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationPrivilegesStores">
+              <MappingFragment StoreEntitySet="RelationPrivilegesStores">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="PrivilegesID" ColumnName="PrivilegesID" />
+                <ScalarProperty Name="StoresID" ColumnName="StoresID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationPrivilegesSystem">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationPrivilegesSystem">
+              <MappingFragment StoreEntitySet="RelationPrivilegesSystem">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="PrivilegesID" ColumnName="PrivilegesID" />
+                <ScalarProperty Name="SystemID" ColumnName="SystemID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationPrivilegesUsers">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationPrivilegesUsers">
+              <MappingFragment StoreEntitySet="RelationPrivilegesUsers">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="PrivilegesID" ColumnName="PrivilegesID" />
+                <ScalarProperty Name="UsersID" ColumnName="UsersID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationRoleModule">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationRoleModule">
+              <MappingFragment StoreEntitySet="RelationRoleModule">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationShopsModule">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationShopsModule">
+              <MappingFragment StoreEntitySet="RelationShopsModule">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationShopVersionModule">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationShopVersionModule">
+              <MappingFragment StoreEntitySet="RelationShopVersionModule">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="ShopVersionID" ColumnName="ShopVersionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationStoresModule">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationStoresModule">
+              <MappingFragment StoreEntitySet="RelationStoresModule">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="StoresID" ColumnName="StoresID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationUserRole">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationUserRole">
+              <MappingFragment StoreEntitySet="RelationUserRole">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationUsersModule">
+            <EntityTypeMapping TypeName="JWDB_JCModel.RelationUsersModule">
+              <MappingFragment StoreEntitySet="RelationUsersModule">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="UsersID" ColumnName="UsersID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+                <ScalarProperty Name="ShopsID" ColumnName="ShopsID" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shops">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Shops">
+              <MappingFragment StoreEntitySet="Shops">
+                <ScalarProperty Name="AnnualFee" ColumnName="AnnualFee" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
+                <ScalarProperty Name="CountyCode" ColumnName="CountyCode" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="AfterSales" ColumnName="AfterSales" />
+                <ScalarProperty Name="AttentionMediaID" ColumnName="AttentionMediaID" />
+                <ScalarProperty Name="EnableWeixinPay" ColumnName="EnableWeixinPay" />
+                <ScalarProperty Name="RefreshTokenTime" ColumnName="RefreshTokenTime" />
+                <ScalarProperty Name="AuthorizerRefreshToken" ColumnName="AuthorizerRefreshToken" />
+                <ScalarProperty Name="AuthorizerAppId" ColumnName="AuthorizerAppId" />
+                <ScalarProperty Name="FinalPayment" ColumnName="FinalPayment" />
+                <ScalarProperty Name="Deposit" ColumnName="Deposit" />
+                <ScalarProperty Name="SalespersonID" ColumnName="SalespersonID" />
+                <ScalarProperty Name="ShopType" ColumnName="ShopType" />
+                <ScalarProperty Name="AttentionReply" ColumnName="AttentionReply" />
+                <ScalarProperty Name="WeiXinBackground" ColumnName="WeiXinBackground" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="NoticeNickName" ColumnName="NoticeNickName" />
+                <ScalarProperty Name="NoticeOpenID" ColumnName="NoticeOpenID" />
+                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="OperatorContact" ColumnName="OperatorContact" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="MerchantPassword" ColumnName="MerchantPassword" />
+                <ScalarProperty Name="MerchantAccount" ColumnName="MerchantAccount" />
+                <ScalarProperty Name="WeiXinPassword" ColumnName="WeiXinPassword" />
+                <ScalarProperty Name="WeiXinAccount" ColumnName="WeiXinAccount" />
+                <ScalarProperty Name="MCHKey" ColumnName="MCHKey" />
+                <ScalarProperty Name="MCHID" ColumnName="MCHID" />
+                <ScalarProperty Name="AppSecret" ColumnName="AppSecret" />
+                <ScalarProperty Name="AppID" ColumnName="AppID" />
+                <ScalarProperty Name="OriginID" ColumnName="OriginID" />
+                <ScalarProperty Name="AdminUserID" ColumnName="AdminUserID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="TotalMoney" ColumnName="TotalMoney" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="DomainName" ColumnName="DomainName" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="ShopVersionID" ColumnName="ShopVersionID" />
+                <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShopVersion">
+            <EntityTypeMapping TypeName="JWDB_JCModel.ShopVersion">
+              <MappingFragment StoreEntitySet="ShopVersion">
+                <ScalarProperty Name="Short" ColumnName="Short" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Stores">
+              <MappingFragment StoreEntitySet="Stores">
+                <ScalarProperty Name="ActvityEndDate" ColumnName="ActvityEndDate" />
+                <ScalarProperty Name="ActvityName" ColumnName="ActvityName" />
+                <ScalarProperty Name="AdminUserID" ColumnName="AdminUserID" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="VirtualShopsID" ColumnName="VirtualShopsID" />
+                <ScalarProperty Name="PrintRemark" ColumnName="PrintRemark" />
+                <ScalarProperty Name="ReceiptLogo" ColumnName="ReceiptLogo" />
+                <ScalarProperty Name="ShareExplain" ColumnName="ShareExplain" />
+                <ScalarProperty Name="Profile" ColumnName="Profile" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="IsMainStore" ColumnName="IsMainStore" />
+                <ScalarProperty Name="IsShowWeiXin" ColumnName="IsShowWeiXin" />
+                <ScalarProperty Name="IsShare" ColumnName="IsShare" />
+                <ScalarProperty Name="WifiPassword" ColumnName="WifiPassword" />
+                <ScalarProperty Name="WifiName" ColumnName="WifiName" />
+                <ScalarProperty Name="StoresImage" ColumnName="StoresImage" />
+                <ScalarProperty Name="LatitudeY" ColumnName="LatitudeY" />
+                <ScalarProperty Name="LongitudeX" ColumnName="LongitudeX" />
+                <ScalarProperty Name="MapAdress" ColumnName="MapAdress" />
+                <ScalarProperty Name="BankCard" ColumnName="BankCard" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserOperationLog">
+            <EntityTypeMapping TypeName="JWDB_JCModel.UserOperationLog">
+              <MappingFragment StoreEntitySet="UserOperationLog">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="JWDB_JCModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Fishing" ColumnName="Fishing" />
+                <ScalarProperty Name="GoldCoin" ColumnName="GoldCoin" />
+                <ScalarProperty Name="Mark" ColumnName="Mark" />
+                <ScalarProperty Name="Sexual" ColumnName="Sexual" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LastLoginArea" ColumnName="LastLoginArea" />
+                <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
+                <ScalarProperty Name="WeiXinAutoLoginOpenID" ColumnName="WeiXinAutoLoginOpenID" />
+                <ScalarProperty Name="IsCouponNotice" ColumnName="IsCouponNotice" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="IsIntention" ColumnName="IsIntention" />
+                <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
+                <ScalarProperty Name="LoginTimes" ColumnName="LoginTimes" />
+                <ScalarProperty Name="DefaultStoreID" ColumnName="DefaultStoreID" />
+                <ScalarProperty Name="ShopsID" ColumnName="ShopsID" />
+                <ScalarProperty Name="IdcardPhoto" ColumnName="IdcardPhoto" />
+                <ScalarProperty Name="Idcard" ColumnName="Idcard" />
+                <ScalarProperty Name="WeiXinAppointmentNotice" ColumnName="WeiXinAppointmentNotice" />
+                <ScalarProperty Name="WeiXinOrderNotice" ColumnName="WeiXinOrderNotice" />
+                <ScalarProperty Name="WeiXinOpenName" ColumnName="WeiXinOpenName" />
+                <ScalarProperty Name="WeiXinOpenID" ColumnName="WeiXinOpenID" />
+                <ScalarProperty Name="WeiXinVisible" ColumnName="WeiXinVisible" />
+                <ScalarProperty Name="BasicSalary" ColumnName="BasicSalary" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="TEL" ColumnName="TEL" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="WorkTypeID" ColumnName="WorkTypeID" />
+                <ScalarProperty Name="WorkNum" ColumnName="WorkNum" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="NeedAccount" ColumnName="NeedAccount" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

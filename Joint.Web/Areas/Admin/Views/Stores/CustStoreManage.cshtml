@@ -1,0 +1,1003 @@
+﻿@section Style{
+    <style type="text/css">
+        .form-control {
+            display: inline;
+        }
+
+        .kv-upload-progress > .progress {
+            display: none;
+        }
+
+        .form-control-feedback {
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            position: absolute;
+            right: 10px;
+            text-align: center;
+            top: 0px;
+            width: 34px;
+        }
+
+        .kv-file-upload {
+            display: none;
+        }
+
+        .kv-file-zoom {
+            display: none;
+        }
+        .layui-layer-btn{
+          text-align:center!important;
+        }
+    </style>
+}
+@section HeadScript{
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+}
+
+
+@using Joint.Web.Framework
+<div class="page-header">
+    <div>
+        @if (InitInfo.Instance.IsAdministrator)
+        {
+            <button class="btn btn-sm btn-info" data-toggle="modal" id="btn_add" onclick="assignShopPermissionsSome();">
+                <i class="icon-key"></i>
+                分配菜单
+            </button>
+        }
+        else
+        {
+            <label style="margin-bottom:20px"></label>
+        }
+
+        @* 如果是意向客户，则显示按钮 *@
+        @if (InitInfo.Instance.CurrentUser.IsIntention == true)
+        {
+            <button class="btn btn-sm btn-purple" data-toggle="modal" id="btn_add" onclick="showShopQRCode();">
+                <i class="icon-qrcode"></i>
+                推广二维码
+            </button>
+
+
+            <button class="btn btn-sm btn-success" data-toggle="modal" id="btn_add" onclick="showWeiXinTemplet();">
+                <i class="icon-comments"></i>
+                微信设置
+            </button>
+
+        }
+
+
+        <div style="float:right;" class="input-group col-xs-12 col-sm-3">
+            <input type="text" class="form-control search-query" placeholder="" id="username">
+            <span class="input-group-btn">
+                <button class="btn btn-purple btn-sm" id="searchbtn" type="button">
+                    查询
+                    <i class="icon-search icon-on-right bigger-110"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <input id="PermissionType" type="hidden" value="StorePermission">
+            <input type="hidden" id="IDs" />
+            <div id="divShopQRCode" style="display: none;"><img style="width:100%" id="imgShopQRCode" src="/Admin/Shops/CreateQRCode?XShow=@InitInfo.Instance.CurrentShop.ID"></div>
+            <table class="table table-striped table-bordered table-hover" id="tbStores"></table>
+        </div><!-- /.table-responsive -->
+    </div><!-- /span -->
+</div>
+
+
+<div class="modal fade" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-plus"></i> <label id="modalTitle"> 添加店铺</label></h4>
+            </div>
+            <div class="modal-body">
+
+                <form id="formStores" method="post" class="form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">公司名称</label>
+                        <div class="col-sm-7">
+                            <input type="hidden" name="ID" id="ID">
+                            <input type="hidden" name="WifiName" id="WifiName">
+                            <input type="hidden" name="WifiPassword" id="WifiPassword">
+                            <input type="hidden" name="ShopId" id="ShopId">
+                            <input type="text" name="ShopName" class="form-control" id="ShopName" readonly placeholder="商家名称">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">部门名称</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="StoreName" class="form-control" id="StoreName" placeholder="店铺名称">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">电话</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="Phone" class="form-control" id="Phone" placeholder="电话">
+                        </div>
+                    </div>
+
+                    @*<div class="form-group" style="display:none;">
+                        <label class="col-sm-3 control-label">商家</label>
+                        <div class="col-sm-7">
+                            <input type="hidden" name="ID" id="ID">
+                            <input type="hidden" name="WifiName" id="WifiName">
+                            <input type="hidden" name="WifiPassword" id="WifiPassword">
+                            <input type="hidden" name="ShopId" id="ShopId">
+                            <input type="text" name="ShopName" readonly="readonly" class="form-control" id="ShopName" placeholder="请选择商家名称...">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">店铺名称</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="StoreName" class="form-control" id="StoreName" placeholder="店铺名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">电话</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="Phone" class="form-control" id="Phone" placeholder="输入号码">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">店铺地址</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="Adress" class="form-control" id="Adress" placeholder="店铺地址">
+                            <input type="button" id="btnSearch" value="查询" onclick="searchMap()" />
+                            <input type="button" id="btnSearch" value="点此查看导航地址" onclick="showAddressLink()" />
+                            <textarea id="showAddress" style="display:none;height:120px" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">地图坐标</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="LatitudeY" class="col-sm-5" id="LatitudeY" placeholder="纬度">
+                            <input type="text" name="LongitudeX" class="col-sm-5" id="LongitudeX" placeholder="精度">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12" style="padding:2% 5% 5%;">
+                            <div class="col-sm-12" style="height:340px;border:1px solid #ddd" id="container"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">开户行</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="BankName" class="form-control" id="BankName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">银行卡号</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="BankCard" class="form-control" id="BankCard">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"> 是否总店 </label>
+
+                        <div class="col-sm-7">
+                            <label style="padding-top:5px;">
+                                <input type="checkbox" class="ace ace-switch ace-switch-5" @(ViewBag.HasMainStore == true ? "disabled=\"disabled\"" : "") name="IsMainStore" id="IsMainStore">
+                                <span class="lbl"></span>
+                            </label>
+                            <span class="middle">设置后将不可修改，请谨慎操作</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">共享本店数据</label>
+                        <div class="col-sm-7">
+                            <label style="padding-top:5px;">
+                                <input type="checkbox" class="ace ace-switch ace-switch-5" name="IsShare" id="IsShare">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"> 显示微信 </label>
+                        <div class="col-sm-7">
+                            <label style="padding-top:5px;">
+                                <input type="checkbox" class="ace ace-switch ace-switch-5" name="IsShowWeiXin" id="IsShowWeiXin">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label class="col-sm-3 control-label"> 是否禁用 </label>
+
+                        <div class="col-sm-7">
+                            <label style="padding-top:5px;">
+                                <input type="checkbox" class="ace ace-switch ace-switch-5" name="Disabled" id="Disabled">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">门店图片</label>
+                      
+
+                        <div class="col-sm-9" style="">
+                            <div class="col-sm-9" style="padding:0px;">
+                                <input type="file" id="StoresImage" multiple class="file-loading" />
+                                <input type="hidden" id="StoresImageUpload" class="form-control" name="StoresImage" />
+                            </div>
+                            <div class="col-sm-3" style="padding:0px;">
+                                <div id="btnStoresImage" class="btn" style="float:left;margin-left:5px; height:44px;"><i class="icon-picture align-top bigger-125"></i></div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label class="col-sm-3 control-label  no-padding-right"> 小票Logo </label>
+                        <div class="col-sm-9">
+                            <div class="col-sm-9" style="padding:0px;">
+                                <input type="file" id="ReceiptLogo" multiple class="file-loading" />
+                                <input type="hidden" id="ReceiptLogoUpload" class="form-control" name="ReceiptLogo" />
+                            </div>
+                            <div class="col-sm-3" style="padding:0px;">
+                                <div id="btnReceiptLogo" class="btn" style="float:left;margin-left:5px; height:44px;"><i class="icon-picture align-top bigger-125"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label class="col-sm-3 control-label  no-padding-right"> </label>
+                        <div class="col-sm-9 alert alert-danger" style="background-color:#fff;border:none;margin-bottom:0;padding:0">
+                            <strong>
+                                <i class="icon-bullhorn"></i>
+                                温馨提示:
+                            </strong>
+                            小票Logo的图片大小为：128px * 128px
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">打印单尾部声明</label>
+                        <div class="col-sm-7">
+                            <textarea name="PrintRemark" class="form-control" id="PrintRemark"></textarea>
+
+                        </div>
+                    </div>*@
+
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove"></i>关闭</button>
+                <button type="button" id="btnUpdate" class="btn btn-primary" onclick="editStores();"><i class="icon-save"></i>保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+<div class="modal fade" id="StoreUsersModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-plus"></i> <label id="modalTitle"> 设置管理员</label></h4>
+            </div>
+            <div class="modal-body">
+
+                <form id="formStores" method="post" class="form-horizontal">
+
+                    <input type="hidden" id="StoreID" />
+                    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">员工列表</label>
+                        <div class="col-sm-7">
+                           <select id="StoreUsers"></select>
+                        </div>
+                    </div>
+
+
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove"></i>关闭</button>
+                <button type="button" id="btnSetManager" class="btn btn-primary" onclick="SetManager()"><i class="icon-save"></i>保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+@section FootScript{
+
+    <!-- bootstrap-table js -->
+    <script src="~/Areas/Admin/Content/bootstrap-table/bootstrap-table.js"></script>
+    <link href="~/Areas/Admin/Content/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/Areas/Admin/Content/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <!-- bootstrap-table js -->
+    <!-- bootstrap-fileinput js -->
+    <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script src="~/Scripts/fileinput_locale_zh.js"></script>
+
+    <!-- 下拉插件 -->
+    <script src="~/Areas/Admin/Content/DropdownJs/jquery.dropdown.js"></script>
+    <!-- 省市县插件 -->
+    <script src="~/Scripts/PCASClass.js"></script>
+
+    <script src="~/Scripts/plugins/UEditor/ueditor.config.js"></script>
+    <script src="~/Scripts/plugins/UEditor/ueditor.all.min.js"></script>
+
+ 
+
+    <script type="text/javascript">
+
+        function showWeiXinTemplet() {
+            location.href = "/Admin/WeiXinTemplet/Index?ID=@InitInfo.Instance.CurrentShop.ID";
+        }
+
+        function showShopQRCode(shopID, noticeOpenID) {
+            //
+            ////如果还没有绑定通知人，则通知
+            //if (noticeOpenID == "null" || $.isNullOrEmpty(noticeOpenID)) {
+            //    layer.msg('请先绑定微信通知人');
+            //    return;
+            //}
+            //
+
+            //$("#imgShopQRCode").attr("src", "/Admin/Shops/CreateQRCode?XShow=" + shopID);
+
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: '380px',
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: $('#divShopQRCode')
+            });
+        }
+
+        function showStoreImg(imgUrl, width, height) {
+            layer.open({
+                type: 2,
+                title: false,
+                closeBtn: 0,
+                area: [width, height],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: imgUrl
+            });
+        }
+
+        function showAddressLink() {
+            var latitudeY = $("#LatitudeY").val();
+            var longitudeX = $("#LongitudeX").val();
+            var address = $("#Adress").val();
+            var url = "http://api.map.baidu.com/marker?location=" + latitudeY + "," + longitudeX + "&title=" + address + "&content=" + address + "&output=html";
+            $("#showAddress").show();
+            $("#showAddress").val(url);
+        }
+
+        //初始化fileinput
+        function initTable() {
+            //先销毁表格
+            $('#tbStores').bootstrapTable('destroy');
+            //初始化表格,动态从服务器加载数据
+            $("#tbStores").bootstrapTable({
+                method: "get",  //使用get请求到服务器获取数据
+                url: "@Url.Action("GetShopStores", "Stores")", //获取数据的Servlet地址
+                striped: true,  //表格显示条纹
+                pagination: true, //启动分页
+                pageSize: 100,  //每页显示的记录数
+                pageNumber: 1, //当前第几页
+                search: false,  //是否启用查询
+                showColumns: false,  //显示下拉框勾选要显示的列
+                showRefresh: false,  //显示刷新按钮
+                sidePagination: "server", //表示服务端请求
+                //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+                //设置为limit可以获取limit, offset, search, sort, order
+                queryParamsType: "undefined",
+                queryParams: function queryParams(params) {   //设置查询参数
+                    var param = {
+                        pageNumber: params.pageNumber,
+                        pageSize: params.pageSize,
+                        username: $("#username").val()
+                    };
+                    return param;
+                },
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'ID',
+                    title: '编号',
+                    visible: false
+                }, {
+                    field: 'ShopsName',
+                    title: '商家',
+                    visible: false
+                }, {
+                    field: 'StoreName',
+                    title: '门店'
+                }, {
+                    field: 'Phone',
+                    title: '电话'
+                }, {
+                    field: 'Adress',
+                    title: '地址'
+                }, {
+                    field: 'IsShowWeiXin',
+                    title: '微信'
+                },
+               
+                {
+                    field: 'IsMainStore',
+                    title: '是否总店',
+                    formatter: function (value) {
+                        if (value == true)
+                            return '<span class="label label-sm label-success" >是</span>';
+                        else
+                            return '<span class="label label-sm label-purple" >否</span>';
+                    }
+                }, {
+                    field: 'Disabled',
+                    title: '状态',
+                    formatter: function (value) {
+
+                        if (value == true)
+                            return '<span class="label label-sm label-danger" >禁用</span>';
+                        else
+                            return '<span class="label label-sm label-success" >正常</span>';
+                    }
+                }, {
+                    field: 'Oprate',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+
+                        return [
+                       '<button class="btn btn-xs ' + (row.AdminUserID == null ? 'btn-info' : 'btn-primary') + '" onClick="showManagerDialog(' + row.ID + ',' + row.AdminUserID + ')"><i class="icon-cog bigger-120"></i>' + (row.AdminUserID == null ? '设置管理员' : '已设管理员') + '</button>',
+                       '<button class="btn btn-xs btn-success" onClick="showEditStores(' + row.ID + ')"><i class="icon-edit bigger-120"></i>编辑</button>',
+                       '<button class="btn btn-xs btn-info" onClick="assignShopPermissions(' + row.ID + ')"><i class="icon-key bigger-120"></i>菜单</button>',
+                       '<button class="btn btn-xs btn-purple" onClick="ShowPrivileges(' + row.ID + ',\'StoreShow\')"><i class="icon-check bigger-120"></i>权限</button>',
+                       //'<button class="btn btn-xs btn-danger" onClick="editProfile(' + row.ID + ')"><i class="icon-list-alt bigger-120"></i>门店简介</button>',
+                       //'<button class="btn btn-xs btn-warning" onClick="NoShareStrore(' + row.ID + ')"><i class="icon-cloud bigger-120"></i>共享不可见门店</button>',
+                        ].join('  ');
+                    }
+                }],
+                onLoadSuccess: function () {  //加载成功时执行
+                    $(".page-list").css("display", "none");
+                    //layer.msg("加载成功", { time: 1000 });
+                },
+                onLoadError: function () {  //加载失败时执行
+                    layer.msg("加载数据失败", { time: 1500, icon: 2 });
+                }
+            });
+        };
+
+        var FileInput = function () {
+            var oFile = new Object();
+
+            //初始化fileinput控件（第一次初始化）
+            oFile.Init = function (ctrlName, uploadUrl) {
+                var control = $('#' + ctrlName);
+
+
+                //初始化上传控件的样式
+                control.fileinput({
+                    language: 'zh', //设置语言
+                    uploadUrl: uploadUrl, //上传的地址
+                    allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                    showUpload: false, //是否显示上传按钮
+                    showCaption: true,//是否显示标题
+                    browseClass: "btn btn-xs btn-primary", //按钮样式
+                    removeClass: "btn btn-xs btn-default",
+                    cancelClass: "btn btn-xs btn-default",
+                    uploadClass: "btn btn-xs btn-default",
+                    showPreview: false,//是否显示图片预览
+                    dropZoneEnabled: false,//是否显示拖拽区域
+                    //dropZoneEnabled: false,//是否显示拖拽区域
+                    //minImageWidth: 50, //图片的最小宽度
+                    //minImageHeight: 50,//图片的最小高度
+                    //maxImageWidth: 1000,//图片的最大宽度
+                    //maxImageHeight: 1000,//图片的最大高度
+                    //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+                    //minFileCount: 0,
+                    maxFileCount: 1, //表示允许同时上传的最大文件个数
+                    enctype: 'multipart/form-data',
+                    validateInitialCount: true,
+                    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                }).on("filebatchselected", function (event, files) {
+                    $('#' + ctrlName).fileinput("upload");
+
+
+                });
+            }
+
+            oFile.ShowImageInit = function (ctrlName, uploadUrl, imgUrl) {
+                
+                var control = $('#' + ctrlName);
+                var prewImgSrc = "";
+                if (imgUrl == "" || imgUrl == null) {
+                    prewImgSrc = "";
+                } else {
+                    prewImgSrc = "<img src='" + imgUrl + "' class='file-preview-image' id='' alt='' title=''>";
+                }
+                //初始化上传控件的样式
+                control.fileinput({
+                    language: 'zh', //设置语言
+                    uploadUrl: uploadUrl, //上传的地址
+                    uploadAsync: true, //默认异步上传
+                    allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                    showUpload: false, //是否显示上传按钮
+                    showCaption: true,//是否显示标题
+                    browseClass: "btn btn-xs btn-primary", //按钮样式
+                    removeClass: "btn btn-xs btn-default",
+                    cancelClass: "btn btn-xs btn-default",
+                    uploadClass: "btn btn-xs btn-default",
+                    showPreview: false,//是否显示图片预览
+                    dropZoneEnabled: false,//是否显示拖拽区域
+                    //minImageWidth: 50, //图片的最小宽度
+                    //minImageHeight: 50,//图片的最小高度
+                    //maxImageWidth: 1000,//图片的最大宽度
+                    //maxImageHeight: 1000,//图片的最大高度
+                    //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+                    //minFileCount: 0,
+                    maxFileCount: 1, //表示允许同时上传的最大文件个数
+                    enctype: 'multipart/form-data',
+                    validateInitialCount: true,
+                    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                    initialPreview: [prewImgSrc]
+                });
+
+                //////导入文件上传完成之后的事件
+                //$("#StoresImage").on("fileuploaded", function (event, data, previewId, index) {
+                //    alert("sdfs");
+                //    if (data.Result == 1) {
+                //        $("#StoresImage").val(data.msg);
+                //    } else {
+                //        layer.msg('文件格式类型不正确', { icon: 2, time: 1000 });
+                //        return;
+                //    }
+                //});
+            }
+            return oFile;
+        };
+
+        //设置模态窗口，1添加2编辑
+        function SetModule(tp) {
+            if (tp == 1) {
+                $('#formStores')[0].reset()
+
+                $("#btnUpdate").hide();
+                $("#modalTitle").html("添加门店");
+            }
+            else {
+
+                $("#btnUpdate").show();
+                $("#modalTitle").html("编辑门店");
+            }
+        }
+
+        function ShowPrivileges(id, PType) {
+
+            //iframe层-父子操作
+            var openIndex = layer.open({
+                type: 2,
+                area: ['800px', '600px'],
+                fix: false, //不固定
+                maxmin: true,
+                title: "权限分配",
+                content: $.format('/Admin/Module/ShowPrivileges?PType={0}&ID={1}', PType, id)
+            });
+        }
+
+
+
+        function editStores() {
+
+
+            if ($("#ShopID").val() == "" && $("#ShopName").val() == "") {
+                layer.msg("错误，商家不能为空");
+                return;
+            }
+
+
+            var validateResult = $('#formStores').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+            var storeJson = $("#formStores").serializeJson();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+
+            $.ajax({
+                type: "Post",
+                url: "/Admin/Stores/EditStores",
+                data: storeJson,
+                success: function (result) {
+
+                    layer.close(loading);
+
+                    if (result.success) {
+                        $('#mymodal').modal('hide');
+                        $("#tbStores").bootstrapTable('refresh');
+                    }
+                    else {
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        }
+        function showManagerDialog(id,adminUserID) {
+          
+            $("#StoreID").val(id);
+            //为下拉菜单填充值
+            $.post('/Admin/Stores/GetUsers', { storeID:id },
+            function (result) {
+
+                $("#StoreUsers").html("");
+                $.each(result.Users, function (index, el) {
+                    $("#StoreUsers").append("<option value='" + el.ID + "'>" + el.Name + "</option>");
+                });
+                $("#StoreUsers").prepend("<option value='0' selected='selected'>请选择</option>"); //为Select插入一个Option(第一个位置)
+                if (adminUserID != null) {
+                    $("#StoreUsers").val(adminUserID);
+                }
+
+                $("#StoreUsersModal").modal();
+
+            },
+            "json"
+            );
+
+        }
+        function SetManager() {
+            if ($("#StoreUsers").val() == 0) {
+                layer.msg("请选择员工！"); return;
+            }
+
+            var paramConfig = { reqUrl: "/Admin/Stores/SetManager", data: "storeID="+$("#StoreID").val()+"&userID=" + $("#StoreUsers").val() };
+            CallAjax(paramConfig, function () {
+                layer.msg(ReturnedResult.msg);
+                $('#StoreUsersModal').modal('hide');
+                $("#tbStores").bootstrapTable('refresh');
+
+            });
+        }
+
+
+        function showEditStores(id) {
+
+            
+            SetModule(2);
+
+           
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+
+
+            $.post('/Admin/Stores/GetStoresByID',
+            { ID: id },
+            function (result) {
+           
+                layer.close(loading);
+
+                $.loadData(result, "#formStores");
+
+               // initMap();
+                //$("#DueDate").val(result.DueDate.substr(0, 10));
+                $("#mymodal").modal("toggle");
+                //$("#uploadImage").val(result.StoresImage);
+
+                //if (!$.isNullOrEmpty(result.StoresImage)) {
+                //    $("#btnStoresImage").addClass("btn-danger");
+                //    $("#btnStoresImage").unbind();
+                //    $("#btnStoresImage").click(function () {
+                //        showStoreImg(result.StoresImage, "600px", "400px");
+                //    });
+                //}
+
+                //if (!$.isNullOrEmpty(result.ReceiptLogo)) {
+                //    $("#btnReceiptLogo").addClass("btn-danger");
+                //    $("#btnReceiptLogo").unbind();
+                //    $("#btnReceiptLogo").click(function () {
+                //        showStoreImg(result.ReceiptLogo, "128px", "128px");
+                //    });
+                //}
+
+                if (result.success == false) {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        function styleShowOrHide(isShow) {
+            if (isShow) {
+                return '';
+            }
+            else {
+                return 'style="display:none;"';
+            }
+        }
+
+        function ShowShopPermissionMenu() {
+            //iframe层-父子操作
+            var openIndex = layer.open({
+                type: 2,
+                area: ['680px', '700px'],
+                fix: false, //不固定
+                maxmin: true,
+                title: "权限分配",
+                content: '/Admin/Permission/StorePermissionMenu'
+            });
+
+        }
+
+        function assignShopPermissions(id) {
+            $("#IDs").val(id);
+            ShowShopPermissionMenu();
+        }
+
+        function editProfile(id) {
+            window.location.href = "/Admin/Stores/EditProfile?storeID=" + id;
+        }
+
+        function NoShareStrore(id) {
+            var openIndex = layer.open({
+                type: 2,
+                area: ['800px', '600px'],
+                fix: false, //不固定
+                maxmin: true,
+                title: "共享不可见门店设置",
+                content: "/Admin/Stores/EditNoShareStore?storeID=" + id
+            });
+
+           
+        }
+
+
+        function assignShopPermissionsSome() {
+         //   return;
+            var arrselections = $("#tbStores").bootstrapTable('getSelections');
+            if (arrselections.length <= 0) {
+                layer.msg("请勾选门店");
+                return;
+            }
+
+            var strIDs = "";
+            for (var i = 0; i < arrselections.length; i++) {
+                strIDs = strIDs + arrselections[i].ID + ",";//1,2,3,
+            }
+            strIDs = strIDs.substr(0, strIDs.length - 1);
+
+            //设置隐藏域，给弹窗获取
+            $("#IDs").val(strIDs);
+
+            ShowShopPermissionMenu();
+        }
+
+        $(document).ready(function () {
+
+            //1.调用函数，初始化表格
+            initTable();
+
+            //2.初始化fileinput 圖片上傳
+            var oFileInput = new FileInput();
+            oFileInput.Init("StoresImage", "/Common/Upload/UploadImg");
+
+            var oFileInput2 = new FileInput();
+            oFileInput2.Init("ReceiptLogo", "/Common/Upload/UploadImg");
+
+
+
+            $("#StoresImage").on("fileuploaded", function (event, data, previewId, index) {
+
+                if (data.response.success) {
+                    $("#StoresImageUpload").val(data.response.msg);
+                } else {
+                    layer.msg('文件格式类型不正确', { icon: 2, time: 3000 });
+                    return;
+                }
+            })
+            $("#ReceiptLogo").on("fileuploaded", function (event, data, previewId, index) {
+                if (data.response.success) {
+                    $("#ReceiptLogoUpload").val(data.response.msg);
+                } else {
+                    layer.msg('文件上传失败，请检测文件格式是否为图片', { icon: 2, time: 1000 });
+                    return;
+                }
+            }).on("filecleared", function (event, data, previewId, index) {
+                $("#ReceiptLogoUpload").val("");
+            });
+
+            //当点击查询按钮的时候执行
+            $("#searchbtn").bind("click", initTable);
+
+        });
+
+        function InitValidator() {
+            $('#formStores').bootstrapValidator({
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    StoreName: {
+                        validators: {
+                            notEmpty: {
+                                message: '店铺名不能为空'
+                            }
+                        }
+                    },
+                    //StoresImage: {
+                    //    validators: {
+                    //        notEmpty: {
+                    //            message: '请上传图片'
+                    //        }
+                    //    }
+                    //},
+                    Adress: {
+                        validators: {
+                            notEmpty: {
+                                message: '门店地址不能为空'
+                            }
+                        }
+                    },
+                    //BankCard: {
+                    //    validators: {
+                    //        //notEmpty: {
+                    //        //    message: '银行卡号不能为空'
+                    //        //},
+                    //        regexp: {
+                    //            regexp: /^(\d{16}|\d{19})$/,
+                    //            message: '请输入正确的银行卡号'
+                    //        }
+                    //    }
+                    //},
+                    Phone: {
+                        validators: {
+                            notEmpty: {
+                                message: '手机号不能为空'
+                            },
+                            regexp: {
+                                regexp: /^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$|(^(1[0-9][0-9]|15[0|3|6|7|8|9]|18[8|9])\d{8}$)/,
+                                message: '请输入正确的手机号码'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+
+
+        $(function () {
+            InitValidator();
+        });
+
+    </script>
+
+    @*百度地图脚本*@
+    <script type="text/javascript">
+        var gc = new BMap.Geocoder();//地址解析类
+        var map = new BMap.Map("container");//初始化地图
+        map.addControl(new BMap.NavigationControl());  //初始化地图控件
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+
+
+        function loadMap(point) {
+            
+            if (point == undefined) {
+                //默认加载地址
+                point = new BMap.Point(118.191959, 24.49553);
+            }
+            //var point = new BMap.Point(116.404, 39.915);
+            map.centerAndZoom(point, 17); //设置中心点坐标和地图级别
+            var marker = new BMap.Marker(point); //初始化地图标记
+            marker.enableDragging(); //标记开启拖拽
+
+            //添加标记拖拽监听
+            marker.addEventListener("dragend", function (e) {
+                getLocationAddress(e.point, marker);
+            });
+
+            //添加标记点击监听
+            marker.addEventListener("click", function (e) {
+                getLocationAddress(e.point, marker);
+            });
+
+            getLocationAddress(point, marker);//获取地址信息
+
+            map.addOverlay(marker); //将标记添加到地图中
+        }
+
+        //获取地址信息
+        function getLocationAddress(point, marker) {
+            gc.getLocation(point, function (rs) {
+                showLocationInfo(point, rs, marker);
+            });
+        }
+
+        //显示地址信息窗口
+        function showLocationInfo(pt, rs, marker) {
+            var opts = {
+                width: 250,     //信息窗口宽度
+                height: 100,     //信息窗口高度
+                title: ""  //信息窗口标题
+            }
+
+            var addComp = rs.addressComponents;
+
+            var addr = "<br/>当前位置：" + addComp.province + "," + addComp.city + "," + addComp.district + "," + addComp.street + "," + addComp.streetNumber + "<br/>";
+            addr += "纬度:" + pt.lat + "," + "经度" + pt.lng;
+            $("#LatitudeY").val(pt.lat);
+            $("#LongitudeX").val(pt.lng);
+            var infoWindow = new BMap.InfoWindow(addr, opts);  //创建信息窗口对象
+            marker.openInfoWindow(infoWindow);
+        }
+
+        //查询地址
+        function searchMap() {
+            var city = document.getElementById("Adress").value;
+            
+            var myCity = new BMap.LocalCity();
+            // 将结果显示在地图上，并调整地图视野
+            gc.getPoint(city, function (point) {
+                if (point) {
+                    loadMap(point);
+                }
+            });
+        }
+
+        function initMap() {
+            var lat = $("#LatitudeY").val();
+            var lng = $("#LongitudeX").val();
+            if (lat != undefined && lat != "") {
+
+                var point = new BMap.Point(lng, lat);
+                loadMap(point);
+            }
+            else {
+                loadMap();
+            }
+        }
+
+
+    </script>
+}

@@ -1,0 +1,78 @@
+﻿
+@{
+    if (ViewBag.IsWeiXinOrMoblie)
+    {
+        Layout = "~/Areas/Mobile/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+
+        <div class="error-container">
+            <div class="well">
+                <h1 class="grey lighter smaller">
+                    <span class="blue bigger-125">
+                        <i class="icon-sitemap"></i>
+                        系统提示
+                    </span>
+                    @TempData["Title"]
+                </h1>
+
+                <hr>
+                <h3 class="lighter smaller">@TempData["Message"]</h3>
+
+                <div>
+                    @*<form class="form-search">
+                            <span class="input-icon align-middle">
+                                <i class="icon-search"></i>
+
+                                <input type="text" class="search-query" placeholder="Give it a search...">
+                            </span>
+                            <button class="btn btn-sm" onclick="return false;">Go!</button>
+                        </form>*@
+
+                    <div class="space"></div>
+                    <h4 class="smaller">您可以尝试如下操作:</h4>
+
+                    <ul class="list-unstyled spaced inline bigger-110 margin-15">
+                        <li>
+                            <i class="icon-hand-right blue"></i>
+                            1.点击返回或首页按钮来回到正常页面
+                        </li>
+
+                        <li>
+                            <i class="icon-hand-right blue"></i>
+                            2.联系管理员开通更多权限
+                        </li>
+
+                        <li>
+                            <i class="icon-hand-right blue"></i>
+                            3.若您有更高权限的账号，可以尝试重新登录
+                        </li>
+                    </ul>
+                </div>
+
+                <hr>
+                <div class="space"></div>
+
+                <div class="center">
+                    <a href="javascript:history.go(-1);" class="btn btn-grey">
+                        <i class="icon-arrow-left"></i>
+                        返回
+                    </a>
+                    &nbsp;
+                    <a href="@(ViewBag.IsWeiXinOrMoblie == true ? Url.Action("Index", "Home", new { area = "Mobile" }) : Url.Action("Index", "Home"))" class="btn btn-primary">
+                        <i class="icon-dashboard"></i>
+                        首页
+                    </a>
+                </div>
+            </div>
+        </div><!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div>

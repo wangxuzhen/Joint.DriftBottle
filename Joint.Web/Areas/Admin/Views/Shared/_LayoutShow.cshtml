@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.bbbb4.com/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://www.bbbb4.com/Areas/Admin/Content/Img/ico57.png">
+    <!-- basic styles -->
+    <link href="/Areas/Admin/Content/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/font-awesome.min.css" />
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- ace styles --> 
+
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrapValidator.min.css" />
+    <link href="~/Areas/Admin/Content/easyui/easyui.css" rel="stylesheet" />
+    <style type="text/css">
+        .bootstrap-table .page-list {
+            display: none !important;
+        }
+        input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { /* WebKit*/
+            color: #D0D0D0;
+        }
+
+        input:-moz-placeholder, textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #D0D0D0;
+        }
+
+        input::-moz-placeholder, textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #D0D0D0;
+        }
+
+        input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* IE 10+ */
+            color: #D0D0D0;
+        }
+        /*.fixed-table-container {
+            border: none;
+        }*/
+    </style>
+    @*<link href="~/Areas/Admin/Content/booNavigation-master/css/booNavigation.css" rel="stylesheet" />*@
+
+    @RenderSection("Style", false)
+
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="/Areas/Admin/Content/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+
+    <script src="/Areas/Admin/Content/assets/js/ace-extra.min.js"></script>
+
+
+    <script src="~/Scripts/ValidatorExpand.js?id=1231"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/Areas/Admin/Content/assets/js/html5shiv.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        var isWeiXinOrMoblie=@(ViewBag.IsWeiXinOrMoblie==true?"true":"false");
+    </script>
+
+
+    @RenderSection("HeadScript", false)
+
+    @{
+        //打印控件选择
+        string myUserAgent = Request.UserAgent.ToString().ToLower();
+        //如果是旧版的谷歌，则使用旧版的控件
+        if (myUserAgent.Contains("41.0.2272.118"))
+        {
+            <script src="~/Scripts/LodopFuncsOld.js"></script>
+            <object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width="0" height="0" style="display:block">
+                <embed id="LODOP_EM" type="application/x-print-lodop" width="0" height="0" pluginspage="/Lodop/install_lodop32.exe"></embed>
+            </object>
+        }
+        else
+        {
+            <script src="~/Scripts/LodopFuncs.js"></script>
+            <object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width="0" height="0" style="display:block">
+                <embed id="LODOP_EM" type="application/x-print-lodop" width="0" height="0" pluginspage="/Lodop/install_lodop32.exe"></embed>
+            </object>
+        }
+    }
+</head>
+
+<body>
+
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            @RenderBody()
+            @RenderSection("FooterView", false)
+
+        </div><!-- /.main-container-inner -->
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse" style="display: none;">
+            <i class="icon-double-angle-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/Areas/Admin/Content/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='/Areas/Admin/Content/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Areas/Admin/Content/assets/js/date-time/moment.min.js"></script>
+    <script src="~/Areas/Admin/Content/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Admin/Content/easyui/easyui-lang-zh_CN.js"></script>
+    <script src="/Areas/Admin/Content/LaxJquery.js"></script>
+    <script src="/Areas/Admin/Content/libjs/Layer/layer.2.1.js"></script>
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='/Areas/Admin/Content/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="/Areas/Admin/Content/assets/js/bootstrap.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/typeahead-bs2.min.js"></script>
+
+    <!-- ace scripts -->
+    <script src="/Areas/Admin/Content/assets/js/ace-elements.min.js"></script>
+    <script src="~/Scripts/bootstrapValidator.min.js"></script>
+    <script src="~/Scripts/Ewin.js"></script>
+
+
+
+    <!-- bootstrap-table js -->
+    <script src="/Areas/Admin/Content/bootstrap-table/bootstrap-table.js"></script>
+    <link href="/Areas/Admin/Content/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+    <script src="/Areas/Admin/Content/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!-- bootstrap-table js -->
+    <script src="~/Scripts/Common.Core.js?v=111"></script>
+    <!-- inline scripts related to this page -->
+    @RenderSection("FootScript", false)
+    <script>
+        var isWeiXinOrMoblie=@(ViewBag.IsWeiXinOrMoblie==true?"true":"false");
+
+        //根据pc和mobile返回不同对象
+        function CheckPcOrMoblie(pcObj,mobileObj){
+            
+            if(isWeiXinOrMoblie){
+                return mobileObj;
+            }
+            else{
+                return pcObj;
+            }
+        }
+        function printA4ByHtml(result, title, isPreview) {
+
+            var LODOP = getLodop(document.getElementById('LODOP'), document.getElementById('LODOP_EM'));//
+            LODOP.PRINT_INIT(title);
+            //LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4"); //A4纸张纵向打印
+            //LODOP.SET_PRINT_STYLE("FontSize", 9);
+            LODOP.ADD_PRINT_HTM("9mm", "6mm", "RightMargin:9mm", "BottomMargin:9mm", result);//四个数值分别表示Top,Left,Width,Height
+            //LODOP.ADD_PRINT_HTM("0%", "0%", "100%", "100%", result);//四个数值分别表示Top,Left,Width,Height
+            LODOP.SET_SHOW_MODE("NP_NO_RESULT", true);
+            if (isPreview) {
+                LODOP.PREVIEW(); //打印预览
+            }
+            else {
+                LODOP.PRINT(); //直接打印
+            }
+        }
+
+        function printSmallTicketByHtml(result, title, isPreview) {
+            var LODOP = getLodop(document.getElementById('LODOP'), document.getElementById('LODOP_EM'));//
+            LODOP.PRINT_INIT(title);
+            LODOP.ADD_PRINT_HTM(0, 0, 0, "100%", result);
+            LODOP.SET_PRINT_PAGESIZE(3, "580", "45", "");//这里3表示纵向打印且纸高“按内容的高度”；580表示纸宽580mm；45表示页底空白4.5mm //.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
+            LODOP.SET_PRINT_MODE("PRINT_PAGE_PERCENT", "Full-Width");
+            //打印几份
+            //LODOP.SET_PRINT_COPIES(2);
+            LODOP.SET_SHOW_MODE("NP_NO_RESULT", true);
+            //if (isPreview) {
+                LODOP.PREVIEW(); //打印预览
+            //}
+            //else {
+            //    LODOP.PRINT(); //直接打印
+            //}
+        }
+    </script>
+    @*@{Html.RenderPartial("_BaiduTongJi", new { });}*@
+</body>
+</html>

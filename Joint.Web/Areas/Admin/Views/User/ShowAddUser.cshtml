@@ -1,0 +1,948 @@
+﻿@using Joint.Web.Framework
+@*@model Joint.Entity.Module*@
+@section Style{
+    <style type="text/css">
+        .help-block {
+            display: inline-block;
+        }
+
+        .kv-upload-progress > .progress {
+            display: none;
+        }
+        /*****combogrid样式*******/
+        .textbox {
+            border: 1px solid #d4d4d4;
+            border-radius: 0 !important;
+            height: 28px !important;
+            width: 100% !important;
+        }
+
+        .combo-arrow {
+            height: 28px !important;
+        }
+        /*****combogrid样式*******/
+    </style>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+
+        <div class="row">
+            <div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-sm btn-info" style="margin-left: 12px;" onclick="goBack();">
+                        <i class="icon-reply"></i>
+                        返回
+                    </button>
+                </div>
+                @*<div class="col-sm-9">
+                        <button id="btnShowAccount" type="button" class="btn btn-sm btn-success" style="display:none;" >
+                            <i class="icon-plus"></i>
+                            添加登录账号
+                        </button>
+                        <button id="btnHideAccount" type="button" class="btn btn-sm btn-danger" >
+                            <i class="icon-remove"></i>
+                            不需要登录账号
+                        </button>
+                    </div>*@
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+
+            <form id="userForm" class="form-horizontal" action="" method="post">
+                @if (ViewBag.IsIntention == true)
+                {
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="WorkTypeID"> 开户版本： </label>
+                        <div class="col-sm-9">
+                            @Html.DropDownList("ShopType", ViewData["ListShopType"] as SelectList, new { @class = "col-xs-10 col-sm-5" })
+                        </div>
+                    </div>
+                }
+
+                @*<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="WorkNum"> 登录账号： </label>
+                        <div class="col-sm-9">
+                            <div class="col-sm-5">
+                                <label class="col-sm-6">
+                                    <input type="radio" class="ace" id="btnShowAccount" name="NeedAccount" value="true" checked="checked" onclick="showAccount();">
+                                    <span class="lbl"> 需要登录账号</span>
+                                </label>
+                                <label class="col-sm-6">
+                                    <input type="radio" class="ace" id="btnHideAccount" name="NeedAccount" value="false" onclick="hideAccount();">
+                                    <span class="lbl"> 不需要登录账号</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>*@
+                <input type="hidden" id="NeedAccount" name="NeedAccount" value="true" />
+                <input id="IsIntention" name="IsIntention" type="hidden" value="@ViewBag.IsIntention.ToString()" />
+                <div class="form-group" style="@(((bool)ViewData["showStores"]) ? "" : "display:none")">
+                    <label class="col-sm-3 control-label no-padding-right" for="DefaultStoreID"> 默认部门： </label>
+                    <div class="col-sm-9">
+                        @Html.DropDownList("DefaultStoreID", ViewData["allStoresSelect"] as SelectList, new { @class = "col-xs-10 col-sm-5" })
+                    </div>
+                </div>
+                <div id="divUsername" class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right blue" for="UserName"> 登录名称： </label>
+
+                    <div class="col-sm-9">
+                        <input type="hidden" id="ID" name="ID" class="col-xs-10 col-sm-5">
+                        <input type="text" id="UserName" name="UserName" placeholder="若该员工无需登录系统则无需账号" autocomplete="off" class="col-xs-10 col-sm-5">
+                    </div>
+                </div>
+                <div id="divPassword" class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right blue" for="Password"> 登录密码： </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="Password" name="Password" placeholder="若该员工无需登录系统则无需设置密码" autocomplete="off" onfocus="this.type='password'" class="col-xs-10 col-sm-5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="RealName"> 真实姓名： </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="RealName" name="RealName" placeholder="必填项" class="col-xs-10 col-sm-5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="WorkNum"> 工号： </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="WorkNum" name="WorkNum" placeholder="" class="col-xs-10 col-sm-5">
+                    </div>
+                </div>
+                <div class="form-group" style="display:none;">
+                    <label class="col-sm-3 control-label no-padding-right" for="WorkTypeID"> 工种： </label>
+                    <div class="col-sm-9">
+                        <select id="WorkTypeID" name="WorkTypeID" class="col-xs-10 col-sm-5"></select>
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="BasicSalary"> 底薪： </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="BasicSalary" name="BasicSalary" placeholder="" class="col-xs-10 col-sm-5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="TEL"> 电话： </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="TEL" name="TEL" placeholder="" class="col-xs-10 col-sm-5">
+                        </div>
+                    </div>*@
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="Phone"> 手机： </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="Phone" name="Phone" placeholder="必填项" class="col-xs-10 col-sm-5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="Idcard"> 身份证： </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="Idcard" name="Idcard" placeholder="" class="col-xs-10 col-sm-5">
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="IdcardPhoto"> 身份证图片： </label>
+                        <div class="col-sm-9">
+                            <div class="col-xs-10 col-sm-5" style="padding:0px;">
+
+                                <div class="col-sm-9" style="padding:0px;">
+                                    <input type="file" id="IdcardPhoto" multiple class="file-loading" />
+                                    <input type="hidden" id="IdcardPhotoUpload" class="form-control" name="IdcardPhoto" />
+                                </div>
+                                <div class="col-sm-3" style="padding:0px;">
+                                    <div id="btnIdcardPhoto" class="btn" style="float:left;margin-left:5px; height:44px;"><i class="icon-picture align-top bigger-125"></i></div>
+                                    <div id="divImgIdcardPhoto" style="display: none;"><img id="imgIdcardPhoto" src=""></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Address"> 所在城市： </label>
+
+                        <div class="col-sm-9">
+                            <select id="Province" name="Province" style="float:left;margin-right:10px;"></select>　　<!--省-->
+                            <select id="City" name="City" style="float:left;margin-right:10px;"></select>　　　　 <!--市-->
+                            <select id="Area" name="Area" style="float:left;margin-right:10px;"></select>　　　　 <!--区-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Address"> 地址： </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Address" name="Address" placeholder="" class="col-xs-10 col-sm-5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="QQ"> QQ： </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="QQ" name="QQ" placeholder="" class="col-xs-10 col-sm-5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Email"> 电子邮箱： </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Email" name="Email" placeholder="" class="col-xs-10 col-sm-5">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="Photo"> 头像： </label>
+                        <div class="col-sm-9">
+                            <div class="col-xs-10 col-sm-5" style="padding:0px;">
+
+                                <div class="col-sm-9" style="padding:0px;">
+                                    <input type="file" id="Photo" multiple class="file-loading" />
+                                    <input type="hidden" id="PhotoUpload" class="form-control" name="Photo" />
+                                </div>
+                                <div class="col-sm-3" style="padding:0px;">
+                                    <div id="btnPhoto" class="btn" style="float:left;margin-left:5px; height:44px;"><i class="icon-picture align-top bigger-125"></i></div>
+                                    <div id="divImgPhoto" style="display: none;"><img id="imgPhoto" src=""></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 可查看员工绩效： </label>
+
+                        <div class="col-sm-9">
+
+
+
+                            <div id="CanViewUser" class="tags" style="width:513px; min-height: 28px;padding:5px;cursor: pointer; cursor: pointer;">
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="WeiXinVisible"> 开启微信预约： </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                <input id="WeiXinVisible" name="WeiXinVisible" class="ace ace-switch ace-switch-5" type="checkbox">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="WeiXinOpenID"> 微信OpenID： </label>
+
+                        <div class="col-sm-9">
+                            <div class="col-xs-10 col-sm-5 no-padding-left no-padding-right panel-noscroll">
+
+                                <input type="text" id="BindWeiXin" name="BindWeiXin" class="col-xs-10 col-sm-5">
+                                <input id="WeiXinOpenID" name="WeiXinOpenID" type="hidden" />
+                                <input id="WeiXinOpenName" name="WeiXinOpenName" type="hidden" />
+                            </div>
+                            <div class="col-xs-2 col-sm-2  no-padding-left no-padding-right">
+                                <a class="btn btn-xs btn-danger" id="RemoveBindWeiXin" style="height:30px">解除绑定</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="WeiXinOrderNotice"> 微信下单通知： </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                <input id="WeiXinOrderNotice" name="WeiXinOrderNotice" class="ace ace-switch ace-switch-7" type="checkbox">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="WeiXinAppointmentNotice"> 微信预约通知： </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                <input id="WeiXinAppointmentNotice" name="WeiXinAppointmentNotice" class="ace ace-switch ace-switch-7" type="checkbox">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+                *@
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="Remark"> 备注： </label>
+
+                    <div class="col-sm-9">
+                        <textarea class="col-xs-10 col-sm-5" id="Remark" name="Remark" style="height:100px;"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button id="btnAdd" class="btn btn-info" type="button" onclick="addUser();">
+                            <i class="icon-ok bigger-110"></i>
+                            添加
+                        </button>
+                        <button id="btnUpdate" class="btn btn-info" type="button" onclick="updateUser();">
+                            <i class="icon-ok bigger-110"></i>
+                            保存
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset">
+                            <i class="icon-undo bigger-110"></i>
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+@section FootScript{
+    <script src="/Areas/Admin/Content/assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/jquery.maskedinput.min.js"></script>
+    <link href="/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+    <script src="/Scripts/fileinput.min.js"></script>
+    <script src="/Scripts/fileinput_locale_zh.js"></script>
+    <!-- 下拉插件 -->
+    <script src="~/Areas/Admin/Content/DropdownJs/jquery.dropdown.js"></script>
+    <!-- 省市县插件 -->
+    <script src="~/Scripts/PCASClass.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var oFileInput = new FileInput();
+            oFileInput.Init("IdcardPhoto", "/Common/Upload/UploadImg");
+
+            $("#IdcardPhoto").on("fileuploaded", function (event, data, previewId, index) {
+                if (data.response.success) {
+                    $("#IdcardPhotoUpload").val(data.response.msg);
+                } else {
+                    layer.msg('文件上传失败，请检测文件格式是否为图片', { icon: 2, time: 1000 });
+                    return;
+                }
+            }).on("filecleared", function (event, data, previewId, index) {
+                $("#IdcardPhotoUpload").val("");
+            });
+
+
+            oFileInput.Init("Photo", "/Common/Upload/UploadImg");
+
+            $("#Photo").on("fileuploaded", function (event, data, previewId, index) {
+                if (data.response.success) {
+                    $("#PhotoUpload").val(data.response.msg);
+                } else {
+                    layer.msg('文件上传失败，请检测文件格式是否为图片', { icon: 2, time: 1000 });
+                    return;
+                }
+            }).on("filecleared", function (event, data, previewId, index) {
+                $("#PhotoUpload").val("");
+            });
+
+            //绑定微信
+            bindWeiXin();
+
+            /**
+           * 下面是进行插件初始化
+           * 你只需传入相应的键值对
+           * */
+            $('#userForm').bootstrapValidator({
+                //submitButtons: 'button[type="submit"]',
+                message: '数据格式不符合',
+                feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                    valid: 'icon-ok-sign',
+                    invalid: 'icon-remove-sign',
+                    validating: 'icon-ok-sign'
+                },
+                fields: {/*验证*/
+                    UserName: {/*键名username和input name值对应*/
+                        message: '用户名无效',
+                        validators: {
+                            //notEmpty: {
+                            //    message: '用户名不能为空'
+                            //},
+                            stringLength: {/*长度提示*/
+                                min: 4,
+                                max: 20,
+                                message: '长度必须在4到20字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Password: {/*键名username和input name值对应*/
+                        message: '密码无效',
+                        validators: {
+                            //notEmpty: {
+                            //    message: '密码不能为空'
+                            //},
+                            stringLength: {/*长度提示*/
+                                min: 4,
+                                max: 32,
+                                message: '长度必须在6到32字符之间'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    DefaultStoreID: {
+                        message: '默认门店无效',
+                        validators: {
+                            notEmpty: {
+                                message: '不能为空'
+                            }
+                        }
+                    },
+                    RealName: {
+                        message: '真实姓名无效',
+                        validators: {
+                            notEmpty: {
+                                message: '真实姓名不能为空'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 1,
+                                max: 20,
+                                message: '长度必须1到20字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    WorkNum: {
+                        message: '工号无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 1,
+                                max: 20,
+                                message: '长度必须1到20字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    BasicSalary: {
+                        message: '底薪无效',
+                        validators: {
+                            regexp: {
+                                regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+                                message: '数字无效'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 1,
+                                max: 20,
+                                message: '长度必须1到20字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    TEL: {
+                        message: '电话无效',
+                        validators: {
+                            regexp: {
+                                regexp: /^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$|(^(1[0-9][0-9]|15[0|3|6|7|8|9]|18[8|9])\d{8}$)/,
+                                message: '电话格式有误'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Phone: {
+                        message: '手机无效',
+                        validators: {
+                            notEmpty: {
+                                message: '手机不能为空'
+                            },
+                            regexp: {
+                                regexp: /^1[34578]\d{9}$/,
+                                message: '手机格式有误'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Idcard: {
+                        message: '身份证无效',
+                        validators: {
+                            notEmpty: {
+                                message: '身份证不能为空'
+                            },
+                            regexp: {
+                                regexp: /^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/,
+                                message: '身份证错误'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Address: {
+                        message: '地址无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 50,
+                                message: '长度必须50字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    QQ: {
+                        message: 'QQ无效',
+                        validators: {
+                            regexp: {
+                                regexp: /^\d{5,12}$/,
+                                message: 'QQ号错误'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Email: {
+                        message: '电子邮箱无效',
+                        validators: {
+                            regexp: {
+                                regexp: /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
+                                message: '电子邮箱无效'
+                            },
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 50,
+                                message: '长度必须1到20字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    WeiXinToken: {
+                        message: '微信Token无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 50,
+                                message: '长度必须50字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    },
+                    Remark: {
+                        message: '备注无效',
+                        validators: {
+                            stringLength: {/*长度提示*/
+                                min: 0,
+                                max: 500,
+                                message: '长度必须500字符之内'
+                            }/*最后一个没有逗号*/
+                        }
+                    }
+
+                }
+            });
+
+
+            $("#RemoveBindWeiXin").click(function () {
+                layer.confirm('是否解绑？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    var userID = $.getUrlParam("ID");
+                    $.post("/Admin/User/RemoveUserBindWeiXin", { userID: userID }, function (result) {
+                        if (result.success) {
+                            layer.msg(result.msg, { icon: 1, time: 2000 });
+                            $("#WeiXinOpenID").val("");
+                            $("#WeiXinOpenName").val("");
+                            $("#BindWeiXin").combogrid("setText", "");
+
+                        } else {
+                            layer.msg(result.msg, { icon: 2, time: 2000 });
+                        }
+                    });
+
+                }, function () {
+
+                });
+
+
+
+            })
+
+            initForm();
+
+            InitCanViewUser();
+
+        });
+
+        function showAccount() {
+            $("#btnShowAccount").hide();
+            $("#btnHideAccount").show();
+            $("#divUsername").show();
+            $("#divPassword").show();
+            //$("#divUsername input").val("");
+            //$("#divPassword input").val("");
+            //$("#NeedAccount").val("true");
+        }
+
+        function hideAccount() {
+            $("#btnShowAccount").show();
+            $("#btnHideAccount").hide();
+            $("#divUsername").hide();
+            $("#divPassword").hide();
+            //$("#NeedAccount").val("false");
+        }
+
+        function InitCanViewUser() {
+            $("#CanViewUser").YBdropTable({
+                dropwidth: "auto", //下拉层的宽度
+                editable: false,//设置当前控件是否可以被编辑
+                tableoptions: {
+                    autoPost: true,//输入文本框的时候，是否自动回发服务器获取数据
+                    autoload: true,//点开下拉框的时候是否自动在加载数据
+                    url: "/Admin/User/GetStoreUserJsonByStoreID", //查询响应的地址
+                    qtitletext: "请输入关键字...", //下拉查询框的默认文字
+                    qtextWidth: 513,//查询输入框的长度
+                    pagesize: 5,//分页大小
+                    showSearch: true,//显示搜索框
+                    showTableTH: true,//显示表头
+                    showPager: true, //显示分页控件
+                    multipleChoices: false,//是否多选，保留字段，后期拓展，目前不支持多选
+                    colmodel://表格列定义
+                        [
+                        { name: "ID", displayname: "编号", width: "50px", visible: false },
+                        { name: "RealName", displayname: "真实姓名", width: "100px", visible: true },
+                        { name: "WorkNum", displayname: "工号", width: "100px", visible: true },
+                        { name: "Phone", displayname: "电话", width: "100px", visible: true }
+                        ],
+
+                    //单选回调函数，返回被选行的json对象，非json字符串,直接对象点出属性即可，如jsonResult.ID
+                    singleSelectFunc: function (jsonResult) {
+                        var canViewUser = $("#CanViewUser");
+                        var singleTag = $.format("<span data-id='{0}' class='tag'>{1}<button type='button' class='close' onclick='deleteThisTag(this);'>×</button></span>", jsonResult.ID, jsonResult.RealName)
+                        var hasExist = false;
+                        canViewUser.find("span.tag").each(function () {
+                            if ($(this).attr("data-id") == jsonResult.ID) {
+                                hasExist = true;
+                            }
+                        });
+                        if (hasExist) {
+                            layer.msg("已经存在");
+                        }
+                        else {
+                            canViewUser.append(singleTag);
+                        }
+                    }
+                }
+            });
+        }
+
+        function bindWeiXin() {
+            $("#BindWeiXin").combogrid({
+                fit: true,
+                width: 255,
+                panelWidth: 500,
+                panelHeight: 350,
+                idField: 'OpenID',
+                textField: 'NickName',
+                queryParams: {},
+                url: '/admin/Members/GetWeiXin',
+                mode: 'remote',
+                delay: 600,
+                fitColumns: true,
+                editable: true,
+                pagination: true,           //是否分页
+                rownumbers: true,           //序号
+                pageSize: 10,//每页显示的记录条数，默认为10
+                pageList: [10],//可以设置每页记录条数的列表
+                columns: [[
+                    {
+                        field: 'HeadImgUrl', title: '微信头像', width: 70, formatter: function (value) {
+                            return '<img src="' + value + '" width=50 height=50 />'
+                        }
+                    },
+                    { field: 'NickName', title: '微信昵称', width: 220 },
+                    {
+                        field: 'AttentionTime', title: '关注时间', width: 200, formatter: function (value) {
+                            if (value != "")
+                                return moment(value).format('YYYY-MM-DD HH:mm:ss');
+                        }
+                    },
+                    { field: 'ID', title: '', hidden: true }
+                ]],
+                onClickRow: function (rowIndex, rowData) {
+
+                    $("#WeiXinOpenID").val(rowData.OpenID);
+                    $("#WeiXinOpenName").val(rowData.NickName);
+                }
+            });
+        }
+
+        function deleteThisTag(obj) {
+            $(obj).parent().remove();
+            event.stopPropagation();
+        }
+
+        function initForm() {
+
+            ////获取所有工种为下拉菜单填充值
+            //$.post('/Admin/User/GetAllWorkType',
+            //{ UserID: $.getUrlParam("ID") },
+            //function (result) {
+            //
+            //    //为WorkType下拉菜单填充值
+            //    $.each(result, function (index, el) {
+            //
+            //        $("#WorkTypeID").append("<option value='" + el.ID + "'>" + el.Name + "</option>");
+            //    });
+
+            //    //if (!$.isNullOrEmpty(result.DefaultWorkTypeID))
+            //    //{
+            //    //    $("#WorkTypeID").val(result.DefaultWorkTypeID);
+            //    //}
+
+            //    $("#WorkTypeID").prepend("<option value='' selected='selected'>请选择</option>"); //为Select插入一个Option(第一个位置)
+            //},
+            //"json"
+            //);
+
+            //如果没有传入ID则说明是新增，否则就是编辑
+            if ($.isNullOrEmpty($.getUrlParam("ID"))) {
+                $("#btnAdd").show();
+                $("#btnUpdate").hide();
+
+                //新增的时候省市县没有初始值
+                new PCAS("Province", "City", "Area");
+
+                //谷歌记住密码的解决方案
+                $("#UserName").val("");
+                $("#Password").val("");
+
+            }
+            else {
+                $("#btnUpdate").show();
+                $("#btnAdd").hide();
+
+                //如果url有参数，则是编辑，那么就请求服务器，然后填充表单
+                var loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+
+                $.post('/Admin/User/GetUserByID',
+                { ID: $.getUrlParam("ID") },
+                function (result) {
+                    layer.close(loading);
+                    //$("#UserName").attr("readonly", "readonly");
+                    $.loadData(result, "#userForm");
+
+                    if (result.WeiXinOpenID != "") {
+                        $("#BindWeiXin").combogrid("setValue", result.WeiXinOpenName);
+                        $("#WeiXinOpenID").val(result.WeiXinOpenID);
+                        $("#WeiXinOpenName").val(result.WeiXinOpenName);
+                    }
+
+                    //如果不需要账号则隐藏对应字段
+                    if (!result.NeedAccount) {
+                        $("#btnHideAccount").click();
+                        //hideAccount();
+                    }
+                    else {
+                        $("#btnShowAccount").click();
+                    }
+                    //初始化省市县菜单
+                    //省市区
+                    var Province = result.Province;
+                    var City = result.City;
+                    var Area = result.Area;
+                    new PCAS("Province", "City", "Area", Province, City, Area);
+
+                    //如果头像图片有值则给图片赋值
+                    if (!$.isNullOrEmpty(result.Photo)) {
+                        $("#btnPhoto").addClass("btn-danger");
+                        $("#imgPhoto").attr("src", result.Photo);
+                        $("#imgPhoto").unbind();
+                        $("#btnPhoto").click(function () {
+                            showPhoto();
+                        });
+                    }
+
+                    //如果身份证图片有值则给图片赋值
+                    if (!$.isNullOrEmpty(result.IdcardPhoto)) {
+                        $("#btnIdcardPhoto").addClass("btn-danger");
+                        $("#imgIdcardPhoto").attr("src", result.IdcardPhoto);
+                        $("#btnIdcardPhoto").unbind();
+                        $("#btnIdcardPhoto").click(function () {
+                            showIdcardPhoto();
+                        });
+                    }
+
+                    //$("#Password").val("");
+                },
+                "json"
+                );
+
+            }
+        }
+
+        function showPhoto() {
+            //页面层-佟丽娅
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['60px', '60px'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: $('#divImgPhoto')
+            });
+        }
+
+
+        function showIdcardPhoto() {
+            //页面层-佟丽娅
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['600px', '430px'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: $('#divImgIdcardPhoto')
+            });
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                location.href = document.referrer;
+                //history.go(-1);
+            }
+            else {
+                var backUrl = "@ViewBag.BackUrl";
+                if ($.isNullOrEmpty(backUrl)) {
+                    backUrl = '/Admin/User/Index';
+                }
+                location.href = backUrl;
+            }
+        }
+
+        function addUser() {
+            //验证数据
+            var validateResult = $('#userForm').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var userJson = $("#userForm").serializeJson();
+            userJson.WeiXinVisible = $("#WeiXinVisible").is(":Checked");
+            userJson.WeiXinOrderNotice = $("#WeiXinOrderNotice").is(":Checked");
+            userJson.WeiXinAppointmentNotice = $("#WeiXinAppointmentNotice").is(":Checked");
+            userJson.ParentID = $("#ParentID").val();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/User/AddUser',
+            userJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    //墨绿深蓝风
+                    layer.alert(result.msg,
+                        {
+                            closeBtn: 0
+                        }, function () {
+                            goBack();
+                        });
+
+                    //layer.msg(result.msg);
+                    //location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        function updateUser() {
+            //验证数据
+            var validateResult = $('#userForm').bootstrapValidator('validate').data('bootstrapValidator');
+            if (!validateResult.isValid()) {
+                return;
+            }
+
+            var userJson = $("#userForm").serializeJson();
+            userJson.WeiXinVisible = $("#WeiXinVisible").is(":Checked");
+            userJson.WeiXinOrderNotice = $("#WeiXinOrderNotice").is(":Checked");
+            userJson.WeiXinAppointmentNotice = $("#WeiXinAppointmentNotice").is(":Checked");
+            userJson.ParentID = $("#ParentID").val();
+
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Admin/User/UpdateUser',
+            userJson,
+            function (result) {
+                layer.close(loading);
+
+                if (result.success) {
+                    //墨绿深蓝风
+                    layer.alert(result.msg,
+                        {
+                            closeBtn: 0
+                        }, function () {
+                            goBack();
+                        });
+
+                    //layer.msg(result.msg);
+                    //location.reload();
+                }
+                else {
+                    layer.msg(result.msg);
+                }
+            },
+            "json"
+            );
+        }
+
+        //图片上传
+        var FileInput = function () {
+            var oFile = new Object();
+
+            //初始化fileinput控件（第一次初始化）
+            oFile.Init = function (ctrlName, uploadUrl) {
+                var control = $('#' + ctrlName);
+
+                //初始化上传控件的样式
+                control.fileinput({
+                    language: 'zh', //设置语言
+                    uploadUrl: uploadUrl, //上传的地址
+                    uploadAsync: true, //默认异步上传
+                    allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                    showUpload: false, //是否显示上传按钮
+                    showCaption: true,//是否显示标题
+                    browseClass: "btn btn-xs btn-primary", //按钮样式
+                    removeClass: "btn btn-xs btn-default",
+                    cancelClass: "btn btn-xs btn-default",
+                    uploadClass: "btn btn-xs btn-default",
+                    showPreview: false,//是否显示图片预览
+                    dropZoneEnabled: false,//是否显示拖拽区域
+
+                    //minImageWidth: 50, //图片的最小宽度
+                    //minImageHeight: 50,//图片的最小高度
+                    //maxImageWidth: 1000,//图片的最大宽度
+                    //maxImageHeight: 1000,//图片的最大高度
+                    //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+                    //minFileCount: 0,
+                    maxFileCount: 1, //表示允许同时上传的最大文件个数
+                    enctype: 'multipart/form-data',
+                    validateInitialCount: true,
+                    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                }).on("filebatchselected", function (event, files) {
+                    $("#" + ctrlName).fileinput("upload");
+                });
+                //////导入文件上传完成之后的事件
+                //$("#StoresImage").on("fileuploaded", function (event, data, previewId, index) {
+                //    alert("sdfs");
+                //    if (data.Result == 1) {
+                //        $("#StoresImage").val(data.msg);
+                //    } else {
+                //        layer.msg('文件格式类型不正确', { icon: 2, time: 1000 });
+                //        return;
+                //    }
+                //});
+            }
+            return oFile;
+        };
+
+    </script>
+}
+
+

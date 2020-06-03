@@ -1,0 +1,383 @@
+﻿@using Joint.Web.Areas.Admin.Models;
+@using Joint.Entity
+@model PageModel<Role>
+@section Style{
+    <style type="text/css">
+        .help-block {
+            display: inline-block;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-header widget-header-blue widget-header-flat">
+                        <h4 class="lighter">输入查询条件</h4>
+
+                    </div>
+                    <div class="widget-body">
+                        <form id="searchRole" action="/Admin/Permission/RolePermission" method="post">
+                            <div class="widget-main">
+
+                                <div class="row" id="step-container">
+
+                                    @{
+                                        var searchModel = ViewBag.SearchModel as RoleSearchModel;
+                                        if (searchModel == null)
+                                        {
+                                            searchModel = new RoleSearchModel();
+                                        }
+                                    }
+                                    <div class="col-xs-12 col-sm-3 control-group">
+                                        <label class="control-label">&nbsp;角色名</label>
+                                        <input style="height:35px;" id="RoleName" name="RoleName" type="text" value="@searchModel.RoleName">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3 control-group">
+                                        <div class="form-horizontal">
+                                            <label class="control-label" style="float:left;margin-right:10px;">是否禁用</label>
+                                            <select class="form-control" id="Disabled" name="Disabled" style=" width:150px">
+                                                <option value="" selected="selected">不限制</option>
+                                                <option value="1">禁用</option>
+                                                <option value="0">正常</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-xs-12 col-sm-4 control-group">
+                                            <div class="form-horizontal">
+                                                <label class="control-label" style="float:left;margin-right:10px;">开始日期</label>
+                                                <select class="form-control" id="form-field-select-1" style=" width:200px">
+                                                    <option value="">&nbsp;</option>
+                                                    <option value="AL">Alabama</option>
+                                                    <option value="AK">Alaska</option>
+                                                    <option value="NH">New Hampshire</option>
+                                                    <option value="NJ">New Jersey</option>
+                                                    <option value="NM">New Mexico</option>
+                                                </select>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-xs-12 col-sm-3 control-group">
+                                        <div class="form-horizontal">
+                                            <label class="control-label" style="float:left">开始日期</label>
+                                            <div class="input-group col-xs-4" style="width:200px;">
+                                                <input class="form-control date-picker" id="startDate" name="startDate" type="text" data-date-format="yyyy-mm-dd" value="@searchModel.startDate">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-3 control-group">
+                                        <div class="form-horizontal">
+                                            <label class="control-label" style="float:left">结束日期</label>
+                                            <div class="input-group col-xs-4" style="width:200px;">
+                                                <input class="form-control date-picker" id="endDate" name="endDate" type="text" data-date-format="yyyy-mm-dd" value="@searchModel.endDate">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <hr>
+                                <div class="text-right" style="padding-right:8%">
+                                    <span style="float:left">
+                                        <button type="button" class="btn btn-info" onclick="assignPermissionsSome();">
+                                            <i class="icon-key"></i>
+                                            批量分配菜单
+                                        </button>
+                                    </span>
+                                    <span>
+                                        <button type="button" class="btn btn-danger" onclick="restForm();">
+                                            <i class="icon-undo"></i>
+                                            重置
+                                        </button>
+
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="icon-search"></i>
+                                            查询
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div><!-- /widget-main -->
+                        </form>
+                    </div><!-- /widget-body -->
+
+                </div>
+            </div>
+        </div>
+
+        <div class="hr hr-18 dotted hr-double"></div>
+
+
+
+        <!-- PAGE CONTENT BEGINS -->
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <input id="PermissionType" type="hidden" value="RolePermission">
+                    <input id="IDs" type="hidden" value="">
+                    <table id="roleTable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="center">
+                                    <label>
+                                        <input type="checkbox" class="ace" onclick="checkAll(this);">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </th>
+                                <th>门店名</th>
+                                <th>角色名称</th>
+                                <th>描述</th>
+                                <th class="hidden-480">排序</th>
+
+                                <th>
+                                    <i class="icon-time bigger-110 hidden-480"></i>
+                                    添加时间
+                                </th>
+                                <th class="hidden-480">状态</th>
+
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.Models)
+                            {
+                                <tr>
+                                    <td class="center">
+                                        <label>
+                                            <input data-id="@item.ID" type="checkbox" class="ace cbSingleData">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        @item.Stores.StoreName
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>@item.Description</td>
+                                    <td class="hidden-480">@item.Sort</td>
+                                    <td>@(Convert.ToDateTime(item.CreateTime).ToString("yyyy-MM-dd"))</td>
+
+                                    <td class="hidden-480">
+                                        @{
+                                var boolDisabled = item.Disabled == true;
+                                <span class="label label-sm @(boolDisabled ? "label-warning" : "label-success")">@(boolDisabled == true ? "禁用" : "正常")</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                                            <button data-id="@item.ID" class="btn btn-xs btn-success" onclick="assignPermissions(this);">
+                                                <i class="icon-zoom-in bigger-120"></i>
+                                                查看
+                                            </button>
+                                            <button data-id="@item.ID" class="btn btn-xs btn-info" onclick="assignPermissions(this);">
+                                                <i class="icon-key bigger-120"></i>
+                                                菜单
+                                            </button>
+                                            <button data-id="@item.ID" class="btn btn-xs  btn-purple" onclick="ShowPrivileges(this, 'RoleShow');">
+                                                <i class="icon-check bigger-120"></i>
+                                                权限
+                                            </button>
+                                        </div>
+                                        @* 下面这个div是小屏的时候，后面显示的出来的一个快捷按钮 *@
+                                        <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                            <div class="inline position-relative">
+                                                <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-cog icon-only bigger-110"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+                                                    <li>
+                                                        <a href="#" data-id="@item.ID" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View" onclick="viewData(this);">
+                                                            <span class="blue">
+                                                                <i class="icon-zoom-in bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-id="@item.ID" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit" onclick="assignPermissions(this);">
+                                                            <span class="green">
+                                                                <i class="icon-edit bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div><!-- /.table-responsive -->
+                <div class="text-center">
+                    @*@Html.PageLinks(Model.pagingInfo, pageIndex => string.Format("/Admin/Role/Index?PageIndex={0}", pageIndex))*@
+                    @Html.PageLinks(Model.pagingInfo, pageIndex => Url.Action("RolePermission", "Permission", new { PageIndex = pageIndex }), searchModel)
+                </div>
+            </div><!-- /span -->
+        </div><!-- /row -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<input id="roleID" type="hidden" />
+<div class="modal fade" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title blue lighter"><i class="icon-ok"></i><label id="modalTitle">添加角色</label></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formRole">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 角色名称 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Name" name="Name" class="col-xs-10 col-sm-7">
+
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 排序 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="Sort" name="Sort" class="col-xs-10 col-sm-7">
+                            <span class="help-inline col-xs-12 col-sm-5">
+                                <span class="middle"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 是否禁用 </label>
+
+                        <div class="col-sm-9">
+                            <label>
+                                <input id="modalDisabled" name="Disabled" class="ace ace-switch ace-switch-5" type="checkbox">
+
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> 描述 </label>
+
+                        <div class="col-sm-9">
+                            <textarea class="col-xs-10 col-sm-7" id="Description" name="Description" style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="AddRole();">添加</button>
+                <button id="btnUpdate" type="button" class="btn btn-primary" onclick="editRole();">更新</button>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section FootScript{
+    <script src="/Areas/Admin/Content/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script src="/Areas/Admin/Content/assets/js/date-time/daterangepicker.min.js"></script>
+
+    <script>
+
+        $(function () {
+            $("#Disabled").val(@searchModel.Disabled);
+        });
+
+        $('.date-picker').datepicker({ autoclose: true }).next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        });
+
+        function checkAll(obj) {
+            var isChecked = $(obj).prop("checked");
+            $(".cbSingleData").prop("checked", isChecked);
+        }
+
+
+        function restForm() {
+            $('#searchRole input').val("");
+            $('#Disabled').val("");
+
+        }
+
+        function submitSearchForm() {
+            $("#searchRole").submit();
+            //document.getElementById('searchRole').submit();
+        }
+
+        function ShowPermissionMenu() {
+            //iframe层-父子操作
+            var openIndex = layer.open({
+                type: 2,
+                area: ['680px', '700px'],
+                fix: false, //不固定
+                maxmin: true,
+                title: "权限分配",
+                content: '/Admin/Permission/PermissionMenu'
+            });
+
+        }
+        function ShowPrivileges(obj, PType) {
+            
+            var id = $(obj).attr("data-id");
+
+            //iframe层-父子操作
+            var openIndex = layer.open({
+                type: 2,
+                area: ['800px', '600px'],
+                fix: false, //不固定
+                maxmin: true,
+                title: "权限分配",
+                content: $.format('/Admin/Module/ShowPrivileges?PType={0}&ID={1}', PType, id)
+            });
+        }
+        function assignPermissions(obj) {
+            $("#IDs").val($(obj).attr("data-id"));
+            ShowPermissionMenu();
+        }
+
+        function assignPermissionsSome() {
+            var strIDs = "";
+            $(".cbSingleData:checked").each(function () {
+                strIDs += "," + $(this).attr("data-id");
+            });
+
+            if (strIDs == "") {
+                layer.msg("请勾选角色");
+                return;
+            }
+
+            //设置隐藏域，给弹窗获取
+            $("#IDs").val(strIDs);
+
+            ShowPermissionMenu();
+        }
+
+
+    </script>
+}

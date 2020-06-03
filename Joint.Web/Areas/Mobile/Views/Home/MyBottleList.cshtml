@@ -1,0 +1,158 @@
+﻿@section Style{
+    @* ACE 拓展样式 兼容手机 *@
+    <link href="~/Areas/Mobile/Content/css/CommonExpand.css" rel="stylesheet" />
+
+}
+
+@section HeadScript{
+    @*页头脚本位置*@
+
+}
+
+@using Joint.Common
+@using Joint.Web.Framework
+<script type="text/template" id="singleItem">
+    <div class="profile-activity clearfix" onclick="javascript: location.href = '/Mobile/Home/SendMassage?BottleID={5}&massageKey={6}&UName={7}'">
+        <div>
+            <img class="pull-left  no-hover" style="margin-left:15px;" src="{0}" />
+            @*<i class="pull-left thumbicon  no-hover" style="margin-left:15px;"></i>*@
+            <div class="time">
+                <a class="user" href="#"> {1} </a>
+                <i class="icon-time bigger-110"></i>
+                {2}
+            </div>
+            <div style="margin-top: 3px;">
+                <i style="{3}" class="icon-bell-alt icon-animated-bell red bigger-130"></i> {4}
+            </div>
+        </div>
+    </div>
+</script>
+<div class="personal-list">
+
+    <ul id="myTab" class="nav nav-tabs padding-18 tab-size-bigger" style="padding:0px;">
+        <li class="@(Request["bottleType"]=="1"?"active":"")" style="width:50%" onclick="javascript: location.href = '/Mobile/Home/MyBottleList?bottleType=1'">
+            <a href="#faq-tab-0" data-toggle="tab">
+                <i id="icoFishing" class="blue icon-envelope-alt bigger-120"></i>
+                我捞到的<span class="red" id="fishingCount">@ViewBag.FishingText</span>
+            </a>
+        </li>
+        <li class="@(Request["bottleType"]=="2"?"active":"")" style="width:50%" onclick="javascript: location.href= '/Mobile/Home/MyBottleList?bottleType=2'">
+            <a href="#faq-tab-0" data-toggle="tab">
+                <i id="icoThrow" class="purple icon-envelope-alt bigger-120"></i>
+                我丢出的<span class="red" id="throwCount">@ViewBag.ThrowText</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <div id="user-profile-1" class="user-profile row" style="margin-right:0px;">
+
+        <div style="background-color:#ffffff" id="allItem">
+
+        </div>
+        <div style="text-align:center;margin-bottom:5px;background-color: #ffffff;padding: 10px;">
+            <span class="blue" onclick="getMyBottleList(@Request["bottleType"])">更多瓶子</span>
+        </div>
+    </div>
+</div>
+
+@section FooterView{
+    @{Html.RenderPartial("_FooterCommon", new { });}
+}
+
+@section FootScript{
+    @*页尾脚本位置*@
+    <script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        function PageGoBack() {
+            if (index) {
+                parent.layer.close(index);
+            }
+            else {
+                history.go(-1);
+            }
+        }
+
+        $(function () {
+            getMyBottleList(@Request["bottleType"]);
+        });
+
+        var msgPageIndex = 0;
+        function getMyBottleList(bottleType) {
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+
+            $.post('/Mobile/Home/GetMyBottleList',
+            { pageIndex: msgPageIndex, BottleType: bottleType, MassageKey: '@(Joint.Common.SecureHelper.MD5(InitInfo.Instance.CurrentUser.ID + Joint.Common.SecureHelper.JeasuAutoKey))' },
+                function (result) {
+                    if (result.success == false) {
+                        layer.msg(result.msg);
+                    }
+                    else {
+                        //console.log(result);
+                        $(result).each(function (index, el) {
+                            var singleItem = $.format($("#singleItem").html(),
+                                el.Sexual == true ? "/Areas/Mobile/Content/img/nan.png" : "/Areas/Mobile/Content/img/nv.png",
+                                el.LastReplyUserName,// $.formatDate("MM/dd hh:mm:ss", el.CreateTime.replace("T", " ")),
+                                 $.formatDate("MM/dd hh:mm:ss", el.LastReplyTime),
+                                IsNewReply(el.CreateUserID, el.FirstReplyUserID, el.LastReplyUserID, el.LastReplyTime, el.ReplyViewTime, el.CreateViewTime) == true ? "" : "display:none;",
+                                el.LastReplyMassage,
+                                el.ID,
+                                el.MassageKey,
+                                el.CreateUserName);
+
+
+                            $("#allItem").append(singleItem);
+                        });
+                        if (result.length > 0) {
+                            msgPageIndex++;
+                        }
+                        else {
+                            if (msgPageIndex > 0) {
+                                layer.msg("没有瓶子了", { shadeClose: false, time: 2000, shade: [0.2, '#393D49'] });
+                            }
+
+                        }
+                    }
+
+                    layer.close(loading);
+                },
+                "json"
+            );
+        }
+
+        function IsNewReply(CreateUserID, FirstReplyUserID, LastReplyUserID, LastReplyTime, ReplyViewTime, CreateViewTime) {
+
+            var jsLastReplyTime = new Date(LastReplyTime.replace("-", "/"));
+            var jsReplyViewTime = new Date(ReplyViewTime.replace("-", "/"));
+            var jsCreateViewTime = new Date(CreateViewTime.replace("-", "/"));
+
+
+
+            var bottleType = '@Request["bottleType"]';
+            //说明是收到的
+            if (bottleType == "1") {
+
+                //alert( jsReplyViewTime <= jsLastReplyTime);
+                //如果是捞到的瓶子，回复人和丢瓶子的人是同一个则说明回复了，并且最后查看时间小于等于回复时间，说明是最新回复的
+                if (LastReplyUserID != FirstReplyUserID && jsReplyViewTime <= jsLastReplyTime) {
+                    //console.log(LastReplyUserID, FirstReplyUserID, jsReplyViewTime, jsLastReplyTime);
+                    return true;
+                }
+            }
+            else {
+                //如果是自己的瓶子，回复人和丢瓶子的人不是同一个则说明回复了，并且最后查看时间小于等于回复时间，说明是最新回复的
+                if (LastReplyUserID != CreateUserID && jsCreateViewTime <= jsLastReplyTime) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+    </script>
+}

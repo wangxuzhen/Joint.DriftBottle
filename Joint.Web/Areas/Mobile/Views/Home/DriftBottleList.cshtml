@@ -1,0 +1,105 @@
+﻿@section Style{
+    @* ACE 拓展样式 兼容手机 *@
+    <link href="~/Areas/Mobile/Content/css/CommonExpandDriftBottle.css" rel="stylesheet" />
+}
+
+@section HeadScript{
+    @*页头脚本位置*@
+
+}
+
+<script type="text/template" id="singleItem">
+    <a class="plist {0}" href="/Mobile/Home/SendMassage?BottleID={4}&massageKey={5}&UName={6}">
+        <div class="ptit">{1}</div>
+        <div class="namespand">{2} <img style="width: 20px;" src="{3}" /> </div>
+    </a>
+</script>
+
+<div class="personal-list">
+    <div id="allItem">
+        <a class="plist greendiv">
+            @*<span class="btn btn-danger btn-circle btn-lg listIco"><i class="icon-twitter bigger-110"></i></span>*@
+            <div class="ptit">正在努力加载数据...</div>
+            <div class="namespand"> 请耐心等待 <img style="width: 20px;" src="~/Areas/Mobile/Content/img/nv.png" /> </div>
+        </a>
+
+    </div>
+    <div class="form-actions" style="background-color: #ffffff;">
+        <button class="btn btn-primary btn-block" onclick="getBottleList()">点击更换一批</button>
+    </div>
+</div>
+
+@section FooterView{
+    @{Html.RenderPartial("_FooterCommon", new { });}
+}
+
+@section FootScript{
+    @*页尾脚本位置*@
+    <script type="text/javascript">
+        function sendMassage(bottleID, massageKey) {
+
+            var index = layer.open({
+                type: 2,
+                content: $.format("/Mobile/Home/SendMassage?BottleID={0}&massageKey={1}", bottleID, massageKey),
+                area: [$(window).width() + 'px', $(window).height() + 'px'],
+                title: false,
+                maxmin: false,
+                closeBtn: 0
+            });
+            layer.full(index);
+        }
+
+        function getBottleList() {
+            var loading = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            $.post('/Mobile/Home/GetBottleList',
+            null,
+            function (result) {
+                if (result.success == false) {
+                    layer.msg(result.msg);
+                }
+                else {
+                    $("#allItem").html("");
+                    //console.log(result);
+                    $(result).each(function (index, el) {
+                        var singleItem = $.format($("#singleItem").html(),
+                            el.Sexual == true ? "greendiv" : "purplediv",
+                            el.Massage,
+                            el.CreateUserName,
+                            el.Sexual == true ? "/Areas/Mobile/Content/img/nan.png" : "/Areas/Mobile/Content/img/nv.png",
+                            el.ID,
+                            el.MassageKey,
+                            el.CreateUserName);
+
+                        $("#allItem").append(singleItem);
+                    });
+
+                    $("html,body").animate({
+                        scrollTop: 0
+                    }, 500);
+                }
+
+                layer.close(loading);
+            },
+            "json"
+            );
+        }
+
+        
+        $(function () {
+            getBottleList();
+         
+        });
+
+        //$(window).scroll(function() {
+        //    var scrollTop = $(this).scrollTop();
+        //    var scrollHeight = $(document).height();
+        //    var windowHeight = $(this).height();
+        //    if (scrollTop + windowHeight == scrollHeight) {
+        //        getBottleList();
+        //    }
+        //});
+    </script>
+}

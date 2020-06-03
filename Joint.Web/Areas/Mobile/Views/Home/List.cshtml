@@ -1,0 +1,46 @@
+﻿@section Style{
+    @* ACE 拓展样式 兼容手机 *@
+    <link href="~/Areas/Mobile/Content/css/CommonExpand.css" rel="stylesheet" />
+}
+
+@section HeadScript{
+    @*页头脚本位置*@
+
+}
+
+
+<div class="personal-list">
+    @*<a class="plist" href="#">
+            <span class="btn btn-warning btn-circle btn-lg listIco"><i class="glyphicon icon-ambulance bigger-110"></i></span>
+            <span class="ptit">采购管理</span><span class="iconarrow"></span>
+        </a>*@
+    <a class="plist" href="/Mobile/Home/UserCenter">
+        <span class="btn btn-danger btn-circle btn-lg listIco"><i class="icon-usd bigger-110"></i></span>
+        <span class="ptit">金币：102币（点击签到）</span><span class="iconarrow"></span>
+    </a>
+    <a class="plist" href="/Mobile/Home/UserCenter">
+        <span class="btn btn-success btn-circle btn-lg listIco"><i class="icon-user bigger-110"></i></span>
+        <span class="ptit">个人中心</span><span class="iconarrow"></span>
+    </a>
+    <a class="plist" href="/admin/Home/ModifyPassword">
+        <span class="btn btn-info btn-circle btn-lg listIco"><i class="icon-lock bigger-110"></i></span>
+        <span class="ptit">修改密码</span><span class="iconarrow"></span>
+    </a>
+
+    <a class="plist" href="#">
+        <span class="btn btn-pink btn-circle btn-lg listIco"><i class="icon-jpy bigger-110"></i></span>
+        <span class="ptit">充值</span><span class="iconarrow"></span>
+    </a>
+    <a class="plist" href="/admin/Home/Logout">
+        <span class="btn btn-warning btn-circle btn-lg listIco"><i class="icon-off bigger-110"></i></span>
+        <span class="ptit">退出</span><span class="iconarrow"></span>
+    </a>
+</div>
+
+@section FooterView{
+    @{Html.RenderPartial("_FooterCommon", new { });}
+}
+
+@section FootScript{
+    @*页尾脚本位置*@
+}
