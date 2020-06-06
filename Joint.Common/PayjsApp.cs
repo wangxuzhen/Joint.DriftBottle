@@ -1,8 +1,15 @@
 ﻿/// <summary>
-/// 用于封装Pay个人支付模块
+/// 用于封装Pay个人支付模块(未测试)
 /// Shayuxiang 2020.06.07
-/// 用法:
+/// 发起支付:
 /// var ret = PayjsApp.Instance.SendOrder(100,"123456","测试订单");
+/// 
+/// 回调页面
+///             PayjsApp.Instance.Notify((order) => {
+///                //交易成功
+///            }, (order) => {
+///                //交易失败
+///            });
 /// </summary>
 namespace payjstest
 {
@@ -13,6 +20,7 @@ namespace payjstest
     using System.Net;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Web;
 
     public class PayjsApp
     {
@@ -117,6 +125,26 @@ namespace payjstest
         }
 
         /// <summary>
+        /// 处理回调通知
+        /// </summary>
+        /// <returns></returns>
+        public void Notify(Action<NotifyObject> success, Action<NotifyObject> fail)
+        {
+            //获取当前url
+            string[] url = HttpContext.Current.Request.Url.Query.Replace("?", string.Empty).Split('&');
+            NotifyObject notifyObject = new NotifyObject(url);
+            //交易成功
+            if (notifyObject.IsTradeSuccess())
+            {
+                success.Invoke(notifyObject);
+            }
+            else
+            {
+                fail.Invoke(notifyObject);
+            }
+        }
+
+        /// <summary>
         /// 添加参数
         /// </summary>
         /// <param name="param"></param>
@@ -177,6 +205,87 @@ namespace payjstest
                 sBuilder.Append(data[i].ToString("x2"));
             }
             return sBuilder.ToString();
+        }
+
+
+    }
+
+    public class NotifyObject
+    {
+
+        /// <summary>
+        /// payjs的订单号
+        /// </summary>
+        public string payjs_order_id { get; private set; }
+
+        /// <summary>
+        /// 返回代码
+        /// </summary>
+        public int return_code { get; private set; }
+
+        /// <summary>
+        /// 商户号
+        /// </summary>
+        public string mchid { get; private set; }
+        /// <summary>
+        /// 支付金额:分
+        /// </summary>
+        public int total_fee { get; private set; }
+        /// <summary>
+        /// 我们的订单号
+        /// </summary>
+        public string out_trade_no { get; private set; }
+        /// <summary>
+        /// 微信用户手机显示订单号
+        /// </summary>
+        public string transaction_id { get; private set; }
+        /// <summary>
+        /// 支付成功时间
+        /// </summary>
+        public string time_end { get; private set; }
+
+        public NotifyObject(string[] url)
+        {
+            foreach (var u in url)
+            {
+                if (u.StartsWith("return_code"))
+                {
+                    return_code = int.Parse(u.Split('=')[1]);
+                }
+                if (u.StartsWith("total_fee"))
+                {
+                    total_fee = int.Parse(u.Split('=')[1]);
+                }
+                if (u.StartsWith("out_trade_no"))
+                {
+                    out_trade_no = u.Split('=')[1];
+                }
+                if (u.StartsWith("mchid"))
+                {
+                    mchid = u.Split('=')[1];
+                }
+                if (u.StartsWith("payjs_order_id"))
+                {
+                    payjs_order_id = u.Split('=')[1];
+                }
+                if (u.StartsWith("transaction_id"))
+                {
+                    transaction_id = u.Split('=')[1];
+                }
+                if (u.StartsWith("time_end"))
+                {
+                    time_end = u.Split('=')[1];
+                }
+            }
+        }
+
+        /// <summary>
+        /// 是否交易成功
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTradeSuccess()
+        {
+            return return_code == 1 ? true : false;
         }
 
 
